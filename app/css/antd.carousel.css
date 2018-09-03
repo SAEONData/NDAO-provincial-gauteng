@@ -1,0 +1,23 @@
+.ant-carousel {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.ant-carousel .slick-slide {
+  color: black;
+  font-size: 16px;
+}
+
+.ant-carousel .slick-dots li button {
+  background: black;
+  height: 12px;
+  width: 12px; 
+  border-radius: 6px;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: black;
+  height: 12px;
+  border-radius: 6px;
+}

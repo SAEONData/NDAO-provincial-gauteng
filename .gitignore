@@ -313,3 +313,4 @@ __pycache__/
 /NCCRD.Services.DataV2/secrets.json
 /NCCRD_API/NCCRD.Services.DataV2/secrets.json
 NCCRD_Client/app/js/secrets.js
+app/js/secrets.js
