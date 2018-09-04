@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Row, Container, Footer as MDBFooter, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
+import { Col, Row, Container, Footer as MDBFooter, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact'
 
 //Images
 import nrf_seaon from '../../../images/nrf_saeon.png'

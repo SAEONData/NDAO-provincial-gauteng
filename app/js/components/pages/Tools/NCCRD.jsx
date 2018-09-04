@@ -31,9 +31,8 @@ class NCCRD extends React.Component {
     return (
       <>
         <br />
-        <h3><b>Climate Change Responses</b></h3>
-        <br />
         <HostedContentFrame
+          title="Climate Change Responses"
           source="http://app01.saeon.ac.za/nccrdsite/#/projects?navbar=hidden"
          />
       </>

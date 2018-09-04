@@ -31,9 +31,8 @@ class NWIS extends React.Component {
     return (
       <>
         <br />
-        <h3><b>National Water Information System</b></h3>
-        <br />
         <HostedContentFrame
+          title="National Water Information System"
           source="http://niwis.dws.gov.za/niwis2/"
           showSource={true}
          />

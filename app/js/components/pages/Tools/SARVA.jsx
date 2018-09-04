@@ -31,9 +31,8 @@ class SARVA extends React.Component {
     return (
       <>
         <br />
-        <h3><b>Risk And Vulnerability Hotspots</b></h3>
-        <br />
         <HostedContentFrame
+          title="Risk And Vulnerability Hotspots"
           source="http://app01.saeon.ac.za/profiler2/main.aspx"
           showSource={true}
          />

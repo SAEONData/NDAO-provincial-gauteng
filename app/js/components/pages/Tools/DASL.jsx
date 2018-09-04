@@ -31,9 +31,8 @@ class DASL extends React.Component {
     return (
       <>
         <br />
-        <h3><b>Dam And Stream Levels</b></h3>
-        <br />
         <HostedContentFrame
+          title="Dam And Stream Levels"
           source="https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx"
           showSource={true}
          />

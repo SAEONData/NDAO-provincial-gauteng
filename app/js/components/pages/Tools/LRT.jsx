@@ -31,9 +31,8 @@ class LRT extends React.Component {
     return (
       <>
         <br />
-        <h3><b>Lets Respond Toolkit</b></h3>
-        <br />
         <HostedContentFrame
+          title="Lets Respond Toolkit"
           source="http://www.letsrespondtoolkit.org/"
           showSource={true}
          />
