@@ -24,23 +24,32 @@ class Footer extends React.Component {
       <>
         <MDBFooter color="light" style={{ color: "black" }}>
           <hr />
-          <Container>
-            <Row className="align-items-center" style={{ marginBottom: "10px", marginTop: "10px" }}>
-              <Col sm="9">
-                <p>
-                  <b>Created by SAEON using React, MDBootstrap and AntDesign</b>
-                  <br />
-                  &copy; {(new Date().getFullYear())} Copyright:
+          <Row>
+            <Col md="12" >
+              <div style={{ float: "right" }}>
+                <a href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Technical Information</b></a>
+                <a href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Contact</b></a>
+                <a href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Login</b></a>
+                <a href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Register</b></a>
+              </div>
+            </Col>
+          </Row>
+          <hr />
+          <Row className="align-items-center" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            <Col sm="9">
+              <p>
+                <b>Created by SAEON using React, MDBootstrap and AntDesign</b>
+                <br />
+                &copy; {(new Date().getFullYear())} Copyright:
                   <a href="http://www.saeon.ac.za" style={{ color: "black" }}>
-                    <b> <u>SAEON.ac.za</u> </b>
-                  </a>
-                </p>
-              </Col>
-              <Col md="3" className="d-none d-md-block">
-                <img onClick={this.toggleModal} src={nrf_seaon} style={{ width: "80%", marginTop: "-8px", cursor: "pointer" }} align="right" />
-              </Col>
-            </Row>
-          </Container>
+                  <b> <u>SAEON.ac.za</u> </b>
+                </a>
+              </p>
+            </Col>
+            <Col md="3" className="d-none d-md-block">
+              <img onClick={this.toggleModal} src={nrf_seaon} style={{ width: "80%", marginTop: "-8px", cursor: "pointer" }} align="right" />
+            </Col>
+          </Row>
         </MDBFooter>
 
         <Container>

@@ -22,11 +22,11 @@ class HostedContentFrame extends React.Component {
 
     source = globalFunctions.fixEmptyValue(source, "http://www.example.com")
     width = globalFunctions.fixEmptyValue(width, "100%")
-    height = globalFunctions.fixEmptyValue(height, "500px")
+    height = globalFunctions.fixEmptyValue(height, "600px")
     showSource = globalFunctions.fixEmptyValue(showSource, false)
 
     return (
-      <>
+      <div>
         <iframe
           style={{
             width: width,
@@ -41,7 +41,7 @@ class HostedContentFrame extends React.Component {
           &nbsp;source: <a href={source} target="#"><u>{source}</u></a>
         </span>
 
-      </>
+      </div>
     )
   }
 }

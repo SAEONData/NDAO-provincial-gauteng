@@ -1,5 +1,6 @@
 import React from 'react'
 import { Col, Row, Container } from 'mdbreact';
+import { DEAGreen, DEAGreenDark} from "../../config/colours.js"
 
 //Images
 import environmental_affairs_logo from '../../../images/environmental_affairs_logo.png'
@@ -25,10 +26,10 @@ class Header extends React.Component {
               />
             </Col>
             <Col md="6">
-              <h1 style={{ textAlign: "center", marginTop: "4%", letterSpacing: "2px", color: "#2e7d32" }}>
+              <h1 style={{ textAlign: "center", marginTop: "4%", letterSpacing: "2px", color: DEAGreenDark }}>
                 <b>CCIS</b>
               </h1>
-              <h5 style={{ textAlign: "center", letterSpacing: "2px", marginTop: "-8px", color: "grey" }}>
+              <h5 style={{ textAlign: "center", letterSpacing: "2px", marginTop: "-8px", color: "dimgrey" }}>
                 <b>Climate Change Information System</b>
               </h5>
             </Col>

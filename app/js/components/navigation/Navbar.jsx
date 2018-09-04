@@ -80,7 +80,7 @@ class Navbar extends React.Component {
     let { locationHash, user } = this.props
 
     return (
-      <MDBNavbar size="sm" color="white" dark expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
+      <MDBNavbar size="sm" color="white" expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
         {!this.state.isWideEnough && <NavbarToggler style={{ backgroundColor: "#2BBBAD" }} onClick={this.onClick} />}
         <Collapse isOpen={this.state.collapse} navbar>
 
@@ -96,45 +96,68 @@ class Navbar extends React.Component {
               <a className="nav-link" href="#/about"><b style={{ color: "black" }}>About</b></a>
             </NavItem>
 
-            {/* DAO */}
-            <NavItem style={{ borderBottom: (locationHash === "#/DAO" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
-              <a className="nav-link" href="#/DAO"><b style={{ color: "black" }}>DAO</b></a>
+            {/* Adaptation */}
+            <NavItem>
+              <Dropdown>
+                <DropdownToggle nav caret style={{ color: "black" }}><b>Adaptation</b></DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem href="#">Submit DAO Assessment</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem header style={{ marginLeft: "-16px", fontWeight: "400", fontSize: "16px", color: "black" }}>Impacts:</DropdownItem>
+                  <DropdownItem href="#" style={{ marginLeft: "7px" }}>Climatic</DropdownItem>
+                  <DropdownItem href="#" style={{ marginLeft: "7px" }}>Non Climatic</DropdownItem>
+                  <DropdownItem href="#" style={{ marginLeft: "7px" }}>Combined Climatic And Non-Climatic</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem href="#">Impact Early Warning</DropdownItem>
+                  <DropdownItem href="#">Assessing The Effectiveness Of Adaptation Responses</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </NavItem>
+
+            {/* Tools */}
+            <Dropdown>
+              <DropdownToggle nav caret style={{ color: "black" }}><b>Tools</b></DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem href="#/ccr">Climate Change Responses</DropdownItem>
+                <DropdownItem href="#/sarva">Risk And Vulnerability Hotspots</DropdownItem>
+                <DropdownItem href="#/nwis">National Water Information System</DropdownItem>
+                <DropdownItem href="#/lrt">Lets Respond Toolkit</DropdownItem>
+                <DropdownItem href="#/dasl">Dam And Stream Levels</DropdownItem>
+                <DropdownItem href="#"></DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
           </NavbarNav>
 
           {/* RIGHT */}
           <NavbarNav right>
-
-            {/* DAO */}
-            <NavItem style={{ borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
-              <a className="nav-link" href="#/contact"><b style={{ color: "black" }}>Contact</b></a>
-            </NavItem>
 
             {/* Username */}
             {(user && !user.expired) &&
               <NavItem style={{ marginLeft: "15px" }}>
                 <span className="nav-link">
                   <b style={{ color: "#2BBBAD" }}>
-                    {"Hello, " + user.profile.email}
+                    {"Hello, " + user.profile.email}                    
                   </b>
                 </span>
               </NavItem>
             }
 
+            {/* Contact */}
+            <NavItem style={{ marginLeft: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
+              <a className="nav-link" href="#/contact"><b style={{ color: "black" }}>Contact</b></a>
+            </NavItem>
+
             {/* Login / Logout */}
             <NavItem style={{ marginLeft: "15px" }}>
               {(!user || user.expired) &&
                 <a className="nav-link" onClick={this.LoginLogoutClicked} href="#/login">
-                  <b style={{ color: "black" }}>
-                    Login
-                  </b>
+                  <b style={{ color: "black" }}>Login</b>
                 </a>
               }
               {(user && !user.expired) &&
                 <a className="nav-link" onClick={this.LoginLogoutClicked} href="#/logout">
-                  <b style={{ color: "black" }}>
-                    Logout
-                  </b>
+                  <b style={{ color: "black" }}>Logout</b>
                 </a>
               }
             </NavItem>

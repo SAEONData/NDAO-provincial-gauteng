@@ -9,7 +9,7 @@ import 'mdbreact/dist/css/mdb.css'
 //Components
 import React from 'react'
 import { connect } from 'react-redux'
-import { HashRouter as Router, Switch, Route } from 'react-router-dom'
+import { HashRouter as Router, Redirect, Switch, Route } from 'react-router-dom'
 import Home from './components/Pages/Home.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
@@ -18,9 +18,11 @@ import Footer from './components/navigation/Footer.jsx'
 import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
-import About from './components/pages/About.jsx';
-import DAO from './components/pages/DAO.jsx';
-import Contact from './components/pages/Contact.jsx';
+import NCCRD from './components/Pages/Tools/NCCRD.jsx'
+import NWIS from './components/pages/Tools/NWIS.jsx';
+import SARVA from './components/pages/Tools/SARVA.jsx';
+import LRT from './components/pages/Tools/LRT.jsx';
+import DASL from './components/pages/Tools/DASL.jsx';
 
 const mapStateToProps = (state, props) => {
   let { general: { loading } } = state
@@ -57,11 +59,15 @@ class App extends React.Component {
 
             <Switch>
               <Route path="/" component={Home} exact />
-              <Route path="/about" component={About} />
-              <Route path="/DAO" component={DAO} />
-              <Route path="/contact" component={Contact} exact />
+              <Route path="/login" component={Login} exact />
               <Route path="/logout" component={Logout} exact />
               <Route path="/callback" component={CallbackPage} />
+              <Route path="/ccr" component={NCCRD} />
+              <Route path="/nwis" component={NWIS} />
+              <Route path="/sarva" component={SARVA} />
+              <Route path="/lrt" component={LRT} />
+              <Route path="/dasl" component={DASL} />
+              <Redirect to="/" />
             </Switch>
 
             <br />

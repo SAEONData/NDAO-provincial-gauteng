@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact'
+import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class DAO extends React.Component {
+class NCCRD extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,9 +30,15 @@ class DAO extends React.Component {
 
     return (
       <>
+        <br />
+        <h3><b>Climate Change Responses</b></h3>
+        <br />
+        <HostedContentFrame
+          source="http://app01.saeon.ac.za/nccrdsite/#/projects?navbar=hidden"
+         />
       </>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DAO)
+export default connect(mapStateToProps, mapDispatchToProps)(NCCRD)
