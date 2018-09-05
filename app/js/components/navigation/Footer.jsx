@@ -25,12 +25,25 @@ class Footer extends React.Component {
         <MDBFooter color="light" style={{ color: "black" }}>
           <hr />
           <Row>
-            <Col md="12" >
+            <Col md="12">
               <div style={{ float: "right" }}>
-                <a href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Technical Information</b></a>
-                <a href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Contact</b></a>
-                <a href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Login</b></a>
-                <a href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}><b>Register</b></a>
+                <p style={{ textAlign: "right" }}>
+                  <a href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                    <b>Technical Information</b>
+                  </a>
+                  <br className="d-block d-md-none" />
+                  <a href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                    <b>Contact</b>
+                  </a>
+                  <br className="d-block d-md-none" />
+                  <a href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                    <b>Login</b>
+                  </a>
+                  <br className="d-block d-md-none" />
+                  <a href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                    <b>Register</b>
+                  </a>
+                </p>
               </div>
             </Col>
           </Row>

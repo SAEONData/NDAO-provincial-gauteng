@@ -7,6 +7,7 @@ import {
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'mdbreact'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
+import { DEAGreen, DEAGreenDark } from "../../config/colours.js"
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -80,8 +81,8 @@ class Navbar extends React.Component {
     let { locationHash, user } = this.props
 
     return (
-      <MDBNavbar size="sm" color="white" expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
-        {!this.state.isWideEnough && <NavbarToggler style={{ backgroundColor: "#2BBBAD" }} onClick={this.onClick} />}
+      <MDBNavbar size="sm" light expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
+        {!this.state.isWideEnough && <NavbarToggler style={{ backgroundColor: DEAGreen }} onClick={this.onClick} />}
         <Collapse isOpen={this.state.collapse} navbar>
 
           {/* LEFT */}
@@ -106,50 +107,53 @@ class Navbar extends React.Component {
                   <DropdownItem header style={{ marginLeft: "-16px", fontWeight: "400", fontSize: "16px", color: "black" }}>Impacts:</DropdownItem>
                   <DropdownItem href="#" style={{ marginLeft: "7px" }}>Climatic</DropdownItem>
                   <DropdownItem href="#" style={{ marginLeft: "7px" }}>Non Climatic</DropdownItem>
-                  <DropdownItem href="#" style={{ marginLeft: "7px" }}>Combined Climatic And Non-Climatic</DropdownItem>
+                  <DropdownItem href="#" style={{ marginLeft: "7px" }}>Combined Climatic &amp; Non-Climatic</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem href="#">Impact Early Warning</DropdownItem>
-                  <DropdownItem href="#">Assessing The Effectiveness Of Adaptation Responses</DropdownItem>
+                  <DropdownItem href="#">Assessing The Effectiveness Of<br/>Adaptation Responses</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </NavItem>
 
             {/* Tools */}
-            <Dropdown>
-              <DropdownToggle nav caret style={{ color: "black" }}><b>Tools</b></DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="#/ccr">Climate Change Responses</DropdownItem>
-                <DropdownItem href="#/sarva">Risk And Vulnerability Hotspots</DropdownItem>
-                <DropdownItem href="#/nwis">National Water Information System</DropdownItem>
-                <DropdownItem href="#/lrt">Lets Respond Toolkit</DropdownItem>
-                <DropdownItem href="#/dasl">Dam And Stream Levels</DropdownItem>
-                <DropdownItem href="#"></DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <NavItem>
+              <Dropdown>
+                <DropdownToggle nav caret style={{ color: "black" }}><b>Tools</b></DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem href="#/ccr">Climate Change Responses</DropdownItem>
+                  <DropdownItem href="#/sarva">Risk And Vulnerability Hotspots</DropdownItem>
+                  <DropdownItem href="#/nwis">National Water Information System</DropdownItem>
+                  <DropdownItem href="#/lrt">Lets Respond Toolkit</DropdownItem>
+                  <DropdownItem href="#/dasl">Dam And Stream Levels</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavItem>
 
           </NavbarNav>
+
+          <hr className="d-block d-md-none" />
 
           {/* RIGHT */}
           <NavbarNav right>
 
             {/* Username */}
             {(user && !user.expired) &&
-              <NavItem style={{ marginLeft: "15px" }}>
+              <NavItem style={{ marginRight: "15px" }}>
                 <span className="nav-link">
                   <b style={{ color: "#2BBBAD" }}>
-                    {"Hello, " + user.profile.email}                    
+                    {"Hello, " + user.profile.email}
                   </b>
                 </span>
               </NavItem>
             }
 
             {/* Contact */}
-            <NavItem style={{ marginLeft: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
+            <NavItem style={{ marginRight: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
               <a className="nav-link" href="#/contact"><b style={{ color: "black" }}>Contact</b></a>
             </NavItem>
 
             {/* Login / Logout */}
-            <NavItem style={{ marginLeft: "15px" }}>
+            <NavItem style={{ marginRight: "15px" }}>
               {(!user || user.expired) &&
                 <a className="nav-link" onClick={this.LoginLogoutClicked} href="#/login">
                   <b style={{ color: "black" }}>Login</b>
@@ -164,7 +168,7 @@ class Navbar extends React.Component {
 
             {/* Register */}
             {(!user || user.expired) &&
-              <NavItem style={{ marginLeft: "15px" }}>
+              <NavItem>
                 <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
                   <b style={{ color: "black" }}>
                     Register
@@ -176,7 +180,7 @@ class Navbar extends React.Component {
           </NavbarNav>
 
         </Collapse>
-      </MDBNavbar>
+      </MDBNavbar >
     )
   }
 }

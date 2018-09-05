@@ -45,7 +45,7 @@ class HostedContentFrame extends React.Component {
                   width: width,
                   height: height,
                   margin: "0px",
-                  border: "0px solid gainsboro"
+                  border: "1px solid gainsboro"
                 }}
                 src={source}
               />

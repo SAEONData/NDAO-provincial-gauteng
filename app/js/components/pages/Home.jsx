@@ -2,9 +2,11 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col } from 'mdbreact'
+import { Row, Col, Button } from 'mdbreact'
 import { DEAGreen, DEAGreenDark } from "../../config/colours.js"
 import TrafficLightBar from '../visualization/TrafficLightBar.jsx';
+import TreeSelectInput from '../input/TreeSelectInput.jsx';
+import SelectInput from '../input/SelectInput.jsx';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -32,7 +34,7 @@ class Home extends React.Component {
 
     return (
       <>
-        <Row style={{ color: "white", backgroundColor: DEAGreenDark, textAlign: "center", padding: "10px" }}>
+        <Row style={{ marginTop: "10px", color: "white", backgroundColor: DEAGreenDark, textAlign: "center", padding: "10px" }}>
           <Col md="12">
             <h1>
               Monitoring and Evaluation of Climate Change Adaptation
@@ -48,6 +50,7 @@ class Home extends React.Component {
             </a>
           </Col>
         </Row>
+        <br />
         <br />
         <Row>
           <Col md="12">
@@ -75,6 +78,53 @@ class Home extends React.Component {
             </p>
           </Col>
         </Row>
+        <br />
+        <br />
+        {/* <hr style={{ marginBottom: "30px" }} /> */}
+        <Row>
+          <Col md="12">
+            <h3><b>Climate Change Adaptation Status Across South Africa</b></h3>
+          </Col>
+        </Row>
+        {/* <br /> */}
+        <hr />
+        <Row >
+          <Col md="3" style={{ marginBottom: "3px"}}>
+            <TreeSelectInput
+              placeHolder="Select Region to filter..."
+              data={[{ id: 1, text: "Gauteng" }, { id: 2, text: "Western Cape" }, { id: 3, text: "..." }]} //mock data
+              allowEdit={true}
+            />
+          </Col>
+          <Col md="3" style={{ marginBottom: "3px"}}>
+            <TreeSelectInput
+              placeHolder="Select Sector to filter..."
+              data={[{ id: 1, text: "Agriculture" }, { id: 2, text: "Mining" }, { id: 3, text: "..." }]} //mock data
+              allowEdit={true}
+            />
+          </Col>
+          <Col md="3" style={{ marginBottom: "3px"}}>
+            <SelectInput
+              placeHolder="Select Goal to filter..."
+              data={[
+                { id: 1, text: "Goal 1" },
+                { id: 2, text: "Goal 2" },
+                { id: 3, text: "Goal 3" },
+                { id: 4, text: "Goal 4" },
+                { id: 5, text: "Goal 5" },
+                { id: 6, text: "Goal 6" },
+                { id: 7, text: "Goal 7" },
+                { id: 8, text: "Goal 8" },
+                { id: 9, text: "Goal 9" }
+              ]}
+              allowEdit={true}
+            />
+          </Col>
+          <Col md="3">
+            <Button size="sm" style={{ height: "35px", marginTop: "0px", width: "100%", fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }} color="" >Clear Filters</Button>
+          </Col>
+        </Row>
+        <hr />
         <br />
         <Row>
           <Col md="1"></Col>
@@ -212,12 +262,11 @@ class Home extends React.Component {
           <Col md="1"></Col>
         </Row>
         <br />
-        <hr style={{ marginBottom: "30px" }} />
+        <br />
         <Row>
           <Col md="12">
-            <h3><b>DAO Status Across South Africa</b></h3>
             <p>
-              ...map goes here...
+              <span style={{ display: "inline-block", width: "70px" }}></span>...map goes here...
             </p>
           </Col>
         </Row>

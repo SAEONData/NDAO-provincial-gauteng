@@ -20,13 +20,41 @@ class TrafficLightBar extends React.Component {
 
     let headers = []
 
-    data.map(item => {
+    if (data !== 'undefined' && data.length > 0) {
+      data.map(item => {
+        headers.push(
+          <label key={item.key} style={{ width: ((100 / data.length) + "%"), textAlign: "center", fontSize: "18px" }}>
+            <b>{item.key}</b>
+          </label>
+        )
+      })
+    }
+
+    return headers
+  }
+
+  renderHeadersCondensed(data) {
+
+    let headers = []
+    let lastIndex = (data.length - 1)
+
+    if (data !== 'undefined' && lastIndex >= 0) {
       headers.push(
-        <label key={item.key} style={{ width: ((100 / data.length) + "%"), textAlign: "center", fontSize: "18px" }}>
-          <b>{item.key}</b>
+        <label key={data[0].key} style={{ width: ((100 / 3) + "%"), textAlign: "left", fontSize: "18px", paddingLeft: "10px" }}>
+          <b>{data[0].key}</b>
         </label>
       )
-    })
+      headers.push(
+        <label key="..." style={{ width: ((100 / 3) + "%"), textAlign: "center", fontSize: "18px" }}>
+          <b>...</b>
+        </label>
+      )      
+      headers.push(
+        <label key={data[lastIndex].key} style={{ width: ((100 / 3) + "%"), textAlign: "right", fontSize: "18px", paddingRight: "10px" }}>
+          <b>{data[lastIndex].key}</b>
+        </label>
+      )
+    }
 
     return headers
   }
@@ -79,8 +107,11 @@ class TrafficLightBar extends React.Component {
                   <label style={{ fontSize: "18px", marginTop: "30px", marginLeft: "-3px", width: "15px" }}></label>
                 </th>
                 <th width="100%">
-                  <div style={{ width: "100%" }}>
+                  <div className="d-none d-md-block" style={{ width: "100%" }}>
                     {this.renderHeaders(data)}
+                  </div>
+                  <div className="d-block d-md-none" style={{ width: "100%" }}>
+                    {this.renderHeadersCondensed(data)}
                   </div>
                 </th>
                 <th>
