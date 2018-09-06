@@ -28,6 +28,8 @@ class SARVA extends React.Component {
 
   render() {
 
+    let { closeCallback } = this.props
+
     return (
       <>
         <br />
@@ -35,6 +37,7 @@ class SARVA extends React.Component {
           title="Risk And Vulnerability Hotspots"
           source="http://app01.saeon.ac.za/profiler2/main.aspx"
           showSource={true}
+          closeCallback={closeCallback}
          />
       </>
     )

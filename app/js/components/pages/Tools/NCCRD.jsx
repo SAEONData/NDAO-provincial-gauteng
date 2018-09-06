@@ -28,12 +28,15 @@ class NCCRD extends React.Component {
 
   render() {
 
+    let { closeCallback } = this.props
+
     return (
       <>
         <br />
         <HostedContentFrame
           title="Climate Change Responses"
           source="http://app01.saeon.ac.za/nccrdsite/#/projects?navbar=hidden"
+          closeCallback={closeCallback}
          />
       </>
     )

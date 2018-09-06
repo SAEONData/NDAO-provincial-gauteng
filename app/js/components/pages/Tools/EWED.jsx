@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class DASL extends React.Component {
+class EWED extends React.Component {
 
   constructor(props) {
     super(props);
@@ -34,8 +34,8 @@ class DASL extends React.Component {
       <>
         <br />
         <HostedContentFrame
-          title="Dam And Stream Levels"
-          source="https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx"
+          title="Extreme Weather Events Database"
+          source="https://example.com/"
           showSource={true}
           closeCallback={closeCallback}
          />
@@ -44,4 +44,4 @@ class DASL extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DASL)
+export default connect(mapStateToProps, mapDispatchToProps)(EWED)

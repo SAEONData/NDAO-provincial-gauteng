@@ -20,8 +20,15 @@ class HostedContentFrame extends React.Component {
   }
 
   toggleModal() {
-    this.setState({ showModal: false })
-    location.hash = "#"
+
+    let { closeCallback } = this.props
+
+    //this.setState({ showModal: false })
+    //location.hash = "#"
+
+    if(typeof closeCallback !== 'undefined'){
+      closeCallback()
+    }
   }
 
   render() {

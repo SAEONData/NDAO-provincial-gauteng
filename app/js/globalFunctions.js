@@ -38,3 +38,14 @@ export function readFiltersFromURL(){
 export function GetUID() {
   return Math.random().toString().substr(2, 9)
 }
+
+export function getPartColour(value) {
+  switch (value) {
+    case "R":
+      return "#DF0101"
+    case "A":
+      return "#FFBB33"
+    case "G":
+      return "#3D9140"
+  }
+}

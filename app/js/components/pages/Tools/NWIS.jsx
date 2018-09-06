@@ -28,6 +28,8 @@ class NWIS extends React.Component {
 
   render() {
 
+    let { closeCallback } = this.props
+
     return (
       <>
         <br />
@@ -35,6 +37,7 @@ class NWIS extends React.Component {
           title="National Water Information System"
           source="http://niwis.dws.gov.za/niwis2/"
           showSource={true}
+          closeCallback={closeCallback}
          />
       </>
     )

@@ -28,6 +28,8 @@ class LRT extends React.Component {
 
   render() {
 
+    let { closeCallback } = this.props
+
     return (
       <>
         <br />
@@ -35,6 +37,7 @@ class LRT extends React.Component {
           title="Lets Respond Toolkit"
           source="http://www.letsrespondtoolkit.org/"
           showSource={true}
+          closeCallback={closeCallback}
          />
       </>
     )

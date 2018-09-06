@@ -62,18 +62,22 @@ class SelectInput extends React.Component {
     }
   }
 
-  onChange(value, label, extra) {
+  onChange(value) {
+
+    let { data } = this.props
 
     this.setState({ value: value })
 
     let { callback } = this.props
     if (typeof callback !== 'undefined') {
-      if (typeof extra.triggerNode !== 'undefined') {
-        callback({ id: extra.triggerNode.props.eventKey, text: value })
+
+      if (value !== 'undefined' && value !== undefined) {
+        callback({ id: data.filter(x => x.text === value)[0].id, text: value })
       }
       else {
         callback({ id: 0, text: "" })
       }
+
     }
   }
 

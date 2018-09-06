@@ -3,6 +3,8 @@
 import React from 'react'
 import { Popover, PopoverBody, PopoverHeader } from 'mdbreact'
 
+const _gf = require('../../globalFunctions')
+
 //Images
 import gear from "../../../images/gear.png"
 import traffic_light from "../../../images/traffic_light.jpg"
@@ -59,17 +61,6 @@ class TrafficLightBar extends React.Component {
     return headers
   }
 
-  getPartColour(value) {
-    switch (value) {
-      case "R":
-        return "#DF0101"
-      case "A":
-        return "#FFBB33"
-      case "G":
-        return "#3D9140"
-    }
-  }
-
   renderParts(data) {
 
     let parts = []
@@ -78,7 +69,7 @@ class TrafficLightBar extends React.Component {
       parts.push(
         <label
           key={item.key}
-          style={{ width: ((100 / data.length) + "%"), height: "100%", backgroundColor: this.getPartColour(item.value), border: "0px solid gainsboro" }}
+          style={{ width: ((100 / data.length) + "%"), height: "100%", backgroundColor: _gf.getPartColour(item.value), border: "0px solid gainsboro" }}
         />
       )
     })

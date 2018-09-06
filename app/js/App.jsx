@@ -18,11 +18,7 @@ import Footer from './components/navigation/Footer.jsx'
 import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
-import NCCRD from './components/Pages/Tools/NCCRD.jsx'
-import NWIS from './components/pages/Tools/NWIS.jsx';
-import SARVA from './components/pages/Tools/SARVA.jsx';
-import LRT from './components/pages/Tools/LRT.jsx';
-import DASL from './components/pages/Tools/DASL.jsx';
+import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 
 const mapStateToProps = (state, props) => {
   let { general: { loading } } = state
@@ -62,11 +58,12 @@ class App extends React.Component {
               <Route path="/login" component={Login} exact />
               <Route path="/logout" component={Logout} exact />
               <Route path="/callback" component={CallbackPage} />
-              <Route path="/ccr" component={NCCRD} />
+              {/* <Route path="/ccr" component={NCCRD} />
               <Route path="/nwis" component={NWIS} />
               <Route path="/sarva" component={SARVA} />
               <Route path="/lrt" component={LRT} />
-              <Route path="/dasl" component={DASL} />
+              <Route path="/dasl" component={DASL} /> */}
+              <Route path="/ame" component={AME} />
               <Redirect to="/" />
             </Switch>
 

@@ -47,7 +47,7 @@ class Footer extends React.Component {
               </div>
             </Col>
           </Row>
-          <hr />
+          <hr style={{ marginTop: "0px"}} />
           <Row className="align-items-center" style={{ marginBottom: "10px", marginTop: "10px" }}>
             <Col sm="9">
               <p>
@@ -76,7 +76,7 @@ class Footer extends React.Component {
                   margin: "0px",
                   border: "1px solid gainsboro"
                 }}
-                src={"https://en.wikipedia.org/wiki/Example"}
+                src={"https://example.com/"}
               />
             </ModalBody>
           </Modal>
