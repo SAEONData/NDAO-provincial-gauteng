@@ -6,9 +6,17 @@ import { Container, Button, Collapse, Row, Col } from 'mdbreact'
 import SelectInput from '../../../input/SelectInput.jsx'
 
 import { DEAGreen } from '../../../../config/colours'
-import About from './About.jsx';
-import Goal1Contrib from './Goal1Contrib.jsx';
-import Goal2Contrib from './Goal2Contrib.jsx';
+import About from './About.jsx'
+
+import Goal1Contrib from './Goal1Contrib.jsx'
+import Goal2Contrib from './Goal2Contrib.jsx'
+import Goal3Contrib from './Goal3Contrib.jsx'
+import Goal4Contrib from './Goal4Contrib.jsx'
+import Goal5Contrib from './Goal5Contrib.jsx'
+import Goal6Contrib from './Goal6Contrib.jsx'
+import Goal7Contrib from './Goal7Contrib.jsx'
+import Goal8Contrib from './Goal8Contrib.jsx'
+import Goal9Contrib from './Goal9Contrib.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -105,6 +113,13 @@ class AME extends React.Component {
             <Row>
               {selectedGoal === "Goal 1" && <Goal1Contrib />}
               {selectedGoal === "Goal 2" && <Goal2Contrib />}
+              {selectedGoal === "Goal 3" && <Goal3Contrib />}
+              {selectedGoal === "Goal 4" && <Goal4Contrib />}
+              {selectedGoal === "Goal 5" && <Goal5Contrib />}
+              {selectedGoal === "Goal 6" && <Goal6Contrib />}
+              {selectedGoal === "Goal 7" && <Goal7Contrib />}
+              {selectedGoal === "Goal 8" && <Goal8Contrib />}
+              {selectedGoal === "Goal 9" && <Goal9Contrib />}
             </Row>
           </Collapse>
 

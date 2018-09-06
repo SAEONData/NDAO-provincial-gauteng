@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Input } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark } from '../../../../config/colours'
-import DateInput from '../../../input/DateInput.jsx'
-import NCCRD from '../../Tools/NCCRD.jsx';
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
@@ -30,8 +28,6 @@ class Goal2Contrib extends React.Component {
   constructor(props) {
     super(props);
 
-    this.NCCRD_CloseCallback = this.NCCRD_CloseCallback.bind(this)
-
     this.state = {
       hasChamp: false,
       hasFunding: false,
@@ -44,13 +40,9 @@ class Goal2Contrib extends React.Component {
     this.props.updateNav(location.hash)
   }
 
-  NCCRD_CloseCallback() {
-    this.setState({ showNCCRD: false })
-  }
-
   render() {
 
-    let { hasChamp, hasFunding, goalStatus, showNCCRD, radForumsComitees } = this.state
+    let { hasChamp, hasFunding, goalStatus, radForumsComitees } = this.state
 
     return (
       <>
@@ -224,14 +216,29 @@ class Goal2Contrib extends React.Component {
                   2.4 Are climate change items included in existing administrative and political forums/committees
                   in businesses, sectors, provinces and municipalities?
                 </label>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="5">
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
-                  <Input onClick={() => { this.setState({ radForumsComitees: 1 }) }} checked={radForumsComitees === 1 ? true : false} label="No." type="radio" id="radFC1" />
-                  <Input onClick={() => { this.setState({ radForumsComitees: 2 }) }} checked={radForumsComitees === 2 ? true : false} label="222" type="radio" id="radFC2" />
-                  <Input onClick={() => { this.setState({ radForumsComitees: 3 }) }} checked={radForumsComitees === 3 ? true : false} label="333" type="radio" id="radFC3" />
+                  <Input
+                    onClick={() => { this.setState({ radForumsComitees: 1 }) }}
+                    checked={radForumsComitees === 1 ? true : false}
+                    label="No."
+                    type="radio"
+                    id="radFC1"
+                  />
+                  <Input
+                    onClick={() => { this.setState({ radForumsComitees: 2 }) }}
+                    checked={radForumsComitees === 2 ? true : false}
+                    label="Only by request in existing administrative and political forums/committees."
+                    type="radio"
+                    id="radFC2"
+                  />
+                  <Input
+                    onClick={() => { this.setState({ radForumsComitees: 3 }) }}
+                    checked={radForumsComitees === 3 ? true : false}
+                    label="Climate change in a standing item in administrative and political provincial, 
+                            municipal and sector forum/committee agendas."
+                    type="radio"
+                    id="radFC3"
+                  />
                 </div>
               </Col>
             </Row>
@@ -260,7 +267,7 @@ class Goal2Contrib extends React.Component {
                 />
               </Col>
             </Row>
-            <br />            
+            <br />
 
             <Row>
               <Col md="4">
@@ -269,14 +276,9 @@ class Goal2Contrib extends React.Component {
                 </Button>
               </Col>
             </Row>
-            <hr />
 
           </Col>
         </Row>
-
-        {showNCCRD &&
-          <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />
-        }
 
       </>
     )
