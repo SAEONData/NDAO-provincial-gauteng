@@ -23,13 +23,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class Goal7Contrib extends React.Component {
+class Goal9Contrib extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      radRV: 1,
+      radSys: 1,
       goalStatus: "R"
     }
   }
@@ -40,7 +40,7 @@ class Goal7Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, radRV } = this.state
+    let { goalStatus, radSys } = this.state
 
     return (
       <>
@@ -53,32 +53,30 @@ class Goal7Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ marginTop: "8px" }}>
-              Goal 7. Evidence of reduced risk/vulnerability as a result of addressing the identified risk/vulnerability. 
+              Goal 9. Secure food, water and energy supplies for all citizens (within the context of 
+              sustainable development).
             </h5>
             <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>What is being monitored and evaluated:</b>
             </p>
             <p>
-              Evidence of reduced risk/vulnerability as a result of addressing the identified risk/vulnerability.
+              Climate smart agricultural practices, conservation agriculture practices, and water conservation 
+              and demand practices.
             </p>
-            <p>
+            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>How it is being evaluated:</b>
             </p>
             <p>
-              Lack of behavioural/system/infrastructure change/modification as a result of addressing identified 
-              risks (including climate risk) and vulnerabilities to reduce climate change impacts
+              No climate resilient measures/actions implemented to ensure secure food, water and energy
               <span style={{ color: _gf.getPartColour("R") }}><b> (red)</b></span>.
             </p>
             <p>
-              Evidence of reactive behavioural/system/infrastructure change/modification as a result of 
-              addressing identified risks (including climate risk) and vulnerabilities to reduce climate 
-              change impacts
+              Climate resilient measures/actions implemented to ensure secure food, water and energy 
               <span style={{ color: _gf.getPartColour("A") }}><b> (amber)</b></span>.
             </p>
             <p>
-              Evidence of proactive behavioural/system/infrastructure change/modification as a result of 
-              addressing identified risks (including climate risk) and vulnerabilities to reduce climate 
-              change impacts
+              Evidence of secure food, water and energy in communities as a result of implementing 
+              climate-resilient measures
               <span style={{ color: _gf.getPartColour("G") }}><b> (green)</b></span>.
             </p>
           </Col>
@@ -94,76 +92,58 @@ class Goal7Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 7 Assessment:
+              Goal 9 Assessment:
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  7.1 behavioural/system/infrastructure change/modification as a result of addressing identified 
-                  risks (including climate risk) and vulnerabilities to reduce climate change impacts 
+                  9.1 Change in non-climate pressures and threats to human and natural systems?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
-                    onClick={() => { this.setState({ radRV: 1 }) }}
-                    checked={radRV === 1 ? true : false}
-                    label="No or low behavioural/system/infrastructure change/modification as a result of 
-                            addressing identified risks (including climate risk) and vulnerabilities to reduce climate 
-                            change impacts."
+                    onClick={() => { this.setState({ radSys: 1 }) }}
+                    checked={radSys === 1 ? true : false}
+                    label="No climate resilient measures/actions implemented to ensure secure food, water and 
+                            energy."
                     type="radio"
-                    id="radRV1"
+                    id="radSys1"
                   />
                   <Input
-                    onClick={() => { this.setState({ radRV: 2 }) }}
-                    checked={radRV === 2 ? true : false}
-                    label="Evidence of reactive behavioural/system/infrastructure change/modification as a 
-                            result of addressing identified risks (including climate risk) and vulnerabilities to 
-                            reduce climate change impacts."
+                    onClick={() => { this.setState({ radSys: 2 }) }}
+                    checked={radSys === 2 ? true : false}
+                    label="Climate resilient measures/actions implemented to ensure secure food, water and 
+                            energy."
                     type="radio"
-                    id="radRV2"
+                    id="radSys2"
                   />
-
-                  {radRV === 2 &&
-                    <Row style={{ marginBottom: "-10px", marginLeft: "40px" }}>
-                      <Col md="12">
-                        <label style={{ fontWeight: "bold" }}>
-                          Add a link to any evidence
-                        </label>
-                        <TextInput width="95%" />
-                      </Col>
-                    </Row>
-                  }
 
                   <Input
-                    onClick={() => { this.setState({ radRV: 3 }) }}
-                    checked={radRV === 3 ? true : false}
-                    label="Evidence of proactive behavioural/system/infrastructure change/modification as a 
-                            result of addressing identified risks (including climate risk) and vulnerabilities to 
-                            reduce climate change impacts."
+                    onClick={() => { this.setState({ radSys: 3 }) }}
+                    checked={radSys === 3 ? true : false}
+                    label="Evidence of secure food, water and energy in communities as a result of 
+                            implementing climate-resilient measures."
                     type="radio"
-                    id="radRV3"
+                    id="radSys3"
                   />
-
-                  {radRV === 3 &&
-                    <Row style={{ marginBottom: "-10px", marginLeft: "40px" }}>
-                      <Col md="12">
-                        <label style={{ fontWeight: "bold" }}>
-                          Add a link to any evidence
-                        </label>
-                        <TextInput width="95%" />
-                      </Col>
-                    </Row>
-                  }
-
                 </div>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px"}}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  9.2 Add a link to any evidence
+                </label>
+                <TextInput width="95%" />
               </Col>
             </Row>
 
             <Row>
               <Col md="12">
-                <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "15px" }}>
-                  7.2 Based on your inputs, your Goal 7 status is:
+                <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "5px" }}>
+                  9.3 Based on your inputs, your Goal 9 status is:
                 </label>
                 <br />
                 <Button
@@ -201,4 +181,4 @@ class Goal7Contrib extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Goal7Contrib)
+export default connect(mapStateToProps, mapDispatchToProps)(Goal9Contrib)

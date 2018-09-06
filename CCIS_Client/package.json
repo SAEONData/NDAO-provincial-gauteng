@@ -5,8 +5,7 @@
   "scripts": {
     "start": "npm run webpack-app --optimize-minimize --progress & echo 'Output files are saved in ./dist'",
     "app-dev": "webpack-dev-server --inline --hot --watch-poll --progress=true --config ./webpack.dev.config.js",
-    "webpack-app": "./node_modules/.bin/webpack -p",
-    "webpack-dev": "./node_modules/.bin/webpack --progress=true --config ./webpack.dev.config.js"
+    "webpack-app": "./node_modules/.bin/webpack --progress=true -p"
   },
   "author": "SAEON",
   "license": "MIT",

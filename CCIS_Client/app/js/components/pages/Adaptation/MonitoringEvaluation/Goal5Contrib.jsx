@@ -23,13 +23,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class Goal6Contrib extends React.Component {
+class Goal5Contrib extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      radFC: 1,
+      radTech: 1,
       goalStatus: "R"
     }
   }
@@ -40,7 +40,7 @@ class Goal6Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, radFC } = this.state
+    let { goalStatus, radTech } = this.state
 
     return (
       <>
@@ -53,29 +53,47 @@ class Goal6Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ marginTop: "8px" }}>
-              Goal 6. Climate change risks, impacts and vulnerabilities identified and addressed.
+              Goal 5. New and adapted technologies/knowledge and other cost-effective measures (e.g. nature-based 
+              solutions) used in climate change adaptation.
             </h5>
             <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>What is being monitored and evaluated:</b>
             </p>
-            <p>
-              Details of sectoral, business, provincial and municipal risk profiles and vulnerability 
-              assessments and measures/actions to address the identified risks, impacts and vulnerabilities 
-              in businesses, sectors, provinces and municipalities.
-            </p>
-            <p>
+            <ol style={{ marginLeft: "-15px" }}>
+              <li>
+                new technologies, research and knowledge adopted;
+              </li>
+              <li>
+                indigenous knowledge systems;
+              </li>
+              <li>
+                technology needs assessments;
+              </li>
+              <li>
+                technology transfer and access (national and global);
+              </li>
+              <li>
+                web-based tools on technologies  and technology transfer opportunities; and
+              </li>
+              <li>
+                other adaptation challenges and opportunities on technologies, research and knowledge.
+              </li>
+            </ol>
+            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>How it is being evaluated:</b>
             </p>
             <p>
-              No risk and vulnerability profiles
+              Lack of awareness/understanding of newly developed technologies, research and knowledge 
+              leading to poor or no application
               <span style={{ color: _gf.getPartColour("R") }}><b> (red)</b></span>.
             </p>
             <p>
-              Risk and vulnerability profiles identified
+              Awareness/ understanding of technologies, research and knowledge but no implementation and utilisation
               <span style={{ color: _gf.getPartColour("A") }}><b> (amber)</b></span>.
             </p>
             <p>
-              Risks, impacts and vulnerabilities addressed in policies, plans and actions
+              Evidence of implementation and utilisation of technologies and knowledge (e.g. 100 households 
+              now have rainwater harvesting devices and have received training on how to use and maintain them)
               <span style={{ color: _gf.getPartColour("G") }}><b> (green)</b></span>.
             </p>
           </Col>
@@ -91,37 +109,40 @@ class Goal6Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 6 Assessment:
+              Goal 5 Assessment:
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  6.1 Are climate change items included in existing administrative and political forums/committees 
-                  in businesses, sectors, provinces and municipalities?
+                  5.1 Awareness/understanding of new climate change adaptation technologies?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
-                    onClick={() => { this.setState({ radFC: 1 }) }}
-                    checked={radFC === 1 ? true : false}
-                    label="No risk and vulnerability profiles."
+                    onClick={() => { this.setState({ radTech: 1 }) }}
+                    checked={radTech === 1 ? true : false}
+                    label="No or low awareness/understanding of newly developed technologies, research and 
+                            knowledge leading to poor or no application."
                     type="radio"
-                    id="radFC1"
+                    id="radTech1"
                   />
                   <Input
-                    onClick={() => { this.setState({ radFC: 2 }) }}
-                    checked={radFC === 2 ? true : false}
-                    label="Risk and vulnerability profiles identified."
+                    onClick={() => { this.setState({ radTech: 2 }) }}
+                    checked={radTech === 2 ? true : false}
+                    label="Awareness/ understanding of technologies, research and knowledge but no 
+                            implementation and utilisation."
                     type="radio"
-                    id="radFC2"
+                    id="radTech2"
                   />
                   <Input
-                    onClick={() => { this.setState({ radFC: 3 }) }}
-                    checked={radFC === 3 ? true : false}
-                    label="Risks, impacts and vulnerabilities addressed in policies, plans and actions."
+                    onClick={() => { this.setState({ radTech: 3 }) }}
+                    checked={radTech === 3 ? true : false}
+                    label="Evidence of implementation and utilisation of technologies and knowledge (e.g. 100      
+                            households now have rainwater harvesting devices and have received training on how to 
+                            use and maintain them)."
                     type="radio"
-                    id="radFC3"
+                    id="radTech3"
                   />
                 </div>
               </Col>
@@ -129,8 +150,17 @@ class Goal6Contrib extends React.Component {
 
             <Row>
               <Col md="12">
-                <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "5px" }}>
-                  6.2 Based on your inputs, your Goal 6 status is:
+                <label style={{ fontWeight: "bold", marginTop: "5px" }}>
+                  5.2 Add a link to any evidence
+                </label>
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+            
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
+                  5.3 Based on your inputs, your Goal 5 status is:
                 </label>
                 <br />
                 <Button
@@ -168,4 +198,4 @@ class Goal6Contrib extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Goal6Contrib)
+export default connect(mapStateToProps, mapDispatchToProps)(Goal5Contrib)

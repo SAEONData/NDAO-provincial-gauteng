@@ -36,9 +36,9 @@ class AME extends React.Component {
     super(props);
 
     this.state = {
-      aboutSection: false,
+      aboutSection: true,
       contribSection: false,
-      selectedGoal: ""
+      selectedGoal: "Goal 1"
     }
   }
 
@@ -75,12 +75,12 @@ class AME extends React.Component {
           <br />
           <Button
             onClick={() => {
-              this.setState({ contribSection: true, aboutSection: false })
               window.scroll({
                 top: 180,
                 left: 0,
                 behavior: 'smooth'
               });
+              setTimeout(() => { this.setState({ contribSection: true, aboutSection: false }) }, 50);
             }}
             style={{ marginLeft: "0px" }}
             color="grey">Submit your contribution</Button>

@@ -82,7 +82,7 @@ class Goal3Contrib extends React.Component {
                 maintenance and enhancements of monitoring and forecasting facilities/networks.
               </li>
             </ol>
-            <p>
+            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>How it is being evaluated:</b>
             </p>
             <p style={{ marginBottom: "0px"}}>

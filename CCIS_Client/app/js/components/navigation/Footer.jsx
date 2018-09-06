@@ -28,19 +28,19 @@ class Footer extends React.Component {
             <Col md="12">
               <div style={{ float: "right" }}>
                 <p style={{ textAlign: "right" }}>
-                  <a href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                  <a disabled href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Technical Information</b>
                   </a>
                   <br className="d-block d-md-none" />
-                  <a href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                  <a disabled href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Contact</b>
                   </a>
                   <br className="d-block d-md-none" />
-                  <a href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                  <a disabled href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Login</b>
                   </a>
                   <br className="d-block d-md-none" />
-                  <a href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "black" }}>
+                  <a disabled href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Register</b>
                   </a>
                 </p>

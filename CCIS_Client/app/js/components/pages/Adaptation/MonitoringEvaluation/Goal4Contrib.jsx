@@ -23,13 +23,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class Goal5Contrib extends React.Component {
+class Goal4Contrib extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      radTech: 1,
+      radProgrammes: 1,
       goalStatus: "R"
     }
   }
@@ -40,7 +40,7 @@ class Goal5Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, radTech } = this.state
+    let { goalStatus, radProgrammes } = this.state
 
     return (
       <>
@@ -53,47 +53,47 @@ class Goal5Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ marginTop: "8px" }}>
-              Goal 5. New and adapted technologies/knowledge and other cost-effective measures (e.g. nature-based 
-              solutions) used in climate change adaptation.
+              Goal 4. Capacity development, education and awareness programmes (formal and informal) for climate 
+              change adaptation (e.g. informed by adaptation research and with tools to utilise data/outputs).
             </h5>
             <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>What is being monitored and evaluated:</b>
             </p>
             <ol style={{ marginLeft: "-15px" }}>
               <li>
-                new technologies, research and knowledge adopted;
+                number of capacity development programmes (including students, staff, researchers and institutions) 
+                addressing climate change adaptation;
               </li>
               <li>
-                indigenous knowledge systems;
+                coverage of adaptation research and training being undertaken and financed;
               </li>
               <li>
-                technology needs assessments;
+                uptake of research outcomes and human capacity trained in adaptation; 
               </li>
               <li>
-                technology transfer and access (national and global);
+                collaboration and partnerships between sectors, businesses, provinces, municipalities and researchers; and
               </li>
               <li>
-                web-based tools on technologies  and technology transfer opportunities; and
-              </li>
-              <li>
-                other adaptation challenges and opportunities on technologies, research and knowledge.
+                incorporation of climate change issues into school curriculum.
               </li>
             </ol>
-            <p>
+            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>How it is being evaluated:</b>
             </p>
             <p>
-              Lack of awareness/understanding of newly developed technologies, research and knowledge 
-              leading to poor or no application
+              No capacity building programmes (including research), collaboration and partnerships to address 
+              climate change adaptation and no incorporation into school curriculum
               <span style={{ color: _gf.getPartColour("R") }}><b> (red)</b></span>.
             </p>
             <p>
-              Awareness/ understanding of technologies, research and knowledge but no implementation and utilisation
+              Attendance of capacity building programmes but no utilisation, collaboration and partnerships 
+              to address climate change adaptation and no incorporation into school curriculum
               <span style={{ color: _gf.getPartColour("A") }}><b> (amber)</b></span>.
             </p>
             <p>
-              Evidence of implementation and utilisation of technologies and knowledge (e.g. 100 households 
-              now have rainwater harvesting devices and have received training on how to use and maintain them)
+              Capacity building programmes (including research and utilisation), collaboration and 
+              partnerships to address climate change adaptation, incorporation into school curriculum, 
+              and utilisation to inform policy and decision-making
               <span style={{ color: _gf.getPartColour("G") }}><b> (green)</b></span>.
             </p>
           </Col>
@@ -109,58 +109,50 @@ class Goal5Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 5 Assessment:
+              Goal 4 Assessment:
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  5.1 Awareness/understanding of new climate change adaptation technologies?
+                  4.1 Climate change adaptation capacity building programmes?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
-                    onClick={() => { this.setState({ radTech: 1 }) }}
-                    checked={radTech === 1 ? true : false}
-                    label="No or low awareness/understanding of newly developed technologies, research and 
-                            knowledge leading to poor or no application."
+                    onClick={() => { this.setState({ radProgrammes: 1 }) }}
+                    checked={radProgrammes === 1 ? true : false}
+                    label="No capacity building programmes (including research), collaboration and partnerships to   
+                            address climate change adaptation and no incorporation into school curriculum."
                     type="radio"
-                    id="radTech1"
+                    id="radPrg1"
                   />
                   <Input
-                    onClick={() => { this.setState({ radTech: 2 }) }}
-                    checked={radTech === 2 ? true : false}
-                    label="Awareness/ understanding of technologies, research and knowledge but no 
-                            implementation and utilisation."
+                    onClick={() => { this.setState({ radProgrammes: 2 }) }}
+                    checked={radProgrammes === 2 ? true : false}
+                    label="Attendance of capacity building programmes but no utilisation, collaboration and 
+                            partnerships to address climate change adaptation and no incorporation into school 
+                            curriculum."
                     type="radio"
-                    id="radTech2"
+                    id="radPrg2"
                   />
                   <Input
-                    onClick={() => { this.setState({ radTech: 3 }) }}
-                    checked={radTech === 3 ? true : false}
-                    label="Evidence of implementation and utilisation of technologies and knowledge (e.g. 100      
-                            households now have rainwater harvesting devices and have received training on how to 
-                            use and maintain them)."
+                    onClick={() => { this.setState({ radProgrammes: 3 }) }}
+                    checked={radProgrammes === 3 ? true : false}
+                    label="Capacity building programmes (including research and utilisation), collaboration and 
+                            partnerships to address climate change adaptation, incorporation into school curriculum, 
+                            and utilisation to inform policy and decision-making."
                     type="radio"
-                    id="radTech3"
+                    id="radPrg3"
                   />
                 </div>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold", marginTop: "5px" }}>
-                  5.2 Add a link to any evidence
-                </label>
-                <TextInput width="95%" />
               </Col>
             </Row>
             
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  5.3 Based on your inputs, your Goal 5 status is:
+                  4.2 Based on your inputs, your Goal 4 status is:
                 </label>
                 <br />
                 <Button
@@ -198,4 +190,4 @@ class Goal5Contrib extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Goal5Contrib)
+export default connect(mapStateToProps, mapDispatchToProps)(Goal4Contrib)

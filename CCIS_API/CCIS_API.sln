@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCIS_API", "CCIS_API\CCIS_API.csproj", "{6F903DDC-F4C9-4F28-A176-EF6D8269390A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F903DDC-F4C9-4F28-A176-EF6D8269390A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F903DDC-F4C9-4F28-A176-EF6D8269390A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F903DDC-F4C9-4F28-A176-EF6D8269390A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F903DDC-F4C9-4F28-A176-EF6D8269390A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AC7E28E-5802-40FB-883F-2955E3395744}
+	EndGlobalSection
+EndGlobal
