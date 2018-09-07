@@ -104,7 +104,7 @@ class Navbar extends React.Component {
             <NavbarNav left>
               {/* Home */}
               <NavItem style={{ borderBottom: (locationHash === "#/" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
-                <NavLink to="#"><b>Home</b></NavLink>
+                <NavLink to="/"><b>Home</b></NavLink>
               </NavItem>
 
               {/* About */}
