@@ -34,7 +34,7 @@ namespace CCIS_API.Controllers
 
         //Add/Update
         [HttpPost]
-        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
+        //[Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
         public async Task<IActionResult> Post([FromBody]Goal1 goal)
         {
@@ -53,13 +53,15 @@ namespace CCIS_API.Controllers
                 await _context.SaveChangesAsync();
                 return Created(goal);
             }
-            else
-            {
-                //UPDATE
-                _context.Entry(exiting).CurrentValues.SetValues(goal);
-                await _context.SaveChangesAsync();
-                return Updated(exiting);
-            }
+            //else
+            //{
+            //    //UPDATE
+            //    _context.Entry(exiting).CurrentValues.SetValues(goal);
+            //    await _context.SaveChangesAsync();
+            //    return Updated(exiting);
+            //}
+
+            return Ok(goal);
         }
     }
 }

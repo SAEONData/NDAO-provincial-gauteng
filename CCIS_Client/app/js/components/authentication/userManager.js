@@ -1,5 +1,5 @@
 import { createUserManager } from 'redux-oidc';
-import { userManagerConfig } from '../../secrets'
+import { userManagerConfig } from '../../secrets.cfg'
 
 const userManager = createUserManager(userManagerConfig);
 

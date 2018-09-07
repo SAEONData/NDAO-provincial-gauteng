@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Input } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
-import { DEAGreen, DEAGreenDark } from '../../../../config/colours'
+import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
@@ -89,19 +89,19 @@ class Goal2Contrib extends React.Component {
               change key performance indicators or Board-level oversight of climate change) or funding (including
               monetary incentives); no inclusion of climate change items in existing administrative and political
               forums/committees in businesses, sectors, provinces and municipalities
-              <span style={{ color: _gf.getPartColour("R") }}><b> (red)</b></span>.
+              <span style={{ color: Red }}><b> (red)</b></span>.
             </p>
             <p>
               Political/administrative champions designated but with no capacity, structure (i.e. organogram) or
               funding; inclusion of climate change items only by request in existing administrative and political
               forums/committees
-              <span style={{ color: _gf.getPartColour("A") }}><b> (amber)</b></span>.
+              <span style={{ color: Amber }}><b> (amber)</b></span>.
             </p>
             <p>
               Political/administrative champions designated, and capacity, structure (i.e. organogram/Board-level
               oversight) and dedicated funding; climate change standing item in administrative and political
               provincial, municipal and sector forum/committee agendas
-              <span style={{ color: _gf.getPartColour("G") }}><b> (green)</b></span>.
+              <span style={{ color: Green }}><b> (green)</b></span>.
             </p>
           </Col>
           <Col md="12">
@@ -253,17 +253,17 @@ class Goal2Contrib extends React.Component {
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("R"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "R" ? "40px" : "35px", width: goalStatus === "R" ? "58px" : "40px", border: goalStatus === "R" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Red, marginLeft: "0px", marginRight: "0px", height: goalStatus === "R" ? "40px" : "35px", width: goalStatus === "R" ? "58px" : "40px", border: goalStatus === "R" ? "2px solid black" : "0px solid black" }}
                 />
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("A"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "A" ? "40px" : "35px", width: goalStatus === "A" ? "58px" : "40px", border: goalStatus === "A" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Amber, marginLeft: "0px", marginRight: "0px", height: goalStatus === "A" ? "40px" : "35px", width: goalStatus === "A" ? "58px" : "40px", border: goalStatus === "A" ? "2px solid black" : "0px solid black" }}
                 />
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("G"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
               </Col>
             </Row>

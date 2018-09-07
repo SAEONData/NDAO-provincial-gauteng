@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button } from 'mdbreact'
-import { DEAGreen, DEAGreenDark } from "../../config/colours.js"
+import { DEAGreen, DEAGreenDark } from "../../config/colours.cfg"
 import TrafficLightBar from '../visualization/TrafficLightBar.jsx';
 import TreeSelectInput from '../input/TreeSelectInput.jsx';
 import SelectInput from '../input/SelectInput.jsx';

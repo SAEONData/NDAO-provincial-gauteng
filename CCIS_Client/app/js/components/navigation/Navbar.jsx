@@ -6,8 +6,8 @@ import {
   Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink,
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'mdbreact'
-import { ssoBaseURL } from '../../config/ssoBaseURL'
-import { DEAGreen, DEAGreenDark } from "../../config/colours.js"
+import { ssoBaseURL } from '../../config/ssoBaseURL.cfg'
+import { DEAGreen, DEAGreenDark } from "../../config/colours.cfg"
 
 import NCCRD from '../pages/Tools/NCCRD.jsx'
 import NWIS from '../pages/Tools/NWIS.jsx';

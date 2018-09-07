@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
-import { DEAGreen, DEAGreenDark } from '../../../../config/colours'
+import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx';
 
@@ -86,19 +86,19 @@ class Goal1Contrib extends React.Component {
               <br />
               Legal frameworks, plans/strategies, policies, programmes and projects not informed by existing
               risk and vulnerability profiles that include climate risks and impacts
-              <span style={{ color: _gf.getPartColour("R") }}><b> (red)</b></span>.
+              <span style={{ color: Red }}><b> (red)</b></span>.
             </p>
             <p>
               Legal frameworks, plans/strategies, policies, programmes and projects informed by risk and
               vulnerability profiles that include climate risks and impacts
-              <span style={{ color: _gf.getPartColour("A") }}><b> (amber)</b></span>.
+              <span style={{ color: Amber }}><b> (amber)</b></span>.
             </p>
             <p>
               Implementation of legal frameworks, plans/strategies, policies, programmes and projects -
               informed by risk and vulnerability profiles that include climate risks and impacts - to reduce
               vulnerability in risk and vulnerability profiles and enhance capacity to respond to climate
               change impact
-              <span style={{ color: _gf.getPartColour("G") }}><b> (green)</b></span>.
+              <span style={{ color: Green }}><b> (green)</b></span>.
             </p>
           </Col>
           <Col md="12">
@@ -171,17 +171,17 @@ class Goal1Contrib extends React.Component {
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("R"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "R" ? "40px" : "35px", width: goalStatus === "R" ? "58px" : "40px", border: goalStatus === "R" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Red, marginLeft: "0px", marginRight: "0px", height: goalStatus === "R" ? "40px" : "35px", width: goalStatus === "R" ? "58px" : "40px", border: goalStatus === "R" ? "2px solid black" : "0px solid black" }}
                 />
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("A"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "A" ? "40px" : "35px", width: goalStatus === "A" ? "58px" : "40px", border: goalStatus === "A" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Amber, marginLeft: "0px", marginRight: "0px", height: goalStatus === "A" ? "40px" : "35px", width: goalStatus === "A" ? "58px" : "40px", border: goalStatus === "A" ? "2px solid black" : "0px solid black" }}
                 />
                 <Button
                   size="sm"
                   color=""
-                  style={{ backgroundColor: _gf.getPartColour("G"), marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
+                  style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
               </Col>
             </Row>
@@ -201,7 +201,7 @@ class Goal1Contrib extends React.Component {
                 <p style={{ fontWeight: "bold", marginBottom: "0px" }}>
                   Your unique code is:
                   &nbsp;
-                <span style={{ color: _gf.getPartColour("R") }}>####-####-####-####-####</span>
+                <span style={{ color: Red }}>####-####-####-####-####</span>
                   <br />
                   Use this code to find your plan when adding projects to the Climate Change
                   Responses Database

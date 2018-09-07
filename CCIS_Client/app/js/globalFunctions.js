@@ -1,3 +1,4 @@
+import { DEAGreen, Red, Amber, Green} from './config/colours.cfg'
 const queryString = require('query-string')
 
 export function fixEmptyValue(value, defaultValue) {
@@ -16,7 +17,7 @@ export function isEmptyValue(value){
 export function getFontColour(editMode) {
 
   if (editMode) { 
-    return "#1565c0"
+    return DEAGreen //"#1565c0"
   }
   else {
     return "black"
@@ -42,10 +43,10 @@ export function GetUID() {
 export function getPartColour(value) {
   switch (value) {
     case "R":
-      return "#DF0101"
+      return Red
     case "A":
-      return "#FFBB33"
+      return Amber
     case "G":
-      return "#3D9140"
+      return Green
   }
 }

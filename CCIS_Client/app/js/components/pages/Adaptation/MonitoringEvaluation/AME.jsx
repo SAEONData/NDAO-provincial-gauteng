@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Container, Button, Collapse, Row, Col } from 'mdbreact'
 import SelectInput from '../../../input/SelectInput.jsx'
 
-import { DEAGreen } from '../../../../config/colours'
+import { DEAGreen } from '../../../../config/colours.cfg'
 import About from './About.jsx'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
