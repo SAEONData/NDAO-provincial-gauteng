@@ -7,6 +7,7 @@ import { DEAGreen, DEAGreenDark } from "../../config/colours.cfg"
 import TrafficLightBar from '../visualization/TrafficLightBar.jsx';
 import TreeSelectInput from '../input/TreeSelectInput.jsx';
 import SelectInput from '../input/SelectInput.jsx';
+import MapsCarouselView from '../layout/MapsCarouselView.jsx';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -265,9 +266,10 @@ class Home extends React.Component {
         <br />
         <Row>
           <Col md="12">
-            <p>
+            {/* <p>
               <span style={{ display: "inline-block", width: "70px" }}></span>...map goes here...
-            </p>
+            </p> */}
+            <MapsCarouselView />
           </Col>
         </Row>
       </>
