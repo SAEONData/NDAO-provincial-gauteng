@@ -149,11 +149,11 @@ class Goal1Contrib extends React.Component {
                   or any research options described in your document to the Climate Change Response Database (CCR).
               </label>
                 <Button
-                  size="sm"
+                  onClick={() => { this.setState({ showNCCRD: true }) }}
                   color=""
-                  style={{ marginLeft: "0px", backgroundColor: DEAGreen }}
-                  onClick={() => { this.setState({ showNCCRD: true }) }}>
-                  <b>CCR</b>
+                  style={{ fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }}
+                  size="sm">
+                  CCR
                 </Button>
               </Col>
             </Row>

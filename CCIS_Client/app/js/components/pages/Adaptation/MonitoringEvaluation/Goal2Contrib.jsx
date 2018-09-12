@@ -145,26 +145,27 @@ class Goal2Contrib extends React.Component {
 
             <Row>
               <Col md="12">
-                <label style={{ fontWeight: "bold", marginBottom: "0px", marginRight: "7px" }}>
-                  2.1 Does organisation have a dedicated political/administrative champion with capacity and structure?
-                </label>
-                <Popover
-                  component="a"
-                  placement="top"
-                  popoverBody={<img src={info} style={{ height: "25px", marginTop: "1px" }} />}>
-                  <PopoverHeader>
-                    Example organogram
-                  </PopoverHeader>
-                  <PopoverBody>
-                    <a
-                      href="https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing"
-                      target="blank">
-                      https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing
-                    </a>
-                  </PopoverBody>
-                </Popover>
+                  <label style={{ fontWeight: "bold", marginBottom: "0px", marginRight: "7px" }}>
+                    2.1 Does organisation have a dedicated political/administrative champion with capacity and structure?
+                  </label>
+                  <Popover style={{ display: "inline-block"}}
+                    component="a"
+                    placement="right"
+                    popoverBody={<img src={info} style={{ height: "25px", marginTop: "1px" }} />}>
+                    <PopoverHeader>
+                      Example organogram
+                    </PopoverHeader>
+                    <PopoverBody>
+                      <a
+                        href="https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing"
+                        target="blank">
+                        https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing
+                      </a>
+                    </PopoverBody>
+                  </Popover>
+
                 <br />
-                <div style={{ marginTop: "-20px"}}>
+                <div style={{ marginTop: "-20px" }}>
                   <Button
                     onClick={() => { this.setState({ hasChamp: true }) }}
                     color=""
