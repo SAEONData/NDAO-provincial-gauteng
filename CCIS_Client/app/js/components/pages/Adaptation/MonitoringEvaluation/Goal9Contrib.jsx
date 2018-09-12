@@ -60,25 +60,42 @@ class Goal9Contrib extends React.Component {
               <b>What is being monitored and evaluated:</b>
             </p>
             <p>
-              Climate smart agricultural practices, conservation agriculture practices, and water conservation 
-              and demand practices.
+              Climate smart agricultural practices, conservation agriculture practices, and water 
+              conservation and demand practices.
             </p>
-            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
+            <p style={{ marginBottom: "3px" }}>
               <b>How it is being evaluated:</b>
             </p>
-            <p>
-              No climate resilient measures/actions implemented to ensure secure food, water and energy
-              <span style={{ color: Red }}><b> (red)</b></span>.
-            </p>
-            <p>
-              Climate resilient measures/actions implemented to ensure secure food, water and energy 
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Evidence of secure food, water and energy in communities as a result of implementing 
-              climate-resilient measures
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%" }}>
+              <tbody>
+                <tr style={{ backgroundColor: Red }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      No climate resilient measures/actions implemented to ensure secure food, water and energy.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Amber }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Climate resilient measures/actions implemented to ensure secure food, water and energy.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Green }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Evidence of secure food, water and energy in communities as a result of implementing 
+                      climate-resilient measures.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -92,29 +109,28 @@ class Goal9Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 9 Assessment:
+              Goal 9 Assessment
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  9.1 Change in non-climate pressures and threats to human and natural systems?
+                  9.1 Are any climate smart agricultural practices, conservation agriculture practices, 
+                  or water conservation and demand practices being implemented? 
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
                     onClick={() => { this.setState({ radSys: 1 }) }}
                     checked={radSys === 1 ? true : false}
-                    label="No climate resilient measures/actions implemented to ensure secure food, water and 
-                            energy."
+                    label="No climate resilient measures/actions implemented to ensure secure food, water and energy."
                     type="radio"
                     id="radSys1"
                   />
                   <Input
                     onClick={() => { this.setState({ radSys: 2 }) }}
                     checked={radSys === 2 ? true : false}
-                    label="Climate resilient measures/actions implemented to ensure secure food, water and 
-                            energy."
+                    label="Climate resilient measures/actions implemented to ensure secure food, water and energy."
                     type="radio"
                     id="radSys2"
                   />
@@ -122,8 +138,7 @@ class Goal9Contrib extends React.Component {
                   <Input
                     onClick={() => { this.setState({ radSys: 3 }) }}
                     checked={radSys === 3 ? true : false}
-                    label="Evidence of secure food, water and energy in communities as a result of 
-                            implementing climate-resilient measures."
+                    label="Evidence of secure food, water and energy in communities as a result of implementing climate-resilient measures."
                     type="radio"
                     id="radSys3"
                   />
@@ -134,16 +149,24 @@ class Goal9Contrib extends React.Component {
             <Row style={{ marginTop: "15px"}}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  9.2 Add a link to any evidence
+                  9.2 Add attachments to any evidence: 
                 </label>
                 <TextInput width="95%" />
               </Col>
             </Row>
 
             <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px"}}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "5px" }}>
-                  9.3 Based on your inputs, your Goal 9 status is:
+                  Based on your submission, your Goal 9 status is:
                 </label>
                 <br />
                 <Button
@@ -161,15 +184,6 @@ class Goal9Contrib extends React.Component {
                   color=""
                   style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
-              </Col>
-            </Row>
-            <br />
-
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
               </Col>
             </Row>
 

@@ -115,7 +115,7 @@ class Navbar extends React.Component {
               {/* Adaptation */}
               <NavItem>
                 <Dropdown>
-                  <DropdownToggle nav caret style={{ color: "black" }}><b>Adaptation</b></DropdownToggle>
+                  <DropdownToggle nav caret style={{ color: "black" }}><b>Adaptation M&amp;E</b></DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem href="#/ame">
                       <b>

@@ -59,25 +59,42 @@ class Goal6Contrib extends React.Component {
               <b>What is being monitored and evaluated:</b>
             </p>
             <p>
-              Details of sectoral, business, provincial and municipal risk profiles and vulnerability 
-              assessments and measures/actions to address the identified risks, impacts and vulnerabilities 
+              Details of sectoral, business, provincial and municipal risk profiles and vulnerability
+              assessments and measures/actions to address the identified risks, impacts and vulnerabilities
               in businesses, sectors, provinces and municipalities.
             </p>
-            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
+            <p style={{ marginBottom: "3px" }}>
               <b>How it is being evaluated:</b>
             </p>
-            <p>
-              No risk and vulnerability profiles
-              <span style={{ color: Red }}><b> (red)</b></span>.
-            </p>
-            <p>
-              Risk and vulnerability profiles identified
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Risks, impacts and vulnerabilities addressed in policies, plans and actions
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%" }}>
+              <tbody>
+                <tr style={{ backgroundColor: Red }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      No risk and vulnerability profiles.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Amber }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Risk and vulnerability profiles identified.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Green }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Risks, impacts and vulnerabilities addressed in policies, plans and actions.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -91,15 +108,15 @@ class Goal6Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 6 Assessment:
+              Goal 6 Assessment
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  6.1 Are climate change items included in existing administrative and political forums/committees 
-                  in businesses, sectors, provinces and municipalities?
+                  6.1 Are risk profiles and vulnerability assessments used to determine risks, vulnerabilities
+                  and impacts in measures, plans, or actions within your organisation?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -126,11 +143,30 @@ class Goal6Contrib extends React.Component {
                 </div>
               </Col>
             </Row>
+            <br />
 
             <Row>
               <Col md="12">
+                <label style={{ fontWeight: "bold", marginTop: "5px" }}>
+                  6.2 Add attachments to any evidence:
+                </label>
+                <br />
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px"}}>
+              <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "5px" }}>
-                  6.2 Based on your inputs, your Goal 6 status is:
+                  Based on your submission, your Goal 6 status is:
                 </label>
                 <br />
                 <Button
@@ -148,15 +184,6 @@ class Goal6Contrib extends React.Component {
                   color=""
                   style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
-              </Col>
-            </Row>
-            <br />
-
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
               </Col>
             </Row>
 

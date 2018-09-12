@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact'
 
-import AME from '../../../../../images/AME.png'
+// import AME from '../../../../../images/AME.png'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -52,11 +52,8 @@ class About extends React.Component {
           climate change adaptation obligations under the National Development Plan, National Climate
           Change Response White Paper, South Africa Nationally Determined Contribution and the Paris Agreement.
           This information will be useful for adaptation planning and decision-making, both within
-          South Africa and in the wider international community (see figure below).
+          South Africa and in the wider international community.
         </p>
-        <img src={AME} style={{ width: "100%", marginLeft: "-7px" }} />
-        <br />
-        <br />
         <p>
           A simple pragmatic approach has been developed to monitor and evaluate the progress being made
           in achieving individual DAOs using traffic light colours as a scoring system to summarise progress.

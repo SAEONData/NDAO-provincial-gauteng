@@ -73,33 +73,51 @@ class Goal1Contrib extends React.Component {
               Development Frameworks/Environmental Management Frameworks, Growth and Development Strategies,
               Disaster Management Plans, Conservation Plans, Food Security Strategies, Energy Security
               Strategies, Coastal Management Programmes, Agricultural Plans and Strategies, Integrated
-              Development Plans and associated Sector Plans as prescribed in Municipal Systems and Structures
-              Act, Water Catchment Strategies, Integrated Waste Management Plans, Alien Invasive Strategies,
-              Environmental Impact Assessments, International Agreements on Water Allocation, Business Plans,
-              Land Capability Plans, Air Quality Plans, Greening Strategies/Green Economy Strategies, Transport
-              Strategies, Water Management Strategies, Forest Protection Strategies, Education Plans, Economic
-              Plans, Tourism Plans, Human Settlements/Rural Development Plans, licensing/permitting/authorisation
-              and by-laws, and broader risk management procedures).*
+              Development Plans and associated Sector Plans as prescribed in Municipal Systems and
+              Structures Act, Water Catchment Strategies, Integrated Waste Management Plans, Alien
+              Invasive Strategies, Environmental Impact Assessments, International Agreements on Water
+              Allocation, Business Plans, Land Capability Plans, Air Quality Plans, Greening Strategies/Green
+              Economy Strategies, Transport Strategies, Water Management Strategies, Forest Protection
+              Strategies, Education Plans, Economic Plans, Tourism Plans, Human Settlements/Rural Development
+              Plans, licensing/permitting/authorisation procedures and by-laws, and broader risk
+              management procedures).*
             </p>
-            <p>
+            <p style={{ marginBottom: "3px" }}>
               <b>How it is being evaluated:</b>
-              <br />
-              Legal frameworks, plans/strategies, policies, programmes and projects not informed by existing
-              risk and vulnerability profiles that include climate risks and impacts
-              <span style={{ color: Red }}><b> (red)</b></span>.
             </p>
-            <p>
-              Legal frameworks, plans/strategies, policies, programmes and projects informed by risk and
-              vulnerability profiles that include climate risks and impacts
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Implementation of legal frameworks, plans/strategies, policies, programmes and projects -
-              informed by risk and vulnerability profiles that include climate risks and impacts - to reduce
-              vulnerability in risk and vulnerability profiles and enhance capacity to respond to climate
-              change impact
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%" }}>
+              <tbody>
+                <tr style={{ backgroundColor: Red }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      Legal frameworks, plans/strategies, policies, programmes and projects not informed by
+                      existing risk and vulnerability profiles that include climate risks and impacts.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Amber }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Legal frameworks, plans/strategies, policies, programmes and projects informed by risk
+                      and vulnerability profiles that include climate risks and impacts.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Green }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Implementation of legal frameworks, plans/strategies, policies, programmes and
+                      projects - informed by risk and vulnerability profiles that include climate
+                      risks and impacts - to reduce vulnerability in risk and vulnerability profiles and enhance capacity to respond to climate change impacts.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -112,13 +130,13 @@ class Goal1Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 1 Assessment:
+              Goal 1 Assessment
             </h5>
             <br />
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.1 Add a link to your document
+                  1.1 Attachment your document (see above description):*
                 </label>
                 <TextInput width="95%" />
               </Col>
@@ -126,8 +144,25 @@ class Goal1Contrib extends React.Component {
 
             <Row>
               <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  1.2 Please add the details of all of the climate change adaptation or mitigation options
+                  or any research options described in your document to the Climate Change Response Database (CCR).
+              </label>
+                <Button
+                  size="sm"
+                  color=""
+                  style={{ marginLeft: "0px", backgroundColor: DEAGreen }}
+                  onClick={() => { this.setState({ showNCCRD: true }) }}>
+                  <b>CCR</b>
+                </Button>
+              </Col>
+            </Row>
+            <br />
+
+            <Row>
+              <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  1.2 Does the adaptation plan have a risk and vulnerability assessment
+                  1.3 Does the document have a risk and vulnerability assessment?
                 </label>
                 <br />
                 <Button
@@ -151,7 +186,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.3 When was the plan last updated?
+                  1.4 When was the plan last updated?
                 </label>
               </Col>
             </Row>
@@ -163,9 +198,17 @@ class Goal1Contrib extends React.Component {
             <br />
 
             <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  1.4 Based on your inputs, your Goal 1 status is:
+                  Based on your submission, your Goal 1 status is:
                 </label>
                 <br />
                 <Button
@@ -185,51 +228,10 @@ class Goal1Contrib extends React.Component {
                 />
               </Col>
             </Row>
-            <br />
 
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
-              </Col>
-            </Row>
-            <br />
-
-            <Row>
-              <Col md="12">
-                <p style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  Your unique code is:
-                  &nbsp;
-                <span style={{ color: Red }}>####-####-####-####-####</span>
-                  <br />
-                  Use this code to find your plan when adding projects to the Climate Change
-                  Responses Database
-              </p>
-              </Col>
-            </Row>
-            <hr />
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold", fontSize: "18px" }}>
-                  <u>Next steps:</u>
-                </label>
-                <label style={{ fontWeight: "bold" }}>
-                  Please add the details of all of the climate change adaptation or mitigation options
-                  described in your document to the Climate Change Response Database (CCR).
-              </label>
-                <Button
-                  color=""
-                  style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
-                  onClick={() => { this.setState({ showNCCRD: true }) }}
-                >
-                  <b>CCR</b>
-                </Button>
-              </Col>
-            </Row>
           </Col>
         </Row>
+        <br />
 
         {showNCCRD &&
           <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />

@@ -83,7 +83,7 @@ class SelectInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder } = this.props
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear } = this.props
     let { value } = this.state
 
     if (typeof value === 'undefined' || value === "" || value === null) {
@@ -94,6 +94,7 @@ class SelectInput extends React.Component {
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
+    allowClear = globalFunctions.fixEmptyValue(allowClear, true)
 
     return (
       <>
@@ -121,7 +122,7 @@ class SelectInput extends React.Component {
           value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
           placeholder={placeHolder}
-          allowClear
+          allowClear={allowClear}
           onChange={this.onChange.bind(this)}
         >
           {this.renderSelectNodes(data)}

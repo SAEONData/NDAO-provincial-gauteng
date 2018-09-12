@@ -2,10 +2,12 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Input } from 'mdbreact'
+import { Row, Col, Button, Input, Popover, PopoverBody, PopoverHeader } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 
+//Images
+import info from '../../../../../images/info.png'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
@@ -55,8 +57,8 @@ class Goal2Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ marginTop: "8px" }}>
-              Goal 2. Appropriate resources (including current and past financial investments), capacity
-              and processes (human, legal and regulatory) and support mechanisms (institutional and governance
+              Goal 2. Appropriate resources (including current and past financial investments), capacity and
+              processes (human, legal and regulatory) and support mechanisms (institutional and governance
               structures) to facilitate climate change adaptation.
             </h5>
             <p style={{ marginTop: "20px", marginBottom: "2px" }}>
@@ -66,43 +68,64 @@ class Goal2Contrib extends React.Component {
               <li>
                 Dedicated climate change champions/nodes/units and funding for businesses, sectors, provinces
                 and municipalities (metropolitan, district and local);
-                </li>
+              </li>
               <li>
-                climate change training programmes;
-                </li>
+                Climate change training programmes;
+              </li>
               <li>
-                inclusion of climate change agendas in business, sectoral, provincial and municipal forums/committees
-                (e.g. Climate Change Sustainability Councils, Municipal Climate Change Task Teams, Disaster Management
-                Advisory Forums, Ward Councillor meetings, Provincial Cluster meetings, Board-level oversight); and
-                </li>
+                Inclusion of climate change agendas in business, sectoral, provincial and municipal
+                forums/committees (e.g. Climate Change Sustainability Councils, Municipal Climate Change
+                Task Teams, Disaster Management Advisory Forums, Ward Councillor meetings, Provincial
+                Cluster meetings, Board-level oversight);
+              </li>
               <li>
-                implementation of forum/committee climate change action plans;
-                </li>
+                Implementation of forum/committee climate change action plans; and
+              </li>
               <li>
-                dedicated budget/funding (including monetary incentives).
-                </li>
+                Dedicated budget/funding (including monetary incentives).
+              </li>
             </ol>
-            <p>
+            <p style={{ marginBottom: "3px" }}>
               <b>How it is being evaluated:</b>
-              <br />
-              No dedicated political/administrative champions, capacity, structure (i.e. organogram with climate
-              change key performance indicators or Board-level oversight of climate change) or funding (including
-              monetary incentives); no inclusion of climate change items in existing administrative and political
-              forums/committees in businesses, sectors, provinces and municipalities
-              <span style={{ color: Red }}><b> (red)</b></span>.
             </p>
-            <p>
-              Political/administrative champions designated but with no capacity, structure (i.e. organogram) or
-              funding; inclusion of climate change items only by request in existing administrative and political
-              forums/committees
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Political/administrative champions designated, and capacity, structure (i.e. organogram/Board-level
-              oversight) and dedicated funding; climate change standing item in administrative and political
-              provincial, municipal and sector forum/committee agendas
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%" }}>
+              <tbody>
+                <tr style={{ backgroundColor: Red }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      No dedicated political/administrative champions, capacity, structure (i.e.
+                      organogram with climate change key performance indicators or Board-level
+                      oversight of climate change) or funding (including monetary incentives);
+                      no inclusion of climate change items in existing administrative and
+                      political forums/committees in businesses, sectors, provinces and municipalities.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Amber }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Political/administrative champions designated but with no capacity, structure
+                      (i.e. organogram) or funding; inclusion of climate change items only by request
+                      in existing administrative and political forums/committees.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Green }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Political/administrative champions designated, and capacity, structure
+                      (i.e. organogram/Board-level oversight) and dedicated funding; climate change
+                      standing item in administrative and political provincial, municipal and sector
+                      forum/committee agendas.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -116,30 +139,47 @@ class Goal2Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 2 Assessment:
+              Goal 2 Assessment
             </h5>
             <br />
 
             <Row>
               <Col md="12">
-                <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
+                <label style={{ fontWeight: "bold", marginBottom: "0px", marginRight: "7px" }}>
                   2.1 Does organisation have a dedicated political/administrative champion with capacity and structure?
-              </label>
+                </label>
+                <Popover
+                  component="a"
+                  placement="top"
+                  popoverBody={<img src={info} style={{ height: "25px", marginTop: "1px" }} />}>
+                  <PopoverHeader>
+                    Example organogram
+                  </PopoverHeader>
+                  <PopoverBody>
+                    <a
+                      href="https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing"
+                      target="blank">
+                      https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing
+                    </a>
+                  </PopoverBody>
+                </Popover>
                 <br />
-                <Button
-                  onClick={() => { this.setState({ hasChamp: true }) }}
-                  color=""
-                  style={{ fontSize: hasChamp ? "13px" : "10px", marginLeft: "0px", backgroundColor: hasChamp ? DEAGreen : "grey" }}
-                  size="sm">
-                  YES
+                <div style={{ marginTop: "-20px"}}>
+                  <Button
+                    onClick={() => { this.setState({ hasChamp: true }) }}
+                    color=""
+                    style={{ fontSize: hasChamp ? "13px" : "10px", marginLeft: "0px", backgroundColor: hasChamp ? DEAGreen : "grey" }}
+                    size="sm">
+                    YES
+                  </Button>
+                  <Button
+                    onClick={() => { this.setState({ hasChamp: false }) }}
+                    color=""
+                    style={{ fontSize: !hasChamp ? "13px" : "10px", backgroundColor: !hasChamp ? DEAGreen : "grey" }}
+                    size="sm">
+                    NO
                 </Button>
-                <Button
-                  onClick={() => { this.setState({ hasChamp: false }) }}
-                  color=""
-                  style={{ fontSize: !hasChamp ? "13px" : "10px", backgroundColor: !hasChamp ? DEAGreen : "grey" }}
-                  size="sm">
-                  NO
-                </Button>
+                </div>
               </Col>
             </Row>
             <br />
@@ -147,7 +187,7 @@ class Goal2Contrib extends React.Component {
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  2.2 Add a link to your document
+                  Attach your organogram:
                 </label>
                 <TextInput width="95%" />
               </Col>
@@ -156,7 +196,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  2.3 Does your climate change group have dedicated funding?
+                  2.2 Does your climate change unit have dedicated funding?
                 </label>
                 <br />
                 <Button
@@ -204,7 +244,7 @@ class Goal2Contrib extends React.Component {
             <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  Are there any partnering departments?
+                  Are there any partnering departments/organisations that share the costs?
                 </label>
                 <TextInput width="95%" />
               </Col>
@@ -213,8 +253,8 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  2.4 Are climate change items included in existing administrative and political forums/committees
-                  in businesses, sectors, provinces and municipalities?
+                  2.3 Are climate change items included in existing administrative and political
+                  forums/committees in businesses, sectors, provinces and municipalities?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -234,20 +274,26 @@ class Goal2Contrib extends React.Component {
                   <Input
                     onClick={() => { this.setState({ radForumsComitees: 3 }) }}
                     checked={radForumsComitees === 3 ? true : false}
-                    label="Climate change in a standing item in administrative and political provincial, 
-                            municipal and sector forum/committee agendas."
+                    label="Climate change in a standing item in administrative and political provincial, municipal and sector forum/committee agendas."
                     type="radio"
                     id="radFC3"
                   />
                 </div>
               </Col>
             </Row>
-            <br />
 
             <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", marginTop: "15px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  2.5 Based on your inputs, your Goal 2 status is:
+                  Based on your submission, your Goal 2 status is:
                 </label>
                 <br />
                 <Button
@@ -267,16 +313,6 @@ class Goal2Contrib extends React.Component {
                 />
               </Col>
             </Row>
-            <br />
-
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
-              </Col>
-            </Row>
-
           </Col>
         </Row>
 

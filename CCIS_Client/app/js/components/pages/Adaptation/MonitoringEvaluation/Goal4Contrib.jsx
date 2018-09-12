@@ -53,49 +53,69 @@ class Goal4Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ marginTop: "8px" }}>
-              Goal 4. Capacity development, education and awareness programmes (formal and informal) for climate 
-              change adaptation (e.g. informed by adaptation research and with tools to utilise data/outputs).
+              Goal 4. Capacity development, education and awareness programmes (formal and informal) for
+              climate change adaptation (e.g. informed by adaptation research and with tools to
+              utilise data/outputs).
             </h5>
             <p style={{ marginTop: "20px", marginBottom: "2px" }}>
               <b>What is being monitored and evaluated:</b>
             </p>
             <ol style={{ marginLeft: "-15px" }}>
               <li>
-                number of capacity development programmes (including students, staff, researchers and institutions) 
-                addressing climate change adaptation;
+                Number of capacity development programmes (including students, staff, researchers and
+                institutions) addressing climate change adaptation;
               </li>
               <li>
-                coverage of adaptation research and training being undertaken and financed;
+                Coverage of adaptation research and training being undertaken and financed;
               </li>
               <li>
-                uptake of research outcomes and human capacity trained in adaptation; 
+                Uptake of research outcomes and human capacity trained in adaptation;
               </li>
               <li>
-                collaboration and partnerships between sectors, businesses, provinces, municipalities and researchers; and
+                Collaboration and partnerships between sectors, businesses, provinces, municipalities
+                and researchers; and
               </li>
               <li>
-                incorporation of climate change issues into school curriculum.
+                Incorporation of climate change issues into school curriculum.
               </li>
             </ol>
-            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
+            <p style={{ marginBottom: "3px" }}>
               <b>How it is being evaluated:</b>
             </p>
-            <p>
-              No capacity building programmes (including research), collaboration and partnerships to address 
-              climate change adaptation and no incorporation into school curriculum
-              <span style={{ color: Red }}><b> (red)</b></span>.
-            </p>
-            <p>
-              Attendance of capacity building programmes but no utilisation, collaboration and partnerships 
-              to address climate change adaptation and no incorporation into school curriculum
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Capacity building programmes (including research and utilisation), collaboration and 
-              partnerships to address climate change adaptation, incorporation into school curriculum, 
-              and utilisation to inform policy and decision-making
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%" }}>
+              <tbody>
+                <tr style={{ backgroundColor: Red }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      No capacity building programmes (including research), collaboration and partnerships
+                      to address climate change adaptation and no incorporation into school curriculum.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Amber }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Attendance of capacity building programmes but no utilisation, collaboration and
+                      partnerships to address climate change adaptation and no incorporation into school
+                      curriculum.
+                    </p>
+                  </td>
+                </tr>
+                <tr style={{ backgroundColor: Green }}>
+                  <td style={{ color: "white", padding: "10px" }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Capacity building programmes (including research and utilisation), collaboration
+                      and partnerships to address climate change adaptation, incorporation into school
+                      curriculum, and utilisation to inform policy and decision-making.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -109,7 +129,7 @@ class Goal4Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 4 Assessment:
+              Goal 4 Assessment
             </h5>
             <br />
 
@@ -122,37 +142,82 @@ class Goal4Contrib extends React.Component {
                   <Input
                     onClick={() => { this.setState({ radProgrammes: 1 }) }}
                     checked={radProgrammes === 1 ? true : false}
-                    label="No capacity building programmes (including research), collaboration and partnerships to   
-                            address climate change adaptation and no incorporation into school curriculum."
+                    label="No capacity building programmes (including research), collaboration and partnerships to address climate change adaptation and no incorporation into school curriculum."
                     type="radio"
                     id="radPrg1"
                   />
                   <Input
                     onClick={() => { this.setState({ radProgrammes: 2 }) }}
                     checked={radProgrammes === 2 ? true : false}
-                    label="Attendance of capacity building programmes but no utilisation, collaboration and 
-                            partnerships to address climate change adaptation and no incorporation into school 
-                            curriculum."
+                    label="Attendance of capacity building programmes but no utilisation, collaboration and partnerships to address climate change adaptation and no incorporation into school curriculum."
                     type="radio"
                     id="radPrg2"
                   />
                   <Input
                     onClick={() => { this.setState({ radProgrammes: 3 }) }}
                     checked={radProgrammes === 3 ? true : false}
-                    label="Capacity building programmes (including research and utilisation), collaboration and 
-                            partnerships to address climate change adaptation, incorporation into school curriculum, 
-                            and utilisation to inform policy and decision-making."
+                    label="Capacity building programmes (including research and utilisation), collaboration and partnerships to address climate change adaptation, incorporation into school curriculum, and utilisation to inform policy and decision-making."
                     type="radio"
                     id="radPrg3"
                   />
                 </div>
               </Col>
             </Row>
-            
+            <br />
+
             <Row>
               <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  4.2 Budget for adaptation technologies:
+                </label>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  What is the total budget for adaptation technologies?
+                </label>
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  How long will the funding for the adaptation technologies last?
+                </label>
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Who is the funding agency for the adaptation technologies?
+                </label>
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Are there any partnering departments/organisations that share the cost for the adaptation
+                  technologies?
+                </label>
+                <TextInput width="95%" />
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row>
+
+            <Row style={{ marginTop: "15px"}}>
+              <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  4.2 Based on your inputs, your Goal 4 status is:
+                  Based on your submission, your Goal 4 status is:
                 </label>
                 <br />
                 <Button
@@ -170,15 +235,6 @@ class Goal4Contrib extends React.Component {
                   color=""
                   style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
-              </Col>
-            </Row>
-            <br />
-
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
               </Col>
             </Row>
 

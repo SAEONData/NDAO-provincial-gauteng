@@ -69,47 +69,92 @@ class Goal3Contrib extends React.Component {
                 Historical climate trends; 
               </li>
               <li>
-                fine-scale projections, forecasts (seasonal to inter-annual and intra-seasonal variability) 
+                Fine-scale projections, forecasts (seasonal to inter-annual and intra-seasonal variability) 
                 and early warning systems for provincial and municipal use; 
               </li>
               <li>
-                dissemination and communication platforms for weather and climate-related events (e.g. SMS and  media); 
+                Dissemination and communication platforms for weather and climate-related events 
+                (e.g. SMS and media);
               </li>
               <li>
-                utilisation  of data/information products by end-users; and 
+                Utilisation of data/information products by end-users; and 
               </li>
               <li>
-                maintenance and enhancements of monitoring and forecasting facilities/networks.
+                Maintenance and enhancements of monitoring and forecasting facilities/networks.
               </li>
             </ol>
-            <p style={{ marginTop: "20px", marginBottom: "2px" }}>
+            <p style={{ marginBottom: "5px" }}>
               <b>How it is being evaluated:</b>
             </p>
-            <p style={{ marginBottom: "0px"}}>
-              No dissemination and utilisation of weather and climate-related information
-              <span style={{ color: Red }}><b> (red)</b></span>.
-            </p>
-            <p>
-              Lack of monitoring and forecasting facilities/networks
-              <span style={{ color: Red }}><b> (red)</b></span>.
-            </p>
-            <p style={{ marginBottom: "0px"}}>
-              Dissemination but no utilisation of weather and climate-related information
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p>
-              Monitoring facilities/networks exist but are not well-maintained or enhanced
-              <span style={{ color: Amber }}><b> (amber)</b></span>.
-            </p>
-            <p style={{ marginBottom: "0px"}}>
-              Dissemination and utilisation of weather and climate-related information at provincial, 
-              municipal and community levels
-              <span style={{ Green }}><b> (green)</b></span>.
-            </p>
-            <p>
-              Monitoring facilities/networks exist and are maintained and enhanced
-              <span style={{ color: Green }}><b> (green)</b></span>.
-            </p>
+            <table style={{ width: "95%", marginLeft: "-30px", marginBottom: "-15px" }}>
+              <tbody>
+                <tr>
+                  <td width="30px">
+                    <b>3.1</b>
+                  </td>
+                  <td style={{ color: "white", padding: "10px", backgroundColor: Red }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      No dissemination and utilisation of weather and climate-related information.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="30px"></td>
+                  <td style={{ color: "white", padding: "10px", backgroundColor: Amber }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Dissemination but no utilisation of weather and climate-related information.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="30px"></td>
+                  <td style={{ color: "white", padding: "10px", backgroundColor: Green }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Dissemination and utilisation of weather and climate-related information at 
+                      provincial, municipal and community levels.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <table style={{ width: "95%", marginLeft: "-30px" }}>
+              <tbody>
+                <tr>
+                  <td width="30px">
+                    <b>3.2</b>
+                  </td>
+                  <td style={{ color: "white", padding: "10px",  backgroundColor: Red }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>RED </b>
+                      Monitoring facilities/networks exist but are not well-maintained or enhanced.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="30px"></td>
+                  <td style={{ color: "white", padding: "10px",  backgroundColor: Amber }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>AMBER </b>
+                      Lack of monitoring and forecasting facilities/networks.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="30px"></td>
+                  <td style={{ color: "white", padding: "10px",  backgroundColor: Green }}>
+                    <p style={{ marginBottom: "0px" }}>
+                      <b>GREEN </b>
+                      Monitoring facilities/networks exist and are maintained and enhanced. 
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </Col>
           <Col md="12">
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
@@ -123,14 +168,14 @@ class Goal3Contrib extends React.Component {
           </Col>
           <Col md="11">
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
-              Goal 3 Assessment:
+              Goal 3 Assessment
             </h5>
             <br />
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  3.1 Dissemination and utilization of climate change information?
+                  3.1 Dissemination and utilisation of climate change information?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -150,8 +195,7 @@ class Goal3Contrib extends React.Component {
                   <Input
                     onClick={() => { this.setState({ radDissemination: 3 }) }}
                     checked={radDissemination === 3 ? true : false}
-                    label="Utilisation of weather and climate-related information at provincial, municipal and 
-                            community levels."
+                    label="Utilisation of weather and climate-related information at provincial, municipal and community levels."
                     type="radio"
                     id="radDiss3"
                   />
@@ -163,7 +207,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                3.2 Monitoring and forecasting facilities/networks?
+                  3.2 Monitoring and forecasting facilities/networks?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -230,12 +274,20 @@ class Goal3Contrib extends React.Component {
                 </label>
                 <TextInput width="95%" />
               </Col>
-            </Row>     
+            </Row>  
 
             <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                  <b>Submit</b>
+                </Button>
+              </Col>
+            </Row> 
+
+            <Row style={{ marginTop: "15px"}}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  3.4 Based on your inputs, your Goal 3 status is:
+                  Based on your submission, your Goal 3 status is:
                 </label>
                 <br />
                 <Button
@@ -254,16 +306,7 @@ class Goal3Contrib extends React.Component {
                   style={{ backgroundColor: Green, marginLeft: "0px", marginRight: "0px", height: goalStatus === "G" ? "40px" : "35px", width: goalStatus === "G" ? "58px" : "40px", border: goalStatus === "G" ? "2px solid black" : "0px solid black" }}
                 />
               </Col>
-            </Row>
-            <br />
-
-            <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
-                  <b>Submit</b>
-                </Button>
-              </Col>
-            </Row>
+            </Row>            
 
           </Col>
         </Row>

@@ -35,15 +35,34 @@ class AME extends React.Component {
   constructor(props) {
     super(props);
 
+    this.contribute = this.contribute.bind(this)
+
     this.state = {
       aboutSection: true,
       contribSection: false,
-      selectedGoal: "Goal 1"
+      selectedGoal: 1
     }
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
+
+    if (location.hash.includes("/contribute")) {
+      this.contribute()
+    }
+  }
+
+  contribute() {
+
+    setTimeout(() => {
+      window.scroll({
+        top: 180,
+        left: 0,
+        behavior: 'smooth'
+      })
+    }, 100)
+
+    setTimeout(() => { this.setState({ contribSection: true, aboutSection: false }) }, 200);
   }
 
   render() {
@@ -75,12 +94,8 @@ class AME extends React.Component {
           <br />
           <Button
             onClick={() => {
-              window.scroll({
-                top: 180,
-                left: 0,
-                behavior: 'smooth'
-              });
-              setTimeout(() => { this.setState({ contribSection: true, aboutSection: false }) }, 50);
+              location.hash = "#/ame/contribute"
+              this.contribute()
             }}
             style={{ marginLeft: "0px" }}
             color="grey">Submit your contribution</Button>
@@ -91,8 +106,9 @@ class AME extends React.Component {
             <Row>
               <Col md="4">
                 <SelectInput
+                  key={"Goal " + selectedGoal}
                   placeHolder="Select Goal..."
-                  value={selectedGoal}
+                  value={"Goal " + selectedGoal}
                   data={[
                     { id: 1, text: "Goal 1" },
                     { id: 2, text: "Goal 2" },
@@ -105,22 +121,43 @@ class AME extends React.Component {
                     { id: 9, text: "Goal 9" }
                   ]}
                   allowEdit={true}
-                  callback={(selectedNode) => { this.setState({ selectedGoal: selectedNode.text }) }}
+                  allowClear={false}
+                  callback={(selectedNode) => { this.setState({ selectedGoal: selectedNode.id }) }}
                 />
               </Col>
             </Row>
             <br />
             <Row>
-              {selectedGoal === "Goal 1" && <Goal1Contrib />}
-              {selectedGoal === "Goal 2" && <Goal2Contrib />}
-              {selectedGoal === "Goal 3" && <Goal3Contrib />}
-              {selectedGoal === "Goal 4" && <Goal4Contrib />}
-              {selectedGoal === "Goal 5" && <Goal5Contrib />}
-              {selectedGoal === "Goal 6" && <Goal6Contrib />}
-              {selectedGoal === "Goal 7" && <Goal7Contrib />}
-              {selectedGoal === "Goal 8" && <Goal8Contrib />}
-              {selectedGoal === "Goal 9" && <Goal9Contrib />}
+              {selectedGoal === 1 && <Goal1Contrib />}
+              {selectedGoal === 2 && <Goal2Contrib />}
+              {selectedGoal === 3 && <Goal3Contrib />}
+              {selectedGoal === 4 && <Goal4Contrib />}
+              {selectedGoal === 5 && <Goal5Contrib />}
+              {selectedGoal === 6 && <Goal6Contrib />}
+              {selectedGoal === 7 && <Goal7Contrib />}
+              {selectedGoal === 8 && <Goal8Contrib />}
+              {selectedGoal === 9 && <Goal9Contrib />}
             </Row>
+            <br />
+
+            {selectedGoal < 9 &&
+              <Row style={{ textAlign: "right" }}>
+                <Col md="12" >
+                  <Button color="grey" onClick={() => {
+                    window.scroll({
+                      top: 180,
+                      left: 0,
+                      behavior: 'smooth'
+                    })
+                    setTimeout(() => {
+                      this.setState({ selectedGoal: (selectedGoal + 1) })
+                    }, 100)
+                  }}>
+                    Next
+                </Button>
+                </Col>
+              </Row>
+            }
           </Collapse>
 
 
