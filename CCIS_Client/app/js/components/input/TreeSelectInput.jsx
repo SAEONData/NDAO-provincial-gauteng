@@ -119,7 +119,7 @@ class TreeSelectInput extends React.Component {
           searchPlaceholder="Search..."
           style={{ width: "100%" }}
           value={value}
-          dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
+          dropdownStyle={{ maxHeight: 250, overflow: 'auto', paddingRight: "20px" }}
           placeholder={placeHolder}
           allowClear
           onChange={this.onChange.bind(this)}

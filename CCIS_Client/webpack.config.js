@@ -78,7 +78,13 @@ module.exports = {
         'file-loader'
       ]
     },
-    ]
+    {
+      test: /\.(pptx|zip)$/,
+      loader: "file-loader",
+      options: {
+        name: '[name].[ext]'
+      }
+    }]
   },
 
   plugins: [
@@ -97,7 +103,7 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc|cfg)$/),
+    new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
     new CopyWebpackPlugin([
       {
         from: 'js/config/*.cfg',

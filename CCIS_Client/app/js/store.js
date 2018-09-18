@@ -11,7 +11,8 @@ const store = createStore(
   combineReducers({ oidc: oidcReducer, ...reducers, router: routerReducer }), {
 
     general: {
-      loading: false
+      loading: false,
+      showSideNav: false
     },
     navigation: {
       locationHash: "#/"

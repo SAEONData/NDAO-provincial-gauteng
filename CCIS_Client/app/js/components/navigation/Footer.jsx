@@ -28,10 +28,10 @@ class Footer extends React.Component {
             <Col md="12">
               <div style={{ float: "right" }}>
                 <p style={{ textAlign: "right" }}>
-                  <a disabled href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
+                  {/* <a disabled href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Technical Information</b>
                   </a>
-                  <br className="d-block d-md-none" />
+                  <br className="d-block d-md-none" /> */}
                   <a disabled href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
                     <b>Contact</b>
                   </a>

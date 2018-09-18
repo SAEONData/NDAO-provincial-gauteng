@@ -19,10 +19,11 @@ import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
+// import SideNav from './components/navigation/SideNav.jsx'
 
 const mapStateToProps = (state, props) => {
-  let { general: { loading } } = state
-  return { loading }
+  let { general: { loading, showSideNav } } = state
+  return { loading, showSideNav }
 }
 
 class App extends React.Component {
@@ -41,9 +42,8 @@ class App extends React.Component {
 
   render() {
 
-    let { loading } = this.props
+    let { loading, showSideNav } = this.props
     let { navbar } = this.state
-
 
     return (
       <div className="container">
@@ -53,16 +53,13 @@ class App extends React.Component {
             {navbar && <Header/>}
             {navbar && <Navbar/>}
 
+            {/* <SideNav style={{ width: "500px"}} isOpen={showSideNav} /> */}
+
             <Switch>
               <Route path="/" component={Home} exact />
               <Route path="/login" component={Login} exact />
               <Route path="/logout" component={Logout} exact />
               <Route path="/callback" component={CallbackPage} />
-              {/* <Route path="/ccr" component={NCCRD} />
-              <Route path="/nwis" component={NWIS} />
-              <Route path="/sarva" component={SARVA} />
-              <Route path="/lrt" component={LRT} />
-              <Route path="/dasl" component={DASL} /> */}
               <Route path="/ame" component={AME} />
               <Redirect to="/" />
             </Switch>

@@ -11,6 +11,9 @@ import info from '../../../../../images/info.png'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
+//Content
+import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'
+
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -145,27 +148,11 @@ class Goal2Contrib extends React.Component {
 
             <Row>
               <Col md="12">
-                  <label style={{ fontWeight: "bold", marginBottom: "0px", marginRight: "7px" }}>
-                    2.1 Does organisation have a dedicated political/administrative champion with capacity and structure?
-                  </label>
-                  <Popover style={{ display: "inline-block"}}
-                    component="a"
-                    placement="right"
-                    popoverBody={<img src={info} style={{ height: "25px", marginTop: "1px" }} />}>
-                    <PopoverHeader>
-                      Example organogram
-                    </PopoverHeader>
-                    <PopoverBody>
-                      <a
-                        href="https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing"
-                        target="blank">
-                        https://docs.google.com/presentation/d/16gZRzLs8H8SWlmGyTquC5sfqzt3q9cMV6tT4ei4txIU/edit?usp=sharing
-                      </a>
-                    </PopoverBody>
-                  </Popover>
-
+                <label style={{ fontWeight: "bold", marginBottom: "0px", marginRight: "7px" }}>
+                  2.1 Does organisation have a dedicated political/administrative champion with capacity and structure?
+                </label>
                 <br />
-                <div style={{ marginTop: "-20px" }}>
+                <div>
                   <Button
                     onClick={() => { this.setState({ hasChamp: true }) }}
                     color=""
@@ -190,6 +177,12 @@ class Goal2Contrib extends React.Component {
                 <label style={{ fontWeight: "bold" }}>
                   Attach your organogram:
                 </label>
+                <br />
+                <a href={OrganogramTemplate}>
+                  <p style={{ fontSize: "14px", marginTop: "-8px", marginBottom: "35px"}}>
+                    <u>Download Organogram Template</u>
+                  </p>
+                </a>
                 <TextInput width="95%" />
               </Col>
             </Row>

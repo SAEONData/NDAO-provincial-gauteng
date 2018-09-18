@@ -36,7 +36,7 @@ class EWED extends React.Component {
         <HostedContentFrame
           title="Extreme Weather Events Database"
           source="http://app01.saeon.ac.za/ndmcsite/#/events"
-          showSource={true}
+          showSource={false}
           closeCallback={closeCallback}
          />
       </>

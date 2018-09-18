@@ -1,25 +1,30 @@
 'use strict'
 
-import React from 'react'
-import { connect } from 'react-redux'
-import {
-  Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink,
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
-} from 'mdbreact'
-import { ssoBaseURL } from '../../config/ssoBaseURL.cfg'
-import { DEAGreen, DEAGreenDark } from "../../config/colours.cfg"
-
-import NCCRD from '../pages/Tools/NCCRD.jsx'
-import NWIS from '../pages/Tools/NWIS.jsx';
-import SARVA from '../pages/Tools/SARVA.jsx';
-import LRT from '../pages/Tools/LRT.jsx';
+import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Fa, Navbar as MDBNavbar, NavbarNav, NavbarToggler, NavItem, NavLink } from 'mdbreact';
+import React from 'react';
+import { connect } from 'react-redux';
+import { DEAGreen } from "../../config/colours.cfg";
+import { ssoBaseURL } from '../../config/ssoBaseURL.cfg';
 import DASL from '../pages/Tools/DASL.jsx';
 import EWED from '../pages/Tools/EWED.jsx';
+import LRT from '../pages/Tools/LRT.jsx';
+import NCCRD from '../pages/Tools/NCCRD.jsx';
+import NWIS from '../pages/Tools/NWIS.jsx';
+import SARVA from '../pages/Tools/SARVA.jsx';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
+  let { general: { showSideNav } } = state
   let { navigation: { locationHash } } = state
-  return { user, locationHash }
+  return { user, locationHash, showSideNav }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleSideNav: payload => {
+      dispatch({ type: "TOGGLE_SIDENAV", payload })
+    }
+  }
 }
 
 class Navbar extends React.Component {
@@ -91,7 +96,7 @@ class Navbar extends React.Component {
 
   render() {
 
-    let { locationHash, user } = this.props
+    let { locationHash, user, showSideNav, toggleSideNav } = this.props
     let { showDASL, showLRT, showNCCRD, showNWIS, showSARVA, showEWED } = this.state
 
     return (
@@ -102,14 +107,15 @@ class Navbar extends React.Component {
 
             {/* LEFT */}
             <NavbarNav left>
+
+              <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
+                style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
+                <Fa icon="bars" />
+              </Button>
+
               {/* Home */}
               <NavItem style={{ borderBottom: (locationHash === "#/" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
                 <NavLink to="/"><b>Home</b></NavLink>
-              </NavItem>
-
-              {/* About */}
-              <NavItem style={{ borderBottom: (locationHash === "#/about" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
-                <NavLink to="about" disabled style={{ color: "grey" }}><b>About</b></NavLink>
               </NavItem>
 
               {/* Adaptation */}
@@ -163,13 +169,13 @@ class Navbar extends React.Component {
                     <DropdownItem onClick={() => { this.setState({ showSARVA: true }) }}>
                       Risk And Vulnerability Hotspots
                     </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showNWIS: true }) }}>
+                    <DropdownItem onClick={() => { window.open("http://niwis.dws.gov.za/niwis2/", "_blank") /*this.setState({ showNWIS: true })*/ }}>
                       National Water Information System
                     </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showLRT: true }) }}>
+                    <DropdownItem onClick={() => { window.open("http://www.letsrespondtoolkit.org/", "_blank") /*this.setState({ showLRT: true })*/ }}>
                       Lets Respond Toolkit
                     </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showDASL: true }) }}>
+                    <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") /*this.setState({ showDASL: true })*/ }}>
                       Dam And Stream Levels
                     </DropdownItem>
                     <DropdownItem onClick={() => { this.setState({ showEWED: true }) }}>
@@ -216,7 +222,7 @@ class Navbar extends React.Component {
               {(!user || user.expired) &&
                 <NavItem>
                   <a disabled key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
-                    <b style={{ color: "grey"}}>Register</b>
+                    <b style={{ color: "grey" }}>Register</b>
                   </a>
                 </NavItem>
               }
@@ -224,17 +230,19 @@ class Navbar extends React.Component {
             </NavbarNav>
 
           </Collapse>
+
+          {showDASL && <DASL closeCallback={() => { this.setState({ showDASL: false }) }} />}
+          {showLRT && <LRT closeCallback={() => { this.setState({ showLRT: false }) }} />}
+          {showNCCRD && <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />}
+          {showNWIS && <NWIS closeCallback={() => { this.setState({ showNWIS: false }) }} />}
+          {showSARVA && <SARVA closeCallback={() => { this.setState({ showSARVA: false }) }} />}
+          {showEWED && <EWED closeCallback={() => { this.setState({ showEWED: false }) }} />}
+
         </MDBNavbar >
 
-        {showDASL && <DASL closeCallback={() => { this.setState({ showDASL: false }) }} />}
-        {showLRT && <LRT closeCallback={() => { this.setState({ showLRT: false }) }} />}
-        {showNCCRD && <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />}
-        {showNWIS && <NWIS closeCallback={() => { this.setState({ showNWIS: false }) }} />}
-        {showSARVA && <SARVA closeCallback={() => { this.setState({ showSARVA: false }) }} />}
-        {showEWED && <EWED closeCallback={() => { this.setState({ showEWED: false }) }} />}
       </>
     )
   }
 }
 
-export default connect(mapStateToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

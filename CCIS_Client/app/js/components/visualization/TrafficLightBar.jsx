@@ -149,7 +149,7 @@ class TrafficLightBar extends React.Component {
                     popoverBody={<img src={traffic_light} style={{ height: "40px", marginLeft: "5px" }} />}
                   >
                     <PopoverHeader>
-                      How the stoplight system works for the goal:
+                      How it is being evaluated:
                     </PopoverHeader>
                     <PopoverBody>
                       {explanation}
@@ -159,7 +159,7 @@ class TrafficLightBar extends React.Component {
                 {!explanation && <img src={traffic_light} style={{ height: "40px", marginLeft: "5px" }} />}
               </td>
               <td>
-                {attachment && <a target="blank" href={attachment}><img src={paper_clip_blue} style={{ height: "35px" }} /></a>}
+                {attachment && <a href={attachment}><img src={paper_clip_blue} style={{ height: "35px" }} /></a>}
                 {!attachment && <img src={paper_clip_grey} style={{ height: "35px" }} />}
               </td>
             </tr>

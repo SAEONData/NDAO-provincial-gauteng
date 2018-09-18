@@ -80,8 +80,11 @@ class AME extends React.Component {
           <h5
             style={{ marginBottom: "0px", color: DEAGreen, cursor: "pointer" }}
             onClick={() => { this.setState({ aboutSection: !aboutSection }) }} >
-            <b>About this platform...</b>
-            &nbsp;&nbsp;&nbsp;
+            <b style={{ marginRight: "15px" }}>
+              <u>
+                About this platform...
+              </u>
+            </b>
             <i className={!aboutSection ? 'fa fa-angle-down rotate-icon' : 'fa fa-angle-up'}></i>
           </h5>
 

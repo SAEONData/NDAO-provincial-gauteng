@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const cwd = process.cwd()
 const mode = 'development'
 
@@ -81,7 +82,13 @@ module.exports = {
         'file-loader'
       ]
     },
-    ]
+    {
+      test: /\.(pptx|zip)$/,
+      loader: "file-loader",
+      options: {
+        name: '[name].[ext]'
+      }
+    }]
   },
 
   plugins: [
@@ -100,6 +107,6 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc)$/)
+    new webpack.IgnorePlugin(/^(fs|ipc|pptx|ignore)$/)
   ]
 }

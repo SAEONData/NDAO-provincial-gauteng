@@ -36,7 +36,7 @@ class SARVA extends React.Component {
         <HostedContentFrame
           title="Risk And Vulnerability Hotspots"
           source="http://app01.saeon.ac.za/profiler2/main.aspx"
-          showSource={true}
+          showSource={false}
           closeCallback={closeCallback}
          />
       </>

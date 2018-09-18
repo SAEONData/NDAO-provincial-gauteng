@@ -37,12 +37,11 @@ class HostedContentFrame extends React.Component {
 
     source = globalFunctions.fixEmptyValue(source, "http://www.example.com")
     width = globalFunctions.fixEmptyValue(width, "100%")
-    height = globalFunctions.fixEmptyValue(height, "600px")
+    height = globalFunctions.fixEmptyValue(height, "550px")
     showSource = globalFunctions.fixEmptyValue(showSource, false)
 
     return (
       <div>
-
         <Container>
           <Modal fade={false} isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" style={{ width: "95%" }} >
             <ModalHeader toggle={this.toggleModal}>{title}</ModalHeader>
@@ -63,7 +62,6 @@ class HostedContentFrame extends React.Component {
             </ModalBody>
           </Modal>
         </Container>
-
       </div>
     )
   }

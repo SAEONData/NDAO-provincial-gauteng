@@ -130,7 +130,7 @@ class Goal3Contrib extends React.Component {
                   <td style={{ color: "white", padding: "10px",  backgroundColor: Red }}>
                     <p style={{ marginBottom: "0px" }}>
                       <b>RED </b>
-                      Monitoring facilities/networks exist but are not well-maintained or enhanced.
+                      Lack of monitoring and forecasting facilities/networks.
                     </p>
                   </td>
                 </tr>
@@ -138,8 +138,8 @@ class Goal3Contrib extends React.Component {
                   <td width="30px"></td>
                   <td style={{ color: "white", padding: "10px",  backgroundColor: Amber }}>
                     <p style={{ marginBottom: "0px" }}>
-                      <b>AMBER </b>
-                      Lack of monitoring and forecasting facilities/networks.
+                      <b>AMBER </b>                     
+                      Monitoring facilities/networks exist but are not well-maintained or enhanced.
                     </p>
                   </td>
                 </tr>
