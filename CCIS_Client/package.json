@@ -20,6 +20,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-error-overlay": "^4.0.1",
+    "react-odata": "^10.1.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",

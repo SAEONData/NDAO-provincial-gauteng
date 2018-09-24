@@ -6,7 +6,8 @@ import { Row, Col, Button } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
-import NCCRD from '../../Tools/NCCRD.jsx';
+import NCCRD from '../../Tools/NCCRD.jsx'
+import FileUpload from '../../../input/FileUpload.jsx'
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
@@ -31,11 +32,12 @@ class Goal1Contrib extends React.Component {
     super(props);
 
     this.NCCRD_CloseCallback = this.NCCRD_CloseCallback.bind(this)
+    this.submit = this.submit.bind(this)
 
     this.state = {
-      hasRiskAssesment: false,
       goalStatus: "R",
-      showNCCRD: false
+      showNCCRD: false,
+      data: { Q1_1: "", Q1_3: false, Q1_4: "" }
     }
   }
 
@@ -47,9 +49,13 @@ class Goal1Contrib extends React.Component {
     this.setState({ showNCCRD: false })
   }
 
+  submit(){
+
+  }
+
   render() {
 
-    let { hasRiskAssesment, goalStatus, showNCCRD } = this.state
+    let { goalStatus, showNCCRD, data } = this.state
 
     return (
       <>
@@ -136,9 +142,18 @@ class Goal1Contrib extends React.Component {
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.1 Attachment your document (see above description):*
+                  1.1 Link/Upload your document (see above description):*
                 </label>
-                <TextInput width="95%" />
+                <TextInput
+                  width="95%"
+                  value={data.Q1_1}
+                  callback={(value) => { this.setState({ data: { ...data, Q1_1: value } }) }}                  
+                />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="4">
+                <FileUpload style={{ marginTop: "-15px", marginBottom: "20px" }} width="100%" />
               </Col>
             </Row>
 
@@ -166,16 +181,16 @@ class Goal1Contrib extends React.Component {
                 </label>
                 <br />
                 <Button
-                  onClick={() => { this.setState({ hasRiskAssesment: true }) }}
+                  onClick={() => { this.setState({ data: { ...data, Q1_3: true } }) }}
                   color=""
-                  style={{ fontSize: hasRiskAssesment ? "13px" : "10px", marginLeft: "0px", backgroundColor: hasRiskAssesment ? DEAGreen : "grey" }}
+                  style={{ fontSize: data.Q1_3 ? "13px" : "10px", marginLeft: "0px", backgroundColor: data.Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   YES
                 </Button>
                 <Button
-                  onClick={() => { this.setState({ hasRiskAssesment: false }) }}
+                  onClick={() => { this.setState({ data: { ...data, Q1_3: false } }) }}
                   color=""
-                  style={{ fontSize: !hasRiskAssesment ? "13px" : "10px", backgroundColor: !hasRiskAssesment ? DEAGreen : "grey" }}
+                  style={{ fontSize: !data.Q1_3 ? "13px" : "10px", backgroundColor: !data.Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   NO
                 </Button>
@@ -192,7 +207,10 @@ class Goal1Contrib extends React.Component {
             </Row>
             <Row>
               <Col md="5">
-                <DateInput />
+                <DateInput 
+                  value={data.Q1_4}
+                  callback={(dateString) => { this.setState({ data: { ...data, Q1_4: dateString } }) }}
+                />
               </Col>
             </Row>
             <br />
