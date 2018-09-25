@@ -1,20 +1,22 @@
 'use strict'
 
 import React from 'react'
+const o = require("odata")
 
-// import { Upload, Icon, message } from 'antd'
+//Ant.D
 import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
 
 import * as globalFunctions from '../../globalFunctions'
+import { apiBaseURL } from '../../config/apiBaseURL.cfg'
 
 const Dragger = Upload.Dragger;
 
 // Properties:
 //  - callback : callback to send filter value
 
-class FileUpload extends React.Component {
+class FileAttach extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,7 +30,6 @@ class FileUpload extends React.Component {
       fileList: []
     }
   }
-
   removeFile(file) {
     console.log("REMOVE", file)
     return true
@@ -36,6 +37,36 @@ class FileUpload extends React.Component {
 
   uploadFile(file) {
     console.log("UPLOAD", file)
+
+    // Initialize an instance of the `FileReader`
+    const reader = new FileReader();
+
+    // Specify the handler for the `load` event
+    reader.onload = (e) => {
+      // Do something with the file
+      // E.g. Send it to the cloud
+      //console.log("DATA", e.target.result);
+
+      o(apiBaseURL + "UploadFile")
+      .post({
+        Id: file.uid,
+        FileName: file.name,
+        Base64Data: e.target.result,
+        MimeType: file.type
+      })
+      .save((data) => {
+        //Success
+        console.log("URL", data)
+      },
+      (status) => {
+        //Failed
+        console.log("ERROR", status)
+      })
+    }
+
+    // Read the file
+    reader.readAsDataURL(file);
+
     return true
   }
 
@@ -96,46 +127,49 @@ class FileUpload extends React.Component {
   render() {
 
     let { width, height, style } = this.props
-    let { fileList } = this.state
+    let { fileList, gapiReady } = this.state
 
     width = globalFunctions.fixEmptyValue(width, "315px")
     height = globalFunctions.fixEmptyValue(height, "90px")
 
     return (
-        <div className="text-center" style={{
-          padding: "10px",
-          width: width,
-          backgroundColor: "whitesmoke",
-          border: "1px dotted grey",
-          borderRadius: "5px",
-          marginBottom: "15px",
-          ...style
-        }}>
-          <Dragger
-            name="file"
-            onChange={this.onChange}
-            customRequest={this.onCustomRequest}
-            onRemove={this.removeFile}
-            fileList={fileList}
-            style={{ cursor: "pointer" }}
-          >
-            <div style={{
-              backgroundColor: "Gainsboro",
-              border: "1px dotted grey",
-              padding: "7px",
-              borderRadius: "2px",
-              marginBottom: fileList.length > 0 ? "12px" : "0px"
-            }}>
-              <p className="ant-upload-drag-icon text-center" style={{ marginBottom: "3px"}}>
-                <Icon type="to-top" theme="outlined" style={{ fontSize: "36px", marginTop: "8px", marginBottom: "5px" }} />
-                <br/>
-                Click or drag file to this area to upload
-              </p>
-            </div>
-          </Dragger>
-        </div>
+      <div className="text-center" style={{
+        padding: "10px",
+        width: width,
+        backgroundColor: "whitesmoke",
+        border: "1px dotted grey",
+        borderRadius: "5px",
+        marginBottom: "15px",
+        ...style
+      }}>
+
+        <Dragger
+          name="file"
+          onChange={this.onChange}
+          customRequest={this.onCustomRequest}
+          onRemove={this.removeFile}
+          fileList={fileList}
+          style={{ cursor: "pointer" }}
+        >
+          <div style={{
+            backgroundColor: "Gainsboro",
+            border: "1px dotted grey",
+            padding: "7px",
+            borderRadius: "2px",
+            marginBottom: fileList.length > 0 ? "12px" : "0px",
+            minHeight: "100px"
+          }}>
+            <p className="ant-upload-drag-icon text-center" style={{ marginBottom: "3px" }}>
+              <Icon type="to-top" theme="outlined" style={{ fontSize: "28px", marginTop: "8px", marginBottom: "5px" }} />
+              <br />
+              <span style={{ fontSize: "16px" }}>Click or drag file here to attach</span>
+            </p>
+          </div>
+        </Dragger>
+
+      </div>
     )
   }
 }
 
-export default FileUpload
+export default FileAttach

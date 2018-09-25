@@ -7,7 +7,7 @@ import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
-import FileUpload from '../../../input/FileUpload.jsx'
+import FileAttach from '../../../input/FileAttach.jsx'
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
@@ -142,7 +142,7 @@ class Goal1Contrib extends React.Component {
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.1 Link/Upload your document (see above description):*
+                  1.1 Attach your document (see above description):*
                 </label>
                 <TextInput
                   width="95%"
@@ -153,7 +153,7 @@ class Goal1Contrib extends React.Component {
             </Row>
             <Row style={{ marginBottom: "7px" }}>
               <Col md="4">
-                <FileUpload style={{ marginTop: "-15px", marginBottom: "20px" }} width="100%" />
+                <FileAttach style={{ marginTop: "-15px", marginBottom: "20px" }} width="100%" />
               </Col>
             </Row>
 

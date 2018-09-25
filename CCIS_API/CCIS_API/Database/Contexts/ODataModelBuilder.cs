@@ -105,6 +105,11 @@ namespace CCIS_API.Database.Contexts
                 .Page() // Allow for the $top and $skip Commands
                 .Select();// Allow for the $select Command; 
 
+            builder.Namespace = "Extensions";
+            builder.Action("UploadFile")
+                .Returns<string>()
+                .Parameter<UploadFile>("fileData");
+
             return builder.GetEdmModel();
         }
     }
