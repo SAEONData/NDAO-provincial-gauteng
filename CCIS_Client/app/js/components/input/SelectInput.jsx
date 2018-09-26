@@ -83,7 +83,7 @@ class SelectInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder, allowClear } = this.props
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style } = this.props
     let { value } = this.state
 
     if (typeof value === 'undefined' || value === "" || value === null) {
@@ -95,6 +95,7 @@ class SelectInput extends React.Component {
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
     allowClear = globalFunctions.fixEmptyValue(allowClear, true)
+    style = globalFunctions.fixEmptyValue(style, {})
 
     return (
       <>
@@ -118,7 +119,7 @@ class SelectInput extends React.Component {
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
-          style={{ width: "100%" }}
+          style={{ width: "100%", ...style }}
           value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
           placeholder={placeHolder}

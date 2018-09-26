@@ -16,7 +16,6 @@ namespace CCIS_API.Database.Models
         public string FundingDuration { get; set; }
         public string PartneringDepartments { get; set; }
         public int IncludedInForums { get; set; }
-        public int Status { get; set; }
 
         public string MetadataLink { get; set; }
     }

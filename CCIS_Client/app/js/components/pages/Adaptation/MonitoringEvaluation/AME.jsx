@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Button, Collapse, Row, Col } from 'mdbreact'
+import { Container, Button, Collapse, Row, Col, Fa } from 'mdbreact'
 import SelectInput from '../../../input/SelectInput.jsx'
 
 import { DEAGreen } from '../../../../config/colours.cfg'
@@ -37,9 +37,11 @@ class AME extends React.Component {
 
     this.contribute = this.contribute.bind(this)
 
+    const contrib = location.hash.includes("/contribute")
+
     this.state = {
-      aboutSection: true,
-      contribSection: false,
+      aboutSection: !contrib,
+      contribSection: contrib,
       selectedGoal: 1
     }
   }
@@ -54,6 +56,8 @@ class AME extends React.Component {
 
   contribute() {
 
+    setTimeout(() => { this.setState({ contribSection: true, aboutSection: false }) }, 100);
+
     setTimeout(() => {
       window.scroll({
         top: 180,
@@ -62,7 +66,6 @@ class AME extends React.Component {
       })
     }, 100)
 
-    setTimeout(() => { this.setState({ contribSection: true, aboutSection: false }) }, 200);
   }
 
   render() {
@@ -100,7 +103,7 @@ class AME extends React.Component {
               location.hash = "#/ame/contribute"
               this.contribute()
             }}
-            style={{ marginLeft: "0px" }}
+            style={{ marginLeft: "0px", marginBottom: "0px" }}
             color="grey">Submit your contribution</Button>
           <br />
 
@@ -126,7 +129,22 @@ class AME extends React.Component {
                   allowEdit={true}
                   allowClear={false}
                   callback={(selectedNode) => { this.setState({ selectedGoal: selectedNode.id }) }}
+                  style={{ marginTop: "5px" }}
                 />
+              </Col>
+              <Col md="4">
+                <Button
+                  color=""
+                  style={{
+                    backgroundColor: DEAGreen,
+                    margin: "5px 0px 0px 0px",
+                    height: "36px",
+                    padding: "0px 15px 0px 15px"
+                  }}
+                >
+                  <Fa icon="pencil" style={{ marginRight: "10px"}} />
+                   Edit existing goal
+                </Button>
               </Col>
             </Row>
             <br />

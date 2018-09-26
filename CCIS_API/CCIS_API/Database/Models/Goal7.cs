@@ -10,7 +10,6 @@ namespace CCIS_API.Database.Models
         public Guid Id { get; set; }
 
         public int ResultingChange { get; set; }
-        public int Status { get; set; }
 
         public string MetadataLink { get; set; }
     }
