@@ -105,10 +105,15 @@ namespace CCIS_API.Database.Contexts
                 .Page() // Allow for the $top and $skip Commands
                 .Select();// Allow for the $select Command; 
 
-            builder.Namespace = "Extensions";
             builder.Action("UploadFile")
-                .Returns<string>()
+                .Returns<GoogleFile>()
                 .Parameter<UploadFile>("fileData");
+
+            builder.Action("RemoveFile")
+                .Returns<bool>()
+                .Parameter<UploadFile>("fileData");
+
+            builder.Action("RemoveAllFiles");
 
             return builder.GetEdmModel();
         }

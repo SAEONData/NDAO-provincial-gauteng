@@ -11,8 +11,7 @@ namespace CCIS_API.Database.Models
 
         public string DocumentLink { get; set; }
         public bool HasAssessment { get; set; }
-        public long LastUpdateDate { get; set; }
-        public int Status { get; set; }
+        public string LastUpdateDate { get; set; }
 
         public string MetadataLink { get; set; }
     }

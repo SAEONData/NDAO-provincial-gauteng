@@ -7,8 +7,6 @@ namespace CCIS_API.ViewModels
 {
     public class UploadFile
     {
-        public string Id { get; set; }
-
         public string FileName { get; set; }
         public string Base64Data { get; set; }
         public string MimeType { get; set; }

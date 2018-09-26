@@ -2,16 +2,20 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button } from 'mdbreact'
+import { Row, Col, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
-import FileAttach from '../../../input/FileAttach.jsx'
+import FileUpload from '../../../input/FileUpload.jsx'
+import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
+import moment from 'moment';
 
+//Images
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
+const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -22,6 +26,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateNav: payload => {
       dispatch({ type: "NAV", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
 }
@@ -32,13 +39,29 @@ class Goal1Contrib extends React.Component {
     super(props);
 
     this.NCCRD_CloseCallback = this.NCCRD_CloseCallback.bind(this)
+    this.reset = this.reset.bind(this)
     this.submit = this.submit.bind(this)
+    this.showMessage = this.showMessage.bind(this)
 
     this.state = {
+      messageModal: false,
+      message: "",
+      title: "",
+      goalId: _gf.GetUID(),
       goalStatus: "R",
       showNCCRD: false,
-      data: { Q1_1: "", Q1_3: false, Q1_4: "" }
+      Q1_1: "",
+      Q1_3: false,
+      Q1_4: moment(new Date(), 'YYYY/MM/DD')
     }
+  }
+
+  showMessage(title, message){
+    this.setState({
+      title,
+      message,
+      messageModal: true
+    })
   }
 
   componentDidMount() {
@@ -49,13 +72,78 @@ class Goal1Contrib extends React.Component {
     this.setState({ showNCCRD: false })
   }
 
-  submit(){
+  async submit() {
 
+    let { goalId, Q1_1, Q1_3, Q1_4 } = this.state
+    let { setLoading, next } = this.props
+
+    //Validate
+    if (Q1_1 === "") {
+      this.showMessage("Required", "Document link required")
+      return
+    }
+
+    setLoading(true)
+
+    //Submit
+    try {
+      let oHandler = await o(apiBaseURL + "goal1")
+        .post({
+          Id: goalId,
+          DocumentLink: Q1_1,
+          HasAssessment: Q1_3,
+          LastUpdateDate: Q1_4
+        })
+        .save()
+
+      setLoading(false)
+      this.showMessage("Success", "Goal submitted successfully")
+      setTimeout(this.reset, 250)
+    }
+    catch (ex) {
+      setLoading(false)
+      this.showMessage("An error occurred", ex.message)
+    }
+
+  }
+
+  async waitForMessageClosed() {
+
+    while (this.state.messageModal === true) {
+      await _gf.wait(250)
+    }
+
+    return true
+  }
+
+  async reset(){
+
+    await this.waitForMessageClosed();
+
+    this.setState({
+      messageModal: false,
+      message: "",
+      title: "",
+      goalId: _gf.GetUID(),
+      goalStatus: "R",
+      showNCCRD: false,
+      Q1_1: "",
+      Q1_3: false,
+      Q1_4: moment(new Date(), 'YYYY/MM/DD')
+    })
+
+    setTimeout(() => {
+      window.scroll({
+        top: 180,
+        left: 0,
+        behavior: 'smooth'
+      })
+    }, 100)
   }
 
   render() {
 
-    let { goalStatus, showNCCRD, data } = this.state
+    let { goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4 } = this.state
 
     return (
       <>
@@ -146,14 +234,23 @@ class Goal1Contrib extends React.Component {
                 </label>
                 <TextInput
                   width="95%"
-                  value={data.Q1_1}
-                  callback={(value) => { this.setState({ data: { ...data, Q1_1: value } }) }}                  
+                  value={Q1_1}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q1_1: value })
+                  }}
                 />
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>
               <Col md="4">
-                <FileAttach style={{ marginTop: "-15px", marginBottom: "20px" }} width="100%" />
+                <FileUpload
+                  key={"fu_" + goalId}
+                  style={{ marginTop: "-15px", marginBottom: "20px" }}
+                  width="100%"
+                  callback={(fileInfo) => { this.setState({ Q1_1: fileInfo.ViewLink }) }}
+                  goalId={goalId}
+                />
               </Col>
             </Row>
 
@@ -181,16 +278,16 @@ class Goal1Contrib extends React.Component {
                 </label>
                 <br />
                 <Button
-                  onClick={() => { this.setState({ data: { ...data, Q1_3: true } }) }}
+                  onClick={() => { this.setState({ Q1_3: true }) }}
                   color=""
-                  style={{ fontSize: data.Q1_3 ? "13px" : "10px", marginLeft: "0px", backgroundColor: data.Q1_3 ? DEAGreen : "grey" }}
+                  style={{ fontSize: Q1_3 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   YES
                 </Button>
                 <Button
-                  onClick={() => { this.setState({ data: { ...data, Q1_3: false } }) }}
+                  onClick={() => { this.setState({ Q1_3: false }) }}
                   color=""
-                  style={{ fontSize: !data.Q1_3 ? "13px" : "10px", backgroundColor: !data.Q1_3 ? DEAGreen : "grey" }}
+                  style={{ fontSize: !Q1_3 ? "13px" : "10px", backgroundColor: !Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   NO
                 </Button>
@@ -207,9 +304,10 @@ class Goal1Contrib extends React.Component {
             </Row>
             <Row>
               <Col md="5">
-                <DateInput 
-                  value={data.Q1_4}
-                  callback={(dateString) => { this.setState({ data: { ...data, Q1_4: dateString } }) }}
+                <DateInput
+                  value={Q1_4}
+                  callback={(dateString) => { this.setState({ Q1_4: dateString }) }}
+                  allowClear={false}
                 />
               </Col>
             </Row>
@@ -217,7 +315,8 @@ class Goal1Contrib extends React.Component {
 
             <Row>
               <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
+                  onClick={this.submit}>
                   <b>Submit</b>
                 </Button>
               </Col>
@@ -254,6 +353,21 @@ class Goal1Contrib extends React.Component {
         {showNCCRD &&
           <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />
         }
+
+        {/* Message modal */}
+        <Container>
+          <Modal fade={false} isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
+            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>{this.state.title}</ModalHeader>
+            <ModalBody>
+              <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
+                {_gf.StringToHTML(this.state.message)}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button size="sm" style={{ width: "100px" }} color="" onClick={() => this.setState({ messageModal: false })} style={{ backgroundColor: DEAGreen }} >Close</Button>
+            </ModalFooter>
+          </Modal>
+        </Container>
 
       </>
     )

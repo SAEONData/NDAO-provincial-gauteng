@@ -11,7 +11,6 @@ namespace CCIS_API.Database.Models
 
         public int TechnologyAwareness { get; set; }
         public string EvidenceLink { get; set; }
-        public int Status { get; set; }
 
         public string MetadataLink { get; set; }
     }

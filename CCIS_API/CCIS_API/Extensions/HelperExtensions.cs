@@ -16,7 +16,14 @@ namespace CCIS_API.Extensions
 
             if (identityProp != null)
             {
-                identityProp.SetValue(model, 0);
+                if(identityProp.GetValue(model) is int)
+                {
+                    identityProp.SetValue(model, 0);
+                }
+                else if(identityProp.GetValue(model) is Guid)
+                {
+                    identityProp.SetValue(model, null);
+                }
             }
         }
 
