@@ -19,7 +19,8 @@ import Goal8Contrib from './Goal8Contrib.jsx'
 import Goal9Contrib from './Goal9Contrib.jsx'
 
 const mapStateToProps = (state, props) => {
-  return {}
+  let user = state.oidc.user
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -47,10 +48,17 @@ class AME extends React.Component {
   }
 
   componentDidMount() {
-    this.props.updateNav(location.hash)
 
-    if (location.hash.includes("/contribute")) {
-      this.contribute()
+    let { user } = this.props
+    if (!user || user.expired) {
+      location.hash = "#/login"
+    }
+    else {
+      this.props.updateNav(location.hash)
+
+      if (location.hash.includes("/contribute")) {
+        this.contribute()
+      }
     }
   }
 
@@ -142,8 +150,8 @@ class AME extends React.Component {
                     padding: "0px 15px 0px 15px"
                   }}
                 >
-                  <Fa icon="pencil" style={{ marginRight: "10px"}} />
-                   Edit existing goal
+                  <Fa icon="pencil" style={{ marginRight: "10px" }} />
+                  Edit existing goal
                 </Button>
               </Col>
             </Row>

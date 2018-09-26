@@ -48,9 +48,6 @@ class Navbar extends React.Component {
 
     this.onClick = this.onClick.bind(this)
     this.listsDropToggle = this.listsDropToggle.bind(this)
-    this.LoginLogout = this.LoginLogout.bind(this)
-    this.GetUser = this.GetUser.bind(this)
-    this.Register = this.Register.bind(this)
   }
 
   onClick() {
@@ -63,42 +60,6 @@ class Navbar extends React.Component {
     this.setState({
       listsDropOpen: !this.state.listsDropOpen
     });
-  }
-
-  LoginLogout() {
-
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a className="nav-link" href="#/login">Login</a>
-    }
-    else {
-      return <a className="nav-link" href="#/logout">Logout</a>
-    }
-  }
-
-  Register() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">Register</a>
-    }
-  }
-
-  GetUser() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link"></span>
-    }
-    else {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link">{"Hello, " + user.profile.email}</span>
-    }
-  }
-
-  LoginLogoutClicked() {
-    //Save current URL to cookie
-    _gf.SaveCurrentUrl()
   }
 
   render() {
@@ -218,10 +179,10 @@ class Navbar extends React.Component {
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
                 {(!user || user.expired) &&
-                  <NavLink to="login" onClick={this.LoginLogoutClicked}><b>Login</b></NavLink>
+                  <NavLink to="login"><b>Login</b></NavLink>
                 }
                 {(user && !user.expired) &&
-                  <NavLink to="logout" onClick={this.LoginLogoutClicked}><b>Logout</b></NavLink>
+                  <NavLink to="logout"><b>Logout</b></NavLink>
                 }
               </NavItem>
 
