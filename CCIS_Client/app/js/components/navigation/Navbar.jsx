@@ -12,6 +12,8 @@ import NCCRD from '../pages/Tools/NCCRD.jsx';
 import NWIS from '../pages/Tools/NWIS.jsx';
 import SARVA from '../pages/Tools/SARVA.jsx';
 
+const _gf = require('../../globalFunctions')
+
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
   let { general: { showSideNav } } = state
@@ -92,6 +94,11 @@ class Navbar extends React.Component {
     else {
       return <span style={{ color: "#d0d6e2" }} className="nav-link">{"Hello, " + user.profile.email}</span>
     }
+  }
+
+  LoginLogoutClicked() {
+    //Save current URL to cookie
+    _gf.SaveCurrentUrl()
   }
 
   render() {
@@ -211,18 +218,18 @@ class Navbar extends React.Component {
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
                 {(!user || user.expired) &&
-                  <NavLink to="login" disabled style={{ color: "grey" }}><b>Login</b></NavLink>
+                  <NavLink to="login" onClick={this.LoginLogoutClicked}><b>Login</b></NavLink>
                 }
                 {(user && !user.expired) &&
-                  <NavLink to="logout" disabled style={{ color: "grey" }}><b>Logout</b></NavLink>
+                  <NavLink to="logout" onClick={this.LoginLogoutClicked}><b>Logout</b></NavLink>
                 }
               </NavItem>
 
               {/* Register */}
               {(!user || user.expired) &&
                 <NavItem>
-                  <a disabled key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
-                    <b style={{ color: "grey" }}>Register</b>
+                  <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
+                    <b>Register</b>
                   </a>
                 </NavItem>
               }

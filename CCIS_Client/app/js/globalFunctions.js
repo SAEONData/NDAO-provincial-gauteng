@@ -39,7 +39,6 @@ export function readFiltersFromURL(){
 
 // http://guid.us/GUID/JavaScript  
 export function GetUID() {
-  //return Math.random().toString().substr(2, 9)
   function S4() {  
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);  
   }  
@@ -79,3 +78,42 @@ export function StringToHTML(strVal) {
 }
 
 export const wait = ms => new Promise((r, j) => setTimeout(r, ms))
+
+
+//-------------------------//
+// Create and Read Cookies //
+//-------------------------//
+
+export function SaveCurrentUrl() {
+  CreateCookie("ccis_last_url", document.URL, 1);
+}
+
+export function ReadLastUrl() {
+  return ReadCookie("ccis_last_url")
+}
+
+export function CreateCookie(name, value, days) {
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    var expires = "; expires=" + date.toGMTString();
+  }
+  else {
+    var expires = "";
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+export function ReadCookie(name) {
+  var nameEQ = name + "="; var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1, c.length);
+    }
+    if (c.indexOf(nameEQ) == 0) {
+      return c.substring(nameEQ.length, c.length);
+    }
+  }
+  return null;
+} 
