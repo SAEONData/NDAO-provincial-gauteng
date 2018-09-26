@@ -53,15 +53,14 @@ namespace CCIS_API.Controllers
                 await _context.SaveChangesAsync();
                 return Created(goal);
             }
-            //else
-            //{
-            //    //UPDATE
-            //    _context.Entry(exiting).CurrentValues.SetValues(goal);
-            //    await _context.SaveChangesAsync();
-            //    return Updated(exiting);
-            //}
-
-            return Ok(goal);
+            else
+            {
+                //UPDATE
+                _context.Entry(exiting).CurrentValues.SetValues(goal);
+                await _context.SaveChangesAsync();
+                return Updated(exiting);
+            }
         }
+
     }
 }

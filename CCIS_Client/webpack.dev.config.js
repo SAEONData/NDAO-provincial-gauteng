@@ -16,7 +16,7 @@ module.exports = {
     historyApiFallback: true
   },
   entry: {
-    app: ['./js/index.jsx'],
+    app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
     react: [
       'react',
