@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CCIS_API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,11 @@ namespace CCIS_API.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     DocumentLink = table.Column<string>(nullable: true),
                     HasAssessment = table.Column<bool>(nullable: false),
-                    LastUpdateDate = table.Column<long>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    DocLastUpdated = table.Column<string>(nullable: true),
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,8 +37,10 @@ namespace CCIS_API.Migrations
                     FundingDuration = table.Column<string>(nullable: true),
                     PartneringDepartments = table.Column<string>(nullable: true),
                     IncludedInForums = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,8 +58,10 @@ namespace CCIS_API.Migrations
                     BudgetDuration = table.Column<string>(nullable: true),
                     FundingAgency = table.Column<string>(nullable: true),
                     PartneringDepartments = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,8 +74,10 @@ namespace CCIS_API.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CapacityBuilding = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,8 +91,10 @@ namespace CCIS_API.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     TechnologyAwareness = table.Column<int>(nullable: false),
                     EvidenceLink = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,8 +107,10 @@ namespace CCIS_API.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IncludedInForums = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,8 +123,10 @@ namespace CCIS_API.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     ResultingChange = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,8 +140,10 @@ namespace CCIS_API.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     NonClimateChange = table.Column<int>(nullable: false),
                     EvidenceLink = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,8 +157,10 @@ namespace CCIS_API.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     NonClimateChange = table.Column<int>(nullable: false),
                     EvidenceLink = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    MetadataLink = table.Column<string>(nullable: true)
+                    Created = table.Column<string>(nullable: true),
+                    CreateUserId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<string>(nullable: true),
+                    LastUpdateUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

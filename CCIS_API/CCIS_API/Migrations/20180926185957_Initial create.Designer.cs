@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CCIS_API.Migrations
 {
     [DbContext(typeof(SQLDBContext))]
-    [Migration("20180925165447_Updated Goal1 LastUpdateDate")]
-    partial class UpdatedGoal1LastUpdateDate
+    [Migration("20180926185957_Initial create")]
+    partial class Initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,15 +26,19 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
+                    b.Property<string>("DocLastUpdated");
+
                     b.Property<string>("DocumentLink");
 
                     b.Property<bool>("HasAssessment");
 
-                    b.Property<string>("LastUpdateDate");
+                    b.Property<string>("LastUpdateUserId");
 
-                    b.Property<string>("MetadataLink");
-
-                    b.Property<int>("Status");
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -46,6 +50,10 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<bool>("DedicatedChampion");
 
                     b.Property<bool>("DedicatedFunding");
@@ -56,11 +64,11 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("IncludedInForums");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<string>("PartneringDepartments");
-
-                    b.Property<int>("Status");
 
                     b.Property<decimal>("TotalBudget");
 
@@ -76,17 +84,21 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("BudgetDuration");
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<int>("DisseminationUtilisation");
 
                     b.Property<string>("FundingAgency");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("MonitoringForcsting");
 
                     b.Property<string>("PartneringDepartments");
-
-                    b.Property<int>("Status");
 
                     b.Property<decimal>("TotalBudget");
 
@@ -102,9 +114,13 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("CapacityBuilding");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("CreateUserId");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Created");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -116,11 +132,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("TechnologyAwareness");
 
@@ -134,11 +154,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<int>("IncludedInForums");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -150,11 +174,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("ResultingChange");
-
-                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
@@ -166,13 +194,17 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("NonClimateChange");
-
-                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
@@ -184,13 +216,17 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("NonClimateChange");
-
-                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 

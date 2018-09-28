@@ -9,7 +9,9 @@ import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
-import moment from 'moment';
+import moment from 'moment'
+import TextAreaInput from '../../../input/TextAreaInput.jsx'
+import buildQuery from 'odata-query'
 
 //Images
 import gear from '../../../../../images/gear.png'
@@ -19,7 +21,8 @@ const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
-  return {}
+  let user = state.oidc.user
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -52,11 +55,11 @@ class Goal1Contrib extends React.Component {
       showNCCRD: false,
       Q1_1: "",
       Q1_3: false,
-      Q1_4: moment(new Date(), 'YYYY/MM/DD')
+      Q1_4: moment().format("YYYY-MM-DD")
     }
   }
 
-  showMessage(title, message){
+  showMessage(title, message) {
     this.setState({
       title,
       message,
@@ -65,7 +68,47 @@ class Goal1Contrib extends React.Component {
   }
 
   componentDidMount() {
-    this.props.updateNav(location.hash)
+    let { updateNav } = this.props
+    updateNav(location.hash)
+  }
+
+  componentDidUpdate(){
+    let { editGoalId } = this.props
+    if(editGoalId){
+      this.getEditGoalData(editGoalId)
+    }   
+  }
+
+  async getEditGoalData(editGoalId){
+
+    this.props.setLoading(true)
+    this.props.resetEdit()
+
+    //Fetch goal details from server
+    const query = buildQuery({
+      key: { Id: editGoalId }
+    })
+
+    try{
+      let res = await fetch(apiBaseURL + `Goal1${query}`)
+      res = await res.json()
+      if(res.value && res.value.length > 0){
+        let data = res.value[0]
+        this.setState({
+          goalId: editGoalId,
+          Q1_1: data.DocumentLink,
+          Q1_3: data.HasAssessment,
+          Q1_4: data.DocLastUpdated
+        })
+      }
+      
+      this.props.setLoading(false)
+    }
+    catch(ex){
+      this.props.setLoading(false)
+      console.error(ex)
+    }
+
   }
 
   NCCRD_CloseCallback() {
@@ -75,7 +118,7 @@ class Goal1Contrib extends React.Component {
   async submit() {
 
     let { goalId, Q1_1, Q1_3, Q1_4 } = this.state
-    let { setLoading, next } = this.props
+    let { setLoading, next, user } = this.props
 
     //Validate
     if (Q1_1 === "") {
@@ -92,7 +135,8 @@ class Goal1Contrib extends React.Component {
           Id: goalId,
           DocumentLink: Q1_1,
           HasAssessment: Q1_3,
-          LastUpdateDate: Q1_4
+          DocLastUpdated: Q1_4,
+          CreateUserId: user.profile.sid
         })
         .save()
 
@@ -116,7 +160,7 @@ class Goal1Contrib extends React.Component {
     return true
   }
 
-  async reset(){
+  async reset() {
 
     await this.waitForMessageClosed();
 
@@ -129,7 +173,7 @@ class Goal1Contrib extends React.Component {
       showNCCRD: false,
       Q1_1: "",
       Q1_3: false,
-      Q1_4: moment(new Date(), 'YYYY/MM/DD')
+      Q1_4: moment().format("YYYY-MM-DD")
     })
 
     setTimeout(() => {
@@ -356,19 +400,25 @@ class Goal1Contrib extends React.Component {
 
         {/* Message modal */}
         <Container>
-          <Modal fade={false} isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
-            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>{this.state.title}</ModalHeader>
+          <Modal isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
+            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>
+              {this.state.title}
+            </ModalHeader>
             <ModalBody>
               <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
                 {_gf.StringToHTML(this.state.message)}
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button size="sm" style={{ width: "100px" }} color="" onClick={() => this.setState({ messageModal: false })} style={{ backgroundColor: DEAGreen }} >Close</Button>
+              <Button
+                size="sm"
+                style={{ width: "100px", backgroundColor: DEAGreen }}
+                color="" onClick={() => this.setState({ messageModal: false })} >
+                Close
+              </Button>
             </ModalFooter>
           </Modal>
         </Container>
-
       </>
     )
   }

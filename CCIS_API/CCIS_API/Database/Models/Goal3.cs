@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CCIS_API.Database.Models
 {
-    public class Goal3
+    public class Goal3 : IGoal
     {
         public Guid Id { get; set; }
 
@@ -16,6 +16,12 @@ namespace CCIS_API.Database.Models
         public string FundingAgency { get; set; }
         public string PartneringDepartments { get; set; }
 
-        public string MetadataLink { get; set; }
+        //Shared fields
+        public string Created { get; set; }
+        public string CreateUserId { get; set; }
+        public string LastUpdated { get; set; }
+        public string LastUpdateUserId { get; set; }
+
+        //public string MetadataLink { get; set; }
     }
 }

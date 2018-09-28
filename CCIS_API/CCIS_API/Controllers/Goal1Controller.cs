@@ -42,21 +42,34 @@ namespace CCIS_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+           
             var exiting = _context.Goal1.FirstOrDefault(x => x.Id == goal.Id);
             if (exiting == null)
             {
+                if (!HelperExtensions.CheckGoalCreateValues(goal))
+                {
+                    return BadRequest(new MissingFieldException("CreateUserId value required"));
+                }
+
                 //ADD
-                HelperExtensions.ClearIdentityValue(ref goal);
-                HelperExtensions.ClearNullableInts(ref goal);
+                HelperExtensions.ClearIdentityValue(goal);
+                HelperExtensions.ClearNullableInts(goal);
                 _context.Goal1.Add(goal);
                 await _context.SaveChangesAsync();
                 return Created(goal);
             }
             else
             {
+                if (!HelperExtensions.CheckGoalUpdateValues(goal))
+                {
+                    return BadRequest(new MissingFieldException("LastUpdateUserId value required"));
+                }
+
                 //UPDATE
+                goal.Created = exiting.Created;
+                goal.CreateUserId = exiting.CreateUserId;
                 _context.Entry(exiting).CurrentValues.SetValues(goal);
+                
                 await _context.SaveChangesAsync();
                 return Updated(exiting);
             }

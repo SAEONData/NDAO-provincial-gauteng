@@ -24,13 +24,19 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
+                    b.Property<string>("DocLastUpdated");
+
                     b.Property<string>("DocumentLink");
 
                     b.Property<bool>("HasAssessment");
 
-                    b.Property<string>("LastUpdateDate");
+                    b.Property<string>("LastUpdateUserId");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -42,6 +48,10 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<bool>("DedicatedChampion");
 
                     b.Property<bool>("DedicatedFunding");
@@ -52,7 +62,9 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("IncludedInForums");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<string>("PartneringDepartments");
 
@@ -70,11 +82,17 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("BudgetDuration");
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<int>("DisseminationUtilisation");
 
                     b.Property<string>("FundingAgency");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("MonitoringForcsting");
 
@@ -94,7 +112,13 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("CapacityBuilding");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -106,9 +130,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("TechnologyAwareness");
 
@@ -122,9 +152,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<int>("IncludedInForums");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.HasKey("Id");
 
@@ -136,7 +172,13 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("ResultingChange");
 
@@ -150,9 +192,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("NonClimateChange");
 
@@ -166,9 +214,15 @@ namespace CCIS_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreateUserId");
+
+                    b.Property<string>("Created");
+
                     b.Property<string>("EvidenceLink");
 
-                    b.Property<string>("MetadataLink");
+                    b.Property<string>("LastUpdateUserId");
+
+                    b.Property<string>("LastUpdated");
 
                     b.Property<int>("NonClimateChange");
 

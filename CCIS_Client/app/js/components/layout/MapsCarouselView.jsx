@@ -5,6 +5,7 @@ import {
   Container, Row, Col, View, Mask, Button, Fa
 } from 'mdbreact';
 import { isEmptyValue } from '../../globalFunctions'
+import { DEAGreen } from '../../config/colours.cfg'
 
 import map_gp from '../../../images/static_maps_gp.png'
 import map_sa from '../../../images/static_maps_sa.png'
@@ -101,13 +102,13 @@ class MapsCarouselView extends React.Component {
     setTimeout(this.autoplay, 10000)
   }
 
-  start_stop(){
-    this.setState({ autoplay: !this.state.autoplay})
+  start_stop() {
+    this.setState({ autoplay: !this.state.autoplay })
   }
 
   next(auto) {
 
-    if(auto == true && !this.state.autoplay){
+    if (auto == true && !this.state.autoplay) {
       return
     }
 
@@ -118,7 +119,7 @@ class MapsCarouselView extends React.Component {
 
   prev(auto) {
 
-    if(auto === true && !this.state.autoplay){
+    if (auto === true && !this.state.autoplay) {
       return
     }
 
@@ -140,9 +141,15 @@ class MapsCarouselView extends React.Component {
           </Carousel>
 
           <div style={{ textAlign: "center" }}>
-            <Button color="elegant" size="sm" floating onClick={this.prev}><Fa icon="step-backward" /></Button>
-            <Button color="elegant" size="sm" floating onClick={this.start_stop}><Fa icon= { autoplay === true ? "pause" : "play"} /></Button>
-            <Button color="elegant" size="sm" floating onClick={this.next}><Fa icon="step-forward" /></Button>
+            <Button color="" style={{ backgroundColor: DEAGreen }} floating onClick={this.prev}>
+              <Fa icon="step-backward" />
+            </Button>
+            <Button color="" style={{ backgroundColor: DEAGreen }} floating onClick={this.start_stop}>
+              <Fa icon={autoplay === true ? "pause" : "play"} />
+            </Button>
+            <Button color="" style={{ backgroundColor: DEAGreen }} floating onClick={this.next}>
+              <Fa icon="step-forward" />
+            </Button>
           </div>
         </Container >
       );

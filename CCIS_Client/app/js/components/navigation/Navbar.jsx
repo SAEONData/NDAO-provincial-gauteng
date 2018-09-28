@@ -50,6 +50,7 @@ class Navbar extends React.Component {
     this.listsDropToggle = this.listsDropToggle.bind(this)
   }
 
+
   onClick() {
     this.setState({
       collapse: !this.state.collapse,
@@ -164,7 +165,7 @@ class Navbar extends React.Component {
               {(user && !user.expired) &&
                 <NavItem style={{ marginRight: "15px" }}>
                   <NavLink to="#" disabled>
-                    <b style={{ color: "#2BBBAD" }}>
+                    <b style={{ color: DEAGreen }}>
                       {"Hello, " + user.profile.email}
                     </b>
                   </NavLink>
@@ -179,10 +180,10 @@ class Navbar extends React.Component {
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
                 {(!user || user.expired) &&
-                  <NavLink to="login"><b>Login</b></NavLink>
+                  <NavLink to="/login"><b>Login</b></NavLink>
                 }
                 {(user && !user.expired) &&
-                  <NavLink to="logout"><b>Logout</b></NavLink>
+                  <NavLink to="/logout"><b>Logout</b></NavLink>
                 }
               </NavItem>
 

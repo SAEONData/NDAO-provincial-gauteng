@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CCIS_API.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace CCIS_API.Extensions
 {
     public static class HelperExtensions
     {
-        public static void ClearIdentityValue<T>(ref T model)
+        public static void ClearIdentityValue<T>(T model)
         {
             var identityProp = model.
                         GetType().
@@ -27,7 +28,7 @@ namespace CCIS_API.Extensions
             }
         }
 
-        public static void ClearNullableInts<T>(ref T model)
+        public static void ClearNullableInts<T>(T model)
         {
             var nullableIntProps = model.
                                     GetType().
@@ -38,6 +39,32 @@ namespace CCIS_API.Extensions
             {
                 prop.SetValue(model, null);
             }
+        }
+
+        public static bool CheckGoalCreateValues(IGoal goal)
+        {
+            if(string.IsNullOrEmpty(goal.CreateUserId))
+            {
+                return false;
+            }
+            goal.Created = DateTime.Now.ToString("yyyy-MM-dd");
+
+            return true;
+        }
+
+        public static bool CheckGoalUpdateValues(IGoal goal)
+        {
+            if (string.IsNullOrEmpty(goal.CreateUserId) && string.IsNullOrEmpty(goal.LastUpdateUserId))
+            {
+                return false;
+            }
+            else if(!string.IsNullOrEmpty(goal.CreateUserId) && string.IsNullOrEmpty(goal.LastUpdateUserId))
+            {
+                goal.LastUpdateUserId = goal.CreateUserId;
+            }
+            goal.LastUpdated = DateTime.Now.ToString("yyyy-MM-dd");
+
+            return true;
         }
     }
 }
