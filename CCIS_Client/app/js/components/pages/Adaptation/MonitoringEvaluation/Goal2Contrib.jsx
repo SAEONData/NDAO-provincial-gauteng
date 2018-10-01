@@ -159,19 +159,6 @@ class Goal2Contrib extends React.Component {
 
     setLoading(true)
 
-    console.log("POST", {
-          Id: goalId,
-          DedicatedChampion: Q2_1,
-          DocumentLink: Q2_1_A,
-          DedicatedFunding: Q2_2,
-          TotalBudget: Q2_2_A,
-          FundingDuration: Q2_2_B,
-          FundingAgency: Q2_2_C,
-          PartneringDepartments: Q2_2_D,
-          IncludedInForums: Q2_3,
-          CreateUserId: user.profile.UserId
-        })
-
     //Submit
     try {
       let oHandler = await o(apiBaseURL + "goal2")
@@ -470,6 +457,10 @@ class Goal2Contrib extends React.Component {
 
                     let distinctFunders = []
 
+                    if(loading){
+                      distinctFunders = ["Loading..."]
+                    }
+
                     if (error) {
                       console.error(error)
                     }
@@ -514,15 +505,18 @@ class Goal2Contrib extends React.Component {
 
                     let processedData = []
 
+                    if(loading){
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
+                    }
+
                     if (error) {
                       console.error(error)
                     }
 
                     if (data) {
-                      console.log("DATA", data)
-                      /*if (data && data.value.length > 0) {
-                      }*/
-                      processedData = data.items
+                      if (data.items && data.items.length > 0) {
+                        processedData = data.items
+                      }
                     }
 
                     return (

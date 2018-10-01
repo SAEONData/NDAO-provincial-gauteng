@@ -22,31 +22,6 @@ class SelectInput extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = { value: undefined }
-  }
-
-  componentDidMount() {
-
-    this.setInternalValue()
-  }
-
-  componentDidUpdate() {
-
-    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
-      this.setInternalValue()
-    }
-  }
-
-  setInternalValue() {
-    //Init state
-    let { value } = this.props
-
-    if (globalFunctions.isEmptyValue(value)) {
-      value = ""
-    }
-
-    this.setState({ value: value })
   }
 
   renderSelectNodes(data) {
@@ -83,8 +58,7 @@ class SelectInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style } = this.props
-    let { value } = this.state
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value } = this.props
 
     if (typeof value === 'undefined' || value === "" || value === null) {
       value = undefined

@@ -10,9 +10,9 @@ namespace CCIS_API.Database.Models
         public Guid Id { get; set; }
 
         public int DisseminationUtilisation { get; set; }
-        public int MonitoringForcsting { get; set; }
-        public decimal TotalBudget { get; set; }
-        public string BudgetDuration { get; set; }
+        public int MonitoringForcasting { get; set; }
+        public int TotalBudget { get; set; }
+        public int BudgetDuration { get; set; }
         public string FundingAgency { get; set; }
         public string PartneringDepartments { get; set; }
 

@@ -4,14 +4,16 @@ using CCIS_API.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CCIS_API.Migrations
 {
     [DbContext(typeof(SQLDBContext))]
-    partial class SQLDBContextModelSnapshot : ModelSnapshot
+    [Migration("20181001203502_Updated Goal3")]
+    partial class UpdatedGoal3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("LastUpdated");
 
-                    b.Property<int>("MonitoringForcasting");
+                    b.Property<int>("MonitoringForcsting");
 
                     b.Property<string>("PartneringDepartments");
 

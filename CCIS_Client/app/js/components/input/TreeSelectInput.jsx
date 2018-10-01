@@ -23,31 +23,6 @@ class TreeSelectInput extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = { value: "" }
-  }
-
-  componentDidMount() {
-
-    this.setInternalValue()
-  }
-
-  componentDidUpdate() {
-
-    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
-      this.setInternalValue()
-    }
-  }
-
-  setInternalValue() {
-    //Init state
-    let { value } = this.props
-
-    if (globalFunctions.isEmptyValue(value)) {
-      value = ""
-    }
-
-    this.setState({ value: value })
   }
 
   renderTreeSelectNodes(data) {
@@ -90,8 +65,7 @@ class TreeSelectInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder } = this.props
-    let { value } = this.state
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value } = this.props
 
     if (typeof value === 'undefined' || value === "" || value === null) {
       value = undefined
@@ -101,6 +75,8 @@ class TreeSelectInput extends React.Component {
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
+    allowClear = globalFunctions.fixEmptyValue(allowClear, true)
+    style = globalFunctions.fixEmptyValue(style, {})
 
     return (
       <>
@@ -124,11 +100,11 @@ class TreeSelectInput extends React.Component {
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
-          style={{ width: "100%" }}
+          style={{ width: "100%", ...style  }}
           value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto', paddingRight: "20px" }}
           placeholder={placeHolder}
-          allowClear
+          allowClear={allowClear}
           onChange={this.onChange.bind(this)}
         >
           {this.renderTreeSelectNodes(data)}
