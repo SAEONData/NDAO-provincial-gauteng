@@ -50,6 +50,12 @@ class Navbar extends React.Component {
     this.listsDropToggle = this.listsDropToggle.bind(this)
   }
 
+  // componentDidUpdate(){
+  //   let { user } = this.props
+  //   if(user){
+  //     console.log("USER", user)
+  //   }
+  // }
 
   onClick() {
     this.setState({

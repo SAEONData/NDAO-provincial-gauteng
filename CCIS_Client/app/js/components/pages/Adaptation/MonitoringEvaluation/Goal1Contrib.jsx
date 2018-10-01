@@ -10,7 +10,6 @@ import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
 import moment from 'moment'
-import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import buildQuery from 'odata-query'
 
 //Images
@@ -50,9 +49,9 @@ class Goal1Contrib extends React.Component {
       messageModal: false,
       message: "",
       title: "",
-      goalId: _gf.GetUID(),
       goalStatus: "R",
       showNCCRD: false,
+      goalId: _gf.GetUID(),
       Q1_1: "",
       Q1_3: false,
       Q1_4: moment().format("YYYY-MM-DD")
@@ -108,7 +107,6 @@ class Goal1Contrib extends React.Component {
       this.props.setLoading(false)
       console.error(ex)
     }
-
   }
 
   NCCRD_CloseCallback() {
@@ -136,7 +134,7 @@ class Goal1Contrib extends React.Component {
           DocumentLink: Q1_1,
           HasAssessment: Q1_3,
           DocLastUpdated: Q1_4,
-          CreateUserId: user.profile.sid
+          CreateUserId: user.profile.UserId
         })
         .save()
 

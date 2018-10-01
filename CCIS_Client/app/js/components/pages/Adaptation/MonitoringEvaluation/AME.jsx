@@ -74,11 +74,12 @@ class AME extends React.Component {
       })
     }, 300)
 
-    setTimeout(() => { 
-      this.setState({ 
-        contribSection: true, 
-        aboutSection: (user && !user.expired) ? false : true }) 
-      }, 500);
+    setTimeout(() => {
+      this.setState({
+        contribSection: true,
+        aboutSection: (user && !user.expired) ? false : true
+      })
+    }, 500);
   }
 
   selectEditGoal(goalId) {
@@ -88,7 +89,7 @@ class AME extends React.Component {
     })
   }
 
-  resetEdit(){
+  resetEdit() {
     this.setState({ editGoalId: null })
   }
 
@@ -228,63 +229,66 @@ class AME extends React.Component {
             </ModalHeader>
             <ModalBody>
 
-              <OData
-                baseUrl={apiBaseURL + `Goal${selectedGoal}`}
-                query={{
-                  // filter: { CreateUserId: user.profile.sid },
-                  select: ['Id', 'Created', 'LastUpdated']
-                }}>
-                {({ loading, error, data }) => {
+              {
+                (user && !user.expired) &&
+                <OData
+                  baseUrl={apiBaseURL + `Goal${selectedGoal}`}
+                  query={{
+                    filter: { CreateUserId: user.profile.UserId },
+                    select: ['Id', 'Created', 'LastUpdated']
+                  }}>
+                  {({ loading, error, data }) => {
 
-                  if (loading === true) {
-                    return (
-                      <p>
-                        Fetching goals...
+                    if (loading === true) {
+                      return (
+                        <p>
+                          Fetching goals...
                         </p>
-                    )
-                  }
+                      )
+                    }
 
-                  if (error) {
-                    console.error(error)
-                    return (
-                      <p>
-                        Unable to fetch goals. (See log for details)
+                    if (error) {
+                      console.error(error)
+                      return (
+                        <p>
+                          Unable to fetch goals. (See log for details)
                         </p>
-                    )
-                  }
+                      )
+                    }
 
-                  if (data) {
-                    if (data.value.length > 0) {
-                      let items = []
-                      data.value.map(item => {
-                        items.push(
-                          <Card key={item.Id}>
-                            <CardBody>
-                              <CardText>
-                                <b>Created on: </b>{item.Created}
-                                <br />
-                                <b>Last updated on: </b>{item.LastUpdated === null ? item.Created : item.LastUpdated}
-                              </CardText>
-                              <Button
-                                size="sm"
-                                color=""
-                                style={{ backgroundColor: DEAGreen }}
-                                onClick={() => { this.selectEditGoal(item.Id) }}>
-                                Select
+                    if (data) {
+                      if (data.value.length > 0) {
+                        let items = []
+                        data.value.map(item => {
+                          items.push(
+                            <Card key={item.Id}>
+                              <CardBody>
+                                <CardText>
+                                  <b>Created on: </b>{item.Created}
+                                  <br />
+                                  <b>Last updated on: </b>{item.LastUpdated === null ? item.Created : item.LastUpdated}
+                                </CardText>
+                                <Button
+                                  size="sm"
+                                  color=""
+                                  style={{ backgroundColor: DEAGreen }}
+                                  onClick={() => { this.selectEditGoal(item.Id) }}>
+                                  Select
                                 </Button>
-                            </CardBody>
-                          </Card>
-                        )
-                      })
-                      return items
-                    }
-                    else {
-                      return (<p>You have not created any goals yet.</p>)
-                    }
+                              </CardBody>
+                            </Card>
+                          )
+                        })
+                        return items
+                      }
+                      else {
+                        return (<p>You have not created any goals yet.</p>)
+                      }
 
-                  }
-                }}
-              </OData>
+                    }
+                  }}
+                </OData>
+              }
 
             </ModalBody>
           </Modal>

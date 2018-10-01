@@ -21,6 +21,7 @@ import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 
 const _gf = require('./globalFunctions')
+const o = require("odata")
 
 const mapStateToProps = (state, props) => {
   let { general: { loading, showSideNav } } = state
@@ -48,6 +49,23 @@ class App extends React.Component {
   componentDidMount(){
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
+  }
+
+  componentDidUpdate() {
+    let { user } = this.props
+
+    let headers = []
+    headers.push({ name: "Accept", value: "application/json" })
+
+    if (user && !user.expired) {
+      //Add auth token to headers
+      headers.push({ name: "Authorization", value: "Bearer " + (user === null ? "" : user.access_token) })
+    }
+
+    //Add headers to OData global config
+    o().config({
+      headers: headers
+    })
   }
 
   ignoreURL(){
