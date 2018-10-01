@@ -52,8 +52,15 @@ class TreeSelectInput extends React.Component {
 
   renderTreeSelectNodes(data) {
 
+    let { transform } = this.props
+
     if (typeof data !== 'undefined') {
       return data.map((item) => {
+
+        if(typeof transform !== 'undefined'){
+          item = transform(item)
+        }
+
         if (item.children) {
           return (
             <TreeSelectNode value={item.text} title={item.text} key={item.id}>

@@ -4,7 +4,7 @@ import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
 import React from 'react';
 import { connect } from 'react-redux';
 import { DEAGreen } from "../../config/colours.cfg";
-import { ssoBaseURL } from '../../config/ssoBaseURL.cfg';
+import { ssoBaseURL } from '../../config/serviceURLs.cfg';
 import DASL from '../pages/Tools/DASL.jsx';
 import EWED from '../pages/Tools/EWED.jsx';
 import LRT from '../pages/Tools/LRT.jsx';

@@ -10,7 +10,7 @@ import SelectInput from '../../../input/SelectInput.jsx'
 import OData from 'react-odata';
 import { DEAGreen } from '../../../../config/colours.cfg'
 import About from './About.jsx'
-import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
+import { apiBaseURL } from '../../../../config/serviceURLs.cfg'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
 import Goal2Contrib from './Goal2Contrib.jsx'

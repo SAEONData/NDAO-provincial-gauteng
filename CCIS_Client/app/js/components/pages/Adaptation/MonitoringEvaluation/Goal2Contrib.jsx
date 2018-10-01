@@ -5,20 +5,18 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Input, InputRange } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
-import buildQuery from 'odata-query'
-import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
-import { ccrdBaseURL } from '../../../../config/ccrdBaseURL.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../config/serviceURLs.cfg'
 import FileUpload from '../../../input/FileUpload.jsx'
-import OData from 'react-odata'
 import SelectInput from '../../../input/SelectInput.jsx'
-
+import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
+import OData from 'react-odata'
+import buildQuery from 'odata-query'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
 import 'antd/lib/slider/style/css'
 
 //Images
-import info from '../../../../../images/info.png'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
@@ -44,6 +42,22 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+const defaultState = {
+  messageModal: false,
+  message: "",
+  title: "",
+  goalStatus: "R",
+  goalId: _gf.GetUID(),
+  Q2_1: false,
+  Q2_1_A: "",
+  Q2_2: false,
+  Q2_2_A: 1,
+  Q2_2_B: 1,
+  Q2_2_C: "",
+  Q2_2_D: "",
+  Q2_3: 1
+}
+
 class Goal2Contrib extends React.Component {
 
   constructor(props) {
@@ -53,21 +67,7 @@ class Goal2Contrib extends React.Component {
     this.reset = this.reset.bind(this)
     this.showMessage = this.showMessage.bind(this)
 
-    this.state = {
-      messageModal: false,
-      message: "",
-      title: "",
-      goalStatus: "R",
-      goalId: _gf.GetUID(),
-      Q2_1: false,
-      Q2_1_A: "",
-      Q2_2: false,
-      Q2_2_A: 1,
-      Q2_2_B: 1,
-      Q2_2_C: "",
-      Q2_2_D: "",
-      Q2_3: 1
-    }
+    this.state = defaultState
   }
 
   componentDidMount() {
@@ -114,7 +114,7 @@ class Goal2Contrib extends React.Component {
           Q2_2_B: data.FundingDuration,
           Q2_2_C: data.FundingAgency,
           Q2_2_D: data.PartneringDepartments,
-          Q2_3: IncludedInForums
+          Q2_3: data.IncludedInForums
         })
       }
 
@@ -130,21 +130,7 @@ class Goal2Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState({
-      messageModal: false,
-      message: "",
-      title: "",
-      goalId: _gf.GetUID(),
-      goalStatus: "R",
-      Q2_1: data.DedicatedChampion,
-      Q2_1_A: data.DocumentLink,
-      Q2_2: data.DedicatedFunding,
-      Q2_2_A: data.TotalBudget,
-      Q2_2_B: data.FundingDuration,
-      Q2_2_C: data.FundingAgency,
-      Q2_2_D: data.PartneringDepartments,
-      Q2_3: IncludedInForums
-    })
+    this.setState(defaultState)
 
     setTimeout(() => {
       window.scroll({
@@ -172,6 +158,19 @@ class Goal2Contrib extends React.Component {
     }
 
     setLoading(true)
+
+    console.log("POST", {
+          Id: goalId,
+          DedicatedChampion: Q2_1,
+          DocumentLink: Q2_1_A,
+          DedicatedFunding: Q2_2,
+          TotalBudget: Q2_2_A,
+          FundingDuration: Q2_2_B,
+          FundingAgency: Q2_2_C,
+          PartneringDepartments: Q2_2_D,
+          IncludedInForums: Q2_3,
+          CreateUserId: user.profile.UserId
+        })
 
     //Submit
     try {
@@ -206,18 +205,6 @@ class Goal2Contrib extends React.Component {
       message,
       messageModal: true
     })
-  }
-
-  uniq(a) {
-    var prims = { "boolean": {}, "number": {}, "string": {} }, objs = [];
-
-    return a.filter(function (item) {
-      var type = typeof item;
-      if (type in prims)
-        return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-      else
-        return objs.indexOf(item) >= 0 ? false : objs.push(item);
-    });
   }
 
   render() {
@@ -472,10 +459,6 @@ class Goal2Contrib extends React.Component {
                 <label style={{ fontWeight: "bold" }}>
                   Who is the funding agency?
                 </label>
-                {/* <TextInput
-                  width="95%"
-                  value={Q2_2_C}
-                  callback={(value) => { this.setState({ Q2_2_C: value }) }} /> */}
 
                 <OData
                   baseUrl={ccrdBaseURL + `Funders`}
@@ -488,7 +471,7 @@ class Goal2Contrib extends React.Component {
                     let distinctFunders = []
 
                     if (error) {
-                      console.error(error)                    
+                      console.error(error)
                     }
 
                     if (data) {
@@ -507,7 +490,7 @@ class Goal2Contrib extends React.Component {
                       <SelectInput
                         data={distinctFunders.map(x => ({ id: distinctFunders.indexOf(x), text: x }))}
                         value={Q2_2_C}
-                        callback={(value) => { this.setState({ Q2_2_C: value }) }}
+                        callback={(value) => { this.setState({ Q2_2_C: value.text }) }}
                         allowClear={false}
                       />
                     )
@@ -519,16 +502,45 @@ class Goal2Contrib extends React.Component {
             <br />
 
             <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
+              <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
                   Are there any partnering departments/organisations that share the costs?
                 </label>
-                <TextInput
-                  width="95%"
-                  value={Q2_2_D}
-                  callback={(value) => { this.setState({ Q2_2_D: value }) }} />
+
+                <OData
+                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                  {({ loading, error, data }) => {
+
+                    let processedData = []
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      console.log("DATA", data)
+                      /*if (data && data.value.length > 0) {
+                      }*/
+                      processedData = data.items
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q2_2_D}
+                        callback={(value) => { this.setState({ Q2_2_D: value.text }) }}
+                        allowClear={false}
+                      />
+                    )
+
+                  }}
+                </OData>
+
               </Col>
             </Row>
+            <br />
 
             <Row>
               <Col md="12">

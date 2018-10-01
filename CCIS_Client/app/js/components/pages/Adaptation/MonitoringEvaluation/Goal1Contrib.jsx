@@ -8,7 +8,7 @@ import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/co
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
-import { apiBaseURL } from '../../../../config/apiBaseURL.cfg'
+import { apiBaseURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
 import buildQuery from 'odata-query'
 
@@ -35,6 +35,18 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+const defaultState = {
+  messageModal: false,
+  message: "",
+  title: "",
+  goalStatus: "R",
+  showNCCRD: false,
+  goalId: _gf.GetUID(),
+  Q1_1: "",
+  Q1_3: false,
+  Q1_4: moment().format("YYYY-MM-DD")
+}
+
 class Goal1Contrib extends React.Component {
 
   constructor(props) {
@@ -45,17 +57,7 @@ class Goal1Contrib extends React.Component {
     this.submit = this.submit.bind(this)
     this.showMessage = this.showMessage.bind(this)
 
-    this.state = {
-      messageModal: false,
-      message: "",
-      title: "",
-      goalStatus: "R",
-      showNCCRD: false,
-      goalId: _gf.GetUID(),
-      Q1_1: "",
-      Q1_3: false,
-      Q1_4: moment().format("YYYY-MM-DD")
-    }
+    this.state = defaultState
   }
 
   showMessage(title, message) {
@@ -162,17 +164,7 @@ class Goal1Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState({
-      messageModal: false,
-      message: "",
-      title: "",
-      goalId: _gf.GetUID(),
-      goalStatus: "R",
-      showNCCRD: false,
-      Q1_1: "",
-      Q1_3: false,
-      Q1_4: moment().format("YYYY-MM-DD")
-    })
+    this.setState(defaultState)
 
     setTimeout(() => {
       window.scroll({

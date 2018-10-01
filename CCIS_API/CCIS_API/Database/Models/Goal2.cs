@@ -12,8 +12,8 @@ namespace CCIS_API.Database.Models
         public bool DedicatedChampion { get; set; }
         public string DocumentLink { get; set; }
         public bool DedicatedFunding { get; set; }
-        public decimal TotalBudget { get; set; }
-        public string FundingDuration { get; set; }
+        public int TotalBudget { get; set; }
+        public int FundingDuration { get; set; }
         public string FundingAgency { get; set; }
         public string PartneringDepartments { get; set; }
         public int IncludedInForums { get; set; }
