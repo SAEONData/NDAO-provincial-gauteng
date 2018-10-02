@@ -150,17 +150,6 @@ class Goal3Contrib extends React.Component {
 
     setLoading(true)
 
-    console.log("POST", {
-      Id: goalId,
-      DisseminationUtilisation: Q3_1,
-      MonitoringForcsting: Q3_2,
-      TotalBudget: Q3_3_A,
-      BudgetDuration: Q3_3_B,
-      FundingAgency: Q3_3_C,
-      PartneringDepartments: Q3_3_D,
-      CreateUserId: user.profile.UserId
-    })
-
     //Submit
     try {
       let oHandler = await o(apiBaseURL + "goal3")
