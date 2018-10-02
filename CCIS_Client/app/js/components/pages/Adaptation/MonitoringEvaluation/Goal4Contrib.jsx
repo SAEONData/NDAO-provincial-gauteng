@@ -44,10 +44,10 @@ const defaultState = {
   goalStatus: "R",
   goalId: _gf.GetUID(),
   Q4_1: 1,
-  Q4_4_A: 1,
-  Q4_4_B: 1,
-  Q4_4_C: "",
-  Q4_4_D: ""
+  Q4_2_A: 1,
+  Q4_2_B: 1,
+  Q4_2_C: "",
+  Q4_2_D: ""
 }
 
 class Goal4Contrib extends React.Component {
@@ -100,10 +100,10 @@ class Goal4Contrib extends React.Component {
         this.setState({
           goalId: editGoalId,
           Q4_1: data.CapacityBuilding,
-          Q4_4_A: data.TotalBudget,
-          Q4_4_B: data.BudgetDuration,
-          Q4_4_C: data.FundingAgency,
-          Q4_4_D: data.PartneringDepartments,
+          Q4_2_A: data.TotalBudget,
+          Q4_2_B: data.BudgetDuration,
+          Q4_2_C: data.FundingAgency,
+          Q4_2_D: data.PartneringDepartments,
         })
       }
 
@@ -132,7 +132,7 @@ class Goal4Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, Q4_1, Q4_4_A, Q4_4_B, Q4_4_C, Q4_4_D } = this.state
+    let { goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -154,10 +154,10 @@ class Goal4Contrib extends React.Component {
         .post({
           Id: goalId,
           CapacityBuilding: Q4_1,
-          TotalBudget: Q4_4_A,
-          BudgetDuration: Q4_4_B,
-          FundingAgency: Q4_4_C,
-          PartneringDepartments: Q4_4_D,
+          TotalBudget: Q4_2_A,
+          BudgetDuration: Q4_2_B,
+          FundingAgency: Q4_2_C,
+          PartneringDepartments: Q4_2_D,
           CreateUserId: user.profile.UserId
         })
         .save()
@@ -182,7 +182,7 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, goalId, Q4_1, Q4_4_A, Q4_4_B, Q4_4_C, Q4_4_D } = this.state
+    let { goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D } = this.state
 
     return (
       <>
@@ -323,30 +323,30 @@ class Goal4Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 1 }) }}>1k - 10k</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 1 }) }}>1k - 10k</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 2 }) }}>10k - 100k</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 2 }) }}>10k - 100k</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 3 }) }}>100k - 1m</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 3 }) }}>100k - 1m</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 4 }) }}>1m - 10m</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 4 }) }}>1m - 10m</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 5 }) }}>10m - 100m</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 5 }) }}>10m - 100m</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_4_A: 6 }) }}>> 100m</a>
+                      <a onClick={() => { this.setState({ Q4_2_A: 6 }) }}>> 100m</a>
                     </Col>
                   </Row>
                   <Slider
                     min={1}
                     max={6}
-                    value={Q4_4_A}
+                    value={Q4_2_A}
                     style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q4_4_A: value }) }}
+                    onChange={(value) => { this.setState({ Q4_2_A: value }) }}
                   />
                 </div>
               </Col>
@@ -361,21 +361,21 @@ class Goal4Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_4_B: 1 }) }}>1 - 5</a>
+                      <a onClick={() => { this.setState({ Q4_2_B: 1 }) }}>1 - 5</a>
                     </Col>
                     <Col md="4" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_4_B: 2 }) }}>5 - 10</a>
+                      <a onClick={() => { this.setState({ Q4_2_B: 2 }) }}>5 - 10</a>
                     </Col>
                     <Col md="4" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_4_B: 3 }) }}>> 10</a>
+                      <a onClick={() => { this.setState({ Q4_2_B: 3 }) }}>> 10</a>
                     </Col>
                   </Row>
                   <Slider
                     min={1}
                     max={3}
-                    value={Q4_4_B}
+                    value={Q4_2_B}
                     style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q4_4_B: value }) }}
+                    onChange={(value) => { this.setState({ Q4_2_B: value }) }}
                   />
                 </div>
               </Col>
@@ -421,8 +421,8 @@ class Goal4Contrib extends React.Component {
                     return (
                       <SelectInput
                         data={distinctFunders.map(x => ({ id: distinctFunders.indexOf(x), text: x }))}
-                        value={Q4_4_C}
-                        callback={(value) => { this.setState({ Q4_4_C: value.text }) }}
+                        value={Q4_2_C}
+                        callback={(value) => { this.setState({ Q4_2_C: value.text }) }}
                         allowClear={false}
                       />
                     )
@@ -465,8 +465,8 @@ class Goal4Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q4_4_D}
-                        callback={(value) => { this.setState({ Q4_4_D: value.text }) }}
+                        value={Q4_2_D}
+                        callback={(value) => { this.setState({ Q4_2_D: value.text }) }}
                         allowClear={false}
                       />
                     )

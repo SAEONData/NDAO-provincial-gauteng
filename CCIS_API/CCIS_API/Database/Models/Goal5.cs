@@ -11,6 +11,10 @@ namespace CCIS_API.Database.Models
 
         public int TechnologyAwareness { get; set; }
         public string EvidenceLink { get; set; }
+        public int TotalBudget { get; set; }
+        public int BudgetDuration { get; set; }
+        public string FundingAgency { get; set; }
+        public string PartneringDepartments { get; set; }
 
         //Shared fields
         public string Created { get; set; }
