@@ -3,8 +3,8 @@ import sa_flag_img_uri from '../images/sa_flag.jpg'
 
 export const data = {
 	title: "Document Links",
-	logoTop: { src: nrf_saeon_img_uri, width: "80%" },
-	logoBottom: { src: sa_flag_img_uri, width: "40%" },
+	logoTop: { src: nrf_saeon_img_uri, width: "65%" },
+	logoBottom: { src: sa_flag_img_uri, width: "30%" },
 	nav: [
 		{
 			id: 1, text: "Technical Information", children: [
@@ -13,7 +13,7 @@ export const data = {
 		},
 		{
 			id: 2, text: "Contact Information", children: [
-				{ id: 21, text: "Contact Us", link: "https://en.wikipedia.org/wiki/Example" }
+				{ id: 21, text: "Contact Us"/*, link: "https://en.wikipedia.org/wiki/Example"*/ }
 			]
 		}
 	]

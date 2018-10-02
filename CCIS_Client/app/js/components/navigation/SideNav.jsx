@@ -128,7 +128,7 @@ class SideNav extends React.Component {
     let { isOpen, title, data } = this.props
     let { width, height, showContent, contentLink, contentTitle } = this.state
 
-    const sideNavWidth = 315
+    const sideNavWidth = 325
 
     return (
       <>
@@ -160,7 +160,7 @@ class SideNav extends React.Component {
         <Modal
           isOpen={showContent}
           toggle={() => this.closeModal()}
-          style={{ width: (width - sideNavWidth - 5) + "px" }}
+          style={{ width: (width - sideNavWidth - 20) + "px" }}
           size="fluid"
           fullHeight position="right"
         >
@@ -174,7 +174,7 @@ class SideNav extends React.Component {
                 marginRight: "0px",
                 marginTop: "-15px",
                 marginBottom: "-20px",
-                width: (width - sideNavWidth - 5) + "px",
+                width: (width - sideNavWidth - 20) + "px",
                 height: (height - 75) + "px",
                 border: "0px solid black",
                 backgroundImage: `url(${loader})`,
