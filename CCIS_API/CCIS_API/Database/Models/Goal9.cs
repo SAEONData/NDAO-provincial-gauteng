@@ -9,7 +9,7 @@ namespace CCIS_API.Database.Models
     {
         public Guid Id { get; set; }
 
-        public int NonClimateChange { get; set; }
+        public int Practices { get; set; }
         public string EvidenceLink { get; set; }
 
         //Shared fields

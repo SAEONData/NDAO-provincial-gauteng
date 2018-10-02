@@ -16,7 +16,6 @@ import buildQuery from 'odata-query'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
-const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -130,25 +129,32 @@ class Goal1Contrib extends React.Component {
 
     //Submit
     try {
-      let oHandler = await o(apiBaseURL + "goal1")
-        .post({
+      let res = await fetch(apiBaseURL + 'Goal1', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           Id: goalId,
           DocumentLink: Q1_1,
           HasAssessment: Q1_3,
           DocLastUpdated: Q1_4,
           CreateUserId: user.profile.UserId
         })
-        .save()
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
-      setTimeout(this.reset, 250)
     }
     catch (ex) {
       setLoading(false)
+      console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
-
   }
 
   async waitForMessageClosed() {

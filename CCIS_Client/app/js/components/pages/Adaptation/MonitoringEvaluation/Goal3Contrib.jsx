@@ -18,7 +18,6 @@ import 'antd/lib/slider/style/css'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
-const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -152,8 +151,10 @@ class Goal3Contrib extends React.Component {
 
     //Submit
     try {
-      let oHandler = await o(apiBaseURL + "goal3")
-        .post({
+      let res = await fetch(apiBaseURL + 'Goal3', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           Id: goalId,
           DisseminationUtilisation: Q3_1,
           MonitoringForcasting: Q3_2,
@@ -163,14 +164,20 @@ class Goal3Contrib extends React.Component {
           PartneringDepartments: Q3_3_D,
           CreateUserId: user.profile.UserId
         })
-        .save()
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
-      setTimeout(this.reset, 250)
     }
     catch (ex) {
       setLoading(false)
+      console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
   }

@@ -18,7 +18,6 @@ import 'antd/lib/slider/style/css'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
-const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -150,8 +149,10 @@ class Goal4Contrib extends React.Component {
 
     //Submit
     try {
-      let oHandler = await o(apiBaseURL + "Goal4")
-        .post({
+      let res = await fetch(apiBaseURL + 'Goal4', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           Id: goalId,
           CapacityBuilding: Q4_1,
           TotalBudget: Q4_2_A,
@@ -160,14 +161,20 @@ class Goal4Contrib extends React.Component {
           PartneringDepartments: Q4_2_D,
           CreateUserId: user.profile.UserId
         })
-        .save()
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
-      setTimeout(this.reset, 250)
     }
     catch (ex) {
       setLoading(false)
+      console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
   }
@@ -481,7 +488,7 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
-                onClick={this.submit} >
+                  onClick={this.submit} >
                   <b>Submit</b>
                 </Button>
               </Col>

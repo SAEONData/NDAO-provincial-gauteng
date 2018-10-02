@@ -23,7 +23,6 @@ import checklist from '../../../../../images/checklist.png'
 //Content
 import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'
 
-const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -161,8 +160,10 @@ class Goal2Contrib extends React.Component {
 
     //Submit
     try {
-      let oHandler = await o(apiBaseURL + "goal2")
-        .post({
+      let res = await fetch(apiBaseURL + 'Goal2', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           Id: goalId,
           DedicatedChampion: Q2_1,
           DocumentLink: Q2_1_A,
@@ -174,14 +175,20 @@ class Goal2Contrib extends React.Component {
           IncludedInForums: Q2_3,
           CreateUserId: user.profile.UserId
         })
-        .save()
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
-      setTimeout(this.reset, 250)
     }
     catch (ex) {
       setLoading(false)
+      console.error(ex)
       this.showMessage("An error occurred", ex.message)
     }
   }
@@ -457,7 +464,7 @@ class Goal2Contrib extends React.Component {
 
                     let distinctFunders = []
 
-                    if(loading){
+                    if (loading) {
                       distinctFunders = ["Loading..."]
                     }
 
@@ -505,7 +512,7 @@ class Goal2Contrib extends React.Component {
 
                     let processedData = []
 
-                    if(loading){
+                    if (loading) {
                       processedData = [{ id: "Loading...", value: "Loading..." }]
                     }
 
