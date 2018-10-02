@@ -34,7 +34,7 @@ namespace CCIS_API.Controllers
 
         //Add/Update
         [HttpPost]
-        //[Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
+        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
         public async Task<IActionResult> Post([FromBody]Goal2 goal)
         {

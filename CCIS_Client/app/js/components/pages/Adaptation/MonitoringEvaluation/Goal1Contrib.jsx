@@ -131,7 +131,10 @@ class Goal1Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goal1', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+         },
         body: JSON.stringify({
           Id: goalId,
           DocumentLink: Q1_1,
@@ -149,6 +152,8 @@ class Goal1Contrib extends React.Component {
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
+      await this.waitForMessageClosed()
+      this.reset()
     }
     catch (ex) {
       setLoading(false)
@@ -170,7 +175,7 @@ class Goal1Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState(defaultState)
+    this.setState( { ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({

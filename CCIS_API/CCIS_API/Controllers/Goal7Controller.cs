@@ -7,6 +7,7 @@ using CCIS_API.Database.Models;
 using CCIS_API.Extensions;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace CCIS_API.Controllers
 
         //Add/Update
         [HttpPost]
-        //[Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
+        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
         public async Task<IActionResult> Post([FromBody]Goal7 goal)
         {

@@ -66,6 +66,7 @@ namespace CCIS_API.Controllers
         [HttpPost]
         [ODataRoute("UploadFile")]
         [EnableCors("CORSPolicy")]
+        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         public GoogleFile UploadFile([FromBody] UploadFile fileData)
         {
             GoogleFile result = null;
@@ -145,6 +146,7 @@ namespace CCIS_API.Controllers
         [HttpPost]
         [ODataRoute("RemoveFile")]
         [EnableCors("CORSPolicy")]
+        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         public bool RemoveFile([FromBody] UploadFile fileData)
         {
             var result = false;

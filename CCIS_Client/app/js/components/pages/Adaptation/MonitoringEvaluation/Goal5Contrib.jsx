@@ -121,7 +121,7 @@ class Goal5Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState(defaultState)
+    this.setState( { ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({
@@ -154,7 +154,10 @@ class Goal5Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goal5', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+        },
         body: JSON.stringify({
           Id: goalId,
           TechnologyAwareness: Q5_1,

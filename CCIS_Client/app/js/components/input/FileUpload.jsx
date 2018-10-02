@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-const o = require("odata")
+import { connect } from 'react-redux'
 const _gf = require('../../globalFunctions')
 
 //Ant.D
@@ -13,6 +13,15 @@ import * as globalFunctions from '../../globalFunctions'
 import { apiBaseURL } from '../../config/serviceURLs.cfg'
 
 const Dragger = Upload.Dragger;
+
+const mapStateToProps = (state, props) => {
+  let user = state.oidc.user
+  return { user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
 
 // Properties:
 //  - callback : callback to send filter value
@@ -74,20 +83,33 @@ class FileUpload extends React.Component {
 
   async removeFile(file) {
 
+    let { user } = this.props
+
     this.setState({ removing: true })
 
+    //Remove
     try {
-
-      let oHandler = await o(apiBaseURL + "RemoveFile")
-        .post({
+      let res = await fetch(apiBaseURL + "RemoveFile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+        },
+        body: JSON.stringify({
           FileName: this.props.goalId,
           Base64Data: "",
           MimeType: file.type
         })
-        .save()
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
     }
     catch (ex) {
-      console.error("ERROR", ex)
+      console.error(ex)
     }
 
     //Issue callback with result  
@@ -101,29 +123,38 @@ class FileUpload extends React.Component {
 
   async uploadFile(file) {
 
+    let { user } = this.props
     this.setState({ uploading: true })
 
     let result = ""
     file.data = await this.readFileData(file)
 
+    //Upload
     try {
-
-      let oHandler = await o(apiBaseURL + "UploadFile")
-        .post({
+      let res = await fetch(apiBaseURL + "UploadFile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+        },
+        body: JSON.stringify({
           FileName: this.props.goalId,
           Base64Data: file.data,
           MimeType: file.type
         })
-        .save()
+      })
 
-      //Check for valid result
-      if (typeof oHandler.data !== 'undefined' && oHandler.data !== null) {
-        //Set result
-        result = oHandler.data
+      let resBody = await res.json()
+      if (res.ok) {
+        result = resBody
+      }
+      else {
+        //Get response body
+        throw new Error(resBody.error.message)
       }
     }
     catch (ex) {
-      console.error("ERROR", ex)
+      console.error(ex)
     }
 
     //Issue callback with result  
@@ -250,4 +281,4 @@ class FileUpload extends React.Component {
   }
 }
 
-export default FileUpload
+export default connect(mapStateToProps, mapDispatchToProps)(FileUpload)
