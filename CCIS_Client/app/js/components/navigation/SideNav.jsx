@@ -165,9 +165,7 @@ class SideNav extends React.Component {
           fullHeight position="right"
         >
           <ModalHeader toggle={() => this.closeModal()}>
-            <h4 style={{ marginBottom: "0px" }}>
-              {contentTitle}
-            </h4>
+            {contentTitle}
           </ModalHeader>
           <ModalBody>
             <iframe
@@ -177,7 +175,7 @@ class SideNav extends React.Component {
                 marginTop: "-15px",
                 marginBottom: "-20px",
                 width: (width - sideNavWidth - 5) + "px",
-                height: (height - 70) + "px",
+                height: (height - 75) + "px",
                 border: "0px solid black",
                 backgroundImage: `url(${loader})`,
                 backgroundRepeat: "no-repeat",
