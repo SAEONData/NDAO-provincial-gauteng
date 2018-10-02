@@ -4,13 +4,15 @@ import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
 import React from 'react';
 import { connect } from 'react-redux';
 import { DEAGreen } from "../../config/colours.cfg";
-import { ssoBaseURL } from '../../config/ssoBaseURL.cfg';
+import { ssoBaseURL } from '../../config/serviceURLs.cfg';
 import DASL from '../pages/Tools/DASL.jsx';
 import EWED from '../pages/Tools/EWED.jsx';
 import LRT from '../pages/Tools/LRT.jsx';
 import NCCRD from '../pages/Tools/NCCRD.jsx';
 import NWIS from '../pages/Tools/NWIS.jsx';
 import SARVA from '../pages/Tools/SARVA.jsx';
+
+const _gf = require('../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -46,10 +48,14 @@ class Navbar extends React.Component {
 
     this.onClick = this.onClick.bind(this)
     this.listsDropToggle = this.listsDropToggle.bind(this)
-    this.LoginLogout = this.LoginLogout.bind(this)
-    this.GetUser = this.GetUser.bind(this)
-    this.Register = this.Register.bind(this)
   }
+
+  // componentDidUpdate(){
+  //   let { user } = this.props
+  //   if(user){
+  //     console.log("USER", user)
+  //   }
+  // }
 
   onClick() {
     this.setState({
@@ -61,37 +67,6 @@ class Navbar extends React.Component {
     this.setState({
       listsDropOpen: !this.state.listsDropOpen
     });
-  }
-
-  LoginLogout() {
-
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a className="nav-link" href="#/login">Login</a>
-    }
-    else {
-      return <a className="nav-link" href="#/logout">Logout</a>
-    }
-  }
-
-  Register() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">Register</a>
-    }
-  }
-
-  GetUser() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link"></span>
-    }
-    else {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link">{"Hello, " + user.profile.email}</span>
-    }
   }
 
   render() {
@@ -196,7 +171,7 @@ class Navbar extends React.Component {
               {(user && !user.expired) &&
                 <NavItem style={{ marginRight: "15px" }}>
                   <NavLink to="#" disabled>
-                    <b style={{ color: "#2BBBAD" }}>
+                    <b style={{ color: DEAGreen }}>
                       {"Hello, " + user.profile.email}
                     </b>
                   </NavLink>
@@ -211,18 +186,18 @@ class Navbar extends React.Component {
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
                 {(!user || user.expired) &&
-                  <NavLink to="login" disabled style={{ color: "grey" }}><b>Login</b></NavLink>
+                  <NavLink to="/login"><b>Login</b></NavLink>
                 }
                 {(user && !user.expired) &&
-                  <NavLink to="logout" disabled style={{ color: "grey" }}><b>Logout</b></NavLink>
+                  <NavLink to="/logout"><b>Logout</b></NavLink>
                 }
               </NavItem>
 
               {/* Register */}
               {(!user || user.expired) &&
                 <NavItem>
-                  <a disabled key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
-                    <b style={{ color: "grey" }}>Register</b>
+                  <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
+                    <b>Register</b>
                   </a>
                 </NavItem>
               }

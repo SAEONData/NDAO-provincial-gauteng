@@ -34,7 +34,7 @@ namespace CCIS_API.Controllers
 
         //Add/Update
         [HttpPost]
-        //[Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
+        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
         public async Task<IActionResult> Post([FromBody]Goal1 goal)
         {
@@ -42,26 +42,38 @@ namespace CCIS_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+           
             var exiting = _context.Goal1.FirstOrDefault(x => x.Id == goal.Id);
             if (exiting == null)
             {
+                if (!HelperExtensions.CheckGoalCreateValues(goal))
+                {
+                    return BadRequest(new MissingFieldException("CreateUserId value required"));
+                }
+
                 //ADD
-                HelperExtensions.ClearIdentityValue(ref goal);
-                HelperExtensions.ClearNullableInts(ref goal);
+                HelperExtensions.ClearIdentityValue(goal);
+                HelperExtensions.ClearNullableInts(goal);
                 _context.Goal1.Add(goal);
                 await _context.SaveChangesAsync();
                 return Created(goal);
             }
-            //else
-            //{
-            //    //UPDATE
-            //    _context.Entry(exiting).CurrentValues.SetValues(goal);
-            //    await _context.SaveChangesAsync();
-            //    return Updated(exiting);
-            //}
+            else
+            {
+                if (!HelperExtensions.CheckGoalUpdateValues(goal))
+                {
+                    return BadRequest(new MissingFieldException("LastUpdateUserId value required"));
+                }
 
-            return Ok(goal);
+                //UPDATE
+                goal.Created = exiting.Created;
+                goal.CreateUserId = exiting.CreateUserId;
+                _context.Entry(exiting).CurrentValues.SetValues(goal);
+                
+                await _context.SaveChangesAsync();
+                return Updated(exiting);
+            }
         }
+
     }
 }

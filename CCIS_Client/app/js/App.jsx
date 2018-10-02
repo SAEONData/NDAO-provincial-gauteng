@@ -23,6 +23,7 @@ import SideNav from './components/navigation/SideNav.jsx'
 
 //Data
 const NavData = require('../data/sideNavData')
+const _gf = require('./globalFunctions')
 
 const mapStateToProps = (state, props) => {
   let { general: { loading, showSideNav } } = state
@@ -34,14 +35,51 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.saveCurrentURL = this.saveCurrentURL.bind(this)
+
     let showNavbar = true
     if (location.toString().includes("navbar=hidden")) {
       showNavbar = false
     }
 
-    this.state = { navbar: showNavbar }
+    this.state = {
+      navbar: showNavbar,
+      currentURL: ""
+    }
   }
 
+  componentDidMount(){
+    this.saveCurrentURL()
+    window.onhashchange = this.saveCurrentURL
+  }
+
+  ignoreURL(){
+
+    let ignore = false
+
+    const ignoreURLs = [
+      "#/login",
+      "#/logout",
+      "#/callback"
+    ]
+
+    ignoreURLs.forEach(x => {
+      if(location.hash.includes(x) && !ignore){
+        ignore = true
+      }
+    })
+
+    return ignore
+  }
+
+  saveCurrentURL(){
+
+    if(location.hash !== this.state.currentURL && !this.ignoreURL()){
+      console.log("NAV", location.hash)
+      this.setState({ currentURL: location.hash})
+      _gf.SaveCurrentUrl()
+    }
+  }
 
   render() {
 
@@ -53,8 +91,8 @@ class App extends React.Component {
         <Router>
           <div>
 
-            {navbar && <Header/>}
-            {navbar && <Navbar/>}
+            {navbar && <Header />}
+            {navbar && <Navbar />}
 
             <SideNav data={NavData.data} isOpen={showSideNav} />
 

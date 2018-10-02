@@ -2,28 +2,31 @@
 
 import React from 'react'
 import userManager from '../Authentication/userManager'
+import Icon from 'antd/lib/icon'
 
 class Login extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentDidMount() {
-        userManager.signinRedirect()
-    }
+  componentDidMount() {
+    userManager.signinRedirect()
+  }
 
-    render() {
+  render() {
 
-        return (
-            <> 
-                <div>
-                    <br />
-                    <label>&nbsp;Redirecting...</label>
-                </div>
-            </>
-        )
-    }
+    return (
+      <>
+        <div style={{ marginLeft: "22px" }}>
+          <br />
+          <Icon type="loading" theme="outlined" />
+          &nbsp;
+          Redirecting...
+        </div>
+      </>
+    )
+  }
 }
 
 export default Login

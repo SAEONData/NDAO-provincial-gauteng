@@ -43,7 +43,7 @@ class HostedContentFrame extends React.Component {
     return (
       <div>
         <Container>
-          <Modal fade={false} isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" style={{ width: "95%" }} >
+          <Modal /*fade={false}*/ isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" style={{ width: "95%" }} >
             <ModalHeader toggle={this.toggleModal}>{title}</ModalHeader>
             <ModalBody>
               <iframe

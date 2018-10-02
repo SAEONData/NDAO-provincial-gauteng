@@ -36,13 +36,14 @@ class DateInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, value, allowEdit, placeholder } = this.props
+    let { label, tooltip, value, allowEdit, allowClear, placeholder } = this.props
 
     placeholder = globalFunctions.fixEmptyValue(placeholder, "Select date...")
     label = globalFunctions.fixEmptyValue(label, "")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
-    value = globalFunctions.fixEmptyValue(value, null) //globalFunctions.fixEmptyValue(value, new Date().toLocaleDateString("en-ZA", { year: 'numeric', month: 'numeric', day: 'numeric' }))
+    allowClear = globalFunctions.fixEmptyValue(allowClear, true)
+    value = globalFunctions.fixEmptyValue(value, null) //globalFunctions.fixEmptyValue(value, new Date().toLocaleDateString("en-ZA", { year: 'numeric', month: 'numeric', day: 'numeric' })) 
 
     return (
       <>
@@ -63,9 +64,10 @@ class DateInput extends React.Component {
         <DatePicker
           placeholder={placeholder}
           disabled={!allowEdit}
-          defaultValue={value !== null ? moment(value, 'YYYY/MM/DD') : value}
+          value={value !== null ? moment(value, 'YYYY/MM/DD') : value}
           style={{ width: "100%" }}
           onChange={this.onChange}
+          allowClear={allowClear}
         />
       </>
     )

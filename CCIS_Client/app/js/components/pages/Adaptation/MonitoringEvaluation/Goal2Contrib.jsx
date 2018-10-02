@@ -2,12 +2,21 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Input, Popover, PopoverBody, PopoverHeader } from 'mdbreact'
+import { Row, Col, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter, Input, InputRange } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../config/serviceURLs.cfg'
+import FileUpload from '../../../input/FileUpload.jsx'
+import SelectInput from '../../../input/SelectInput.jsx'
+import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
+import OData from 'react-odata'
+import buildQuery from 'odata-query'
+
+//Ant.D
+import Slider from 'antd/lib/slider'
+import 'antd/lib/slider/style/css'
 
 //Images
-import info from '../../../../../images/info.png'
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
@@ -17,15 +26,35 @@ import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
-  return {}
+  let user = state.oidc.user
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updateNav: payload => {
       dispatch({ type: "NAV", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
+}
+
+const defaultState = {
+  messageModal: false,
+  message: "",
+  title: "",
+  goalStatus: "R",
+  goalId: _gf.GetUID(),
+  Q2_1: false,
+  Q2_1_A: "",
+  Q2_2: false,
+  Q2_2_A: 1,
+  Q2_2_B: 1,
+  Q2_2_C: "",
+  Q2_2_D: "",
+  Q2_3: 1
 }
 
 class Goal2Contrib extends React.Component {
@@ -33,21 +62,151 @@ class Goal2Contrib extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hasChamp: false,
-      hasFunding: false,
-      radForumsComitees: 1,
-      goalStatus: "R"
-    }
+    this.submit = this.submit.bind(this)
+    this.reset = this.reset.bind(this)
+    this.showMessage = this.showMessage.bind(this)
+
+    this.state = defaultState
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
   }
 
+  componentDidUpdate() {
+    let { editGoalId } = this.props
+    if (editGoalId) {
+      this.getEditGoalData(editGoalId)
+    }
+  }
+
+  async waitForMessageClosed() {
+
+    while (this.state.messageModal === true) {
+      await _gf.wait(250)
+    }
+
+    return true
+  }
+
+  async getEditGoalData(editGoalId) {
+
+    this.props.setLoading(true)
+    this.props.resetEdit()
+
+    //Fetch goal details from server
+    const query = buildQuery({
+      key: { Id: editGoalId }
+    })
+
+    try {
+      let res = await fetch(apiBaseURL + `Goal2${query}`)
+      res = await res.json()
+      if (res.value && res.value.length > 0) {
+        let data = res.value[0]
+        this.setState({
+          goalId: editGoalId,
+          Q2_1: data.DedicatedChampion,
+          Q2_1_A: data.DocumentLink,
+          Q2_2: data.DedicatedFunding,
+          Q2_2_A: data.TotalBudget,
+          Q2_2_B: data.FundingDuration,
+          Q2_2_C: data.FundingAgency,
+          Q2_2_D: data.PartneringDepartments,
+          Q2_3: data.IncludedInForums
+        })
+      }
+
+      this.props.setLoading(false)
+    }
+    catch (ex) {
+      this.props.setLoading(false)
+      console.error(ex)
+    }
+  }
+
+  async reset() {
+
+    await this.waitForMessageClosed();
+
+    this.setState( { ...defaultState, goalId: _gf.GetUID() })
+
+    setTimeout(() => {
+      window.scroll({
+        top: 180,
+        left: 0,
+        behavior: 'smooth'
+      })
+    }, 100)
+  }
+
+  async submit() {
+
+    let { goalId, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3 } = this.state
+    let { setLoading, next, user } = this.props
+
+    //Validate
+    if (Q2_1 == true && Q2_1_A === "") {
+      this.showMessage("Required", "Organogram attachment required")
+      return
+    }
+
+    if (isNaN(Q2_2_A)) {
+      this.showMessage("Required", "Total budget must be a number")
+      return
+    }
+
+    setLoading(true)
+
+    //Submit
+    try {
+      let res = await fetch(apiBaseURL + 'Goal2', {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + (user === null ? "" : user.access_token)
+        },
+        body: JSON.stringify({
+          Id: goalId,
+          DedicatedChampion: Q2_1,
+          DocumentLink: Q2_1_A,
+          DedicatedFunding: Q2_2,
+          TotalBudget: Q2_2_A,
+          FundingDuration: Q2_2_B,
+          FundingAgency: Q2_2_C,
+          PartneringDepartments: Q2_2_D,
+          IncludedInForums: Q2_3,
+          CreateUserId: user.profile.UserId
+        })
+      })
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
+
+      setLoading(false)
+      this.showMessage("Success", "Goal submitted successfully")
+    }
+    catch (ex) {
+      setLoading(false)
+      console.error(ex)
+      this.showMessage("An error occurred", ex.message)
+    }
+  }
+
+  showMessage(title, message) {
+    this.setState({
+      title,
+      message,
+      messageModal: true
+    })
+  }
+
   render() {
 
-    let { hasChamp, hasFunding, goalStatus, radForumsComitees } = this.state
+    let { Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, goalStatus, goalId } = this.state
 
     return (
       <>
@@ -154,16 +313,16 @@ class Goal2Contrib extends React.Component {
                 <br />
                 <div>
                   <Button
-                    onClick={() => { this.setState({ hasChamp: true }) }}
+                    onClick={() => { this.setState({ Q2_1: true }) }}
                     color=""
-                    style={{ fontSize: hasChamp ? "13px" : "10px", marginLeft: "0px", backgroundColor: hasChamp ? DEAGreen : "grey" }}
+                    style={{ fontSize: Q2_1 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q2_1 ? DEAGreen : "grey" }}
                     size="sm">
                     YES
                   </Button>
                   <Button
-                    onClick={() => { this.setState({ hasChamp: false }) }}
+                    onClick={() => { this.setState({ Q2_1: false }) }}
                     color=""
-                    style={{ fontSize: !hasChamp ? "13px" : "10px", backgroundColor: !hasChamp ? DEAGreen : "grey" }}
+                    style={{ fontSize: !Q2_1 ? "13px" : "10px", backgroundColor: !Q2_1 ? DEAGreen : "grey" }}
                     size="sm">
                     NO
                 </Button>
@@ -179,11 +338,25 @@ class Goal2Contrib extends React.Component {
                 </label>
                 <br />
                 <a href={OrganogramTemplate}>
-                  <p style={{ fontSize: "14px", marginTop: "-8px", marginBottom: "35px"}}>
+                  <p style={{ fontSize: "14px", marginTop: "-8px", marginBottom: "35px" }}>
                     <u>Download Organogram Template</u>
                   </p>
                 </a>
-                <TextInput width="95%" />
+                <TextInput
+                  width="95%"
+                  value={Q2_1_A}
+                  callback={(value) => { this.setState({ Q2_1_A: value }) }} />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="4">
+                <FileUpload
+                  key={"fu_" + goalId}
+                  style={{ marginTop: "-15px", marginBottom: "20px" }}
+                  width="100%"
+                  callback={(fileInfo) => { this.setState({ Q2_1_A: fileInfo.ViewLink }) }}
+                  goalId={goalId}
+                />
               </Col>
             </Row>
 
@@ -194,16 +367,16 @@ class Goal2Contrib extends React.Component {
                 </label>
                 <br />
                 <Button
-                  onClick={() => { this.setState({ hasFunding: true }) }}
+                  onClick={() => { this.setState({ Q2_2: true }) }}
                   color=""
-                  style={{ fontSize: hasFunding ? "13px" : "10px", marginLeft: "0px", backgroundColor: hasFunding ? DEAGreen : "grey" }}
+                  style={{ fontSize: Q2_2 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q2_2 ? DEAGreen : "grey" }}
                   size="sm">
                   YES
                 </Button>
                 <Button
-                  onClick={() => { this.setState({ hasFunding: false }) }}
+                  onClick={() => { this.setState({ Q2_2: false }) }}
                   color=""
-                  style={{ fontSize: !hasFunding ? "13px" : "10px", backgroundColor: !hasFunding ? DEAGreen : "grey" }}
+                  style={{ fontSize: !Q2_2 ? "13px" : "10px", backgroundColor: !Q2_2 ? DEAGreen : "grey" }}
                   size="sm">
                   NO
                 </Button>
@@ -216,33 +389,162 @@ class Goal2Contrib extends React.Component {
                 <label style={{ fontWeight: "bold" }}>
                   What is the total budget?
                 </label>
-                <TextInput width="95%" />
+                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                  <Row style={{ marginBottom: "-10px" }}>
+                    <Col md="2" style={{ textAlign: "left" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 1 }) }}>1k - 10k</a>
+                    </Col>
+                    <Col md="2" style={{ textAlign: "left" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 2 }) }}>10k - 100k</a>
+                    </Col>
+                    <Col md="2" style={{ textAlign: "center" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 3 }) }}>100k - 1m</a>
+                    </Col>
+                    <Col md="2" style={{ textAlign: "center" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 4 }) }}>1m - 10m</a>
+                    </Col>
+                    <Col md="2" style={{ textAlign: "right" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 5 }) }}>10m - 100m</a>
+                    </Col>
+                    <Col md="2" style={{ textAlign: "right" }}>
+                      <a onClick={() => { this.setState({ Q2_2_A: 6 }) }}>> 100m</a>
+                    </Col>
+                  </Row>
+                  <Slider
+                    min={1}
+                    max={6}
+                    value={Q2_2_A}
+                    style={{ marginLeft: "15px", marginRight: "15px" }}
+                    onChange={(value) => { this.setState({ Q2_2_A: value }) }}
+                  />
+                </div>
               </Col>
             </Row>
+            <br />
+
             <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
+              <Col md="5">
                 <label style={{ fontWeight: "bold" }}>
-                  How long will the funding last?
+                  How long will the funding last? (Years)
                 </label>
-                <TextInput width="95%" />
+                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                  <Row style={{ marginBottom: "-10px" }}>
+                    <Col md="4" style={{ textAlign: "left" }}>
+                      <a onClick={() => { this.setState({ Q2_2_B: 1 }) }}>1 - 5</a>
+                    </Col>
+                    <Col md="4" style={{ textAlign: "center" }}>
+                      <a onClick={() => { this.setState({ Q2_2_B: 2 }) }}>5 - 10</a>
+                    </Col>
+                    <Col md="4" style={{ textAlign: "right" }}>
+                      <a onClick={() => { this.setState({ Q2_2_B: 3 }) }}>> 10</a>
+                    </Col>
+                  </Row>
+                  <Slider
+                    min={1}
+                    max={3}
+                    value={Q2_2_B}
+                    style={{ marginLeft: "15px", marginRight: "15px" }}
+                    onChange={(value) => { this.setState({ Q2_2_B: value }) }}
+                  />
+                </div>
               </Col>
             </Row>
+            <br />
+
             <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
+              <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
                   Who is the funding agency?
                 </label>
-                <TextInput width="95%" />
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Funders`}
+                  query={{
+                    select: ['FunderId', 'FundingAgency'],
+                    orderBy: ['FundingAgency']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let distinctFunders = []
+
+                    if (loading) {
+                      distinctFunders = ["Loading..."]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      if (data && data.value.length > 0) {
+
+                        //Get distinct funders by 'FundingAgency'
+                        data.value.forEach(item => {
+                          if (!distinctFunders.includes(item.FundingAgency)) {
+                            distinctFunders.push(item.FundingAgency)
+                          }
+                        })
+                      }
+                    }
+
+                    return (
+                      <SelectInput
+                        data={distinctFunders.map(x => ({ id: distinctFunders.indexOf(x), text: x }))}
+                        value={Q2_2_C}
+                        callback={(value) => { this.setState({ Q2_2_C: value.text }) }}
+                        allowClear={false}
+                      />
+                    )
+
+                  }}
+                </OData>
               </Col>
             </Row>
+            <br />
+
             <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
+              <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
                   Are there any partnering departments/organisations that share the costs?
                 </label>
-                <TextInput width="95%" />
+
+                <OData
+                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                  {({ loading, error, data }) => {
+
+                    let processedData = []
+
+                    if (loading) {
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        processedData = data.items
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q2_2_D}
+                        callback={(value) => { this.setState({ Q2_2_D: value.text }) }}
+                        allowClear={false}
+                      />
+                    )
+
+                  }}
+                </OData>
+
               </Col>
             </Row>
+            <br />
 
             <Row>
               <Col md="12">
@@ -252,22 +554,22 @@ class Goal2Contrib extends React.Component {
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
-                    onClick={() => { this.setState({ radForumsComitees: 1 }) }}
-                    checked={radForumsComitees === 1 ? true : false}
+                    onClick={() => { this.setState({ Q2_3: 1 }) }}
+                    checked={Q2_3 === 1 ? true : false}
                     label="No."
                     type="radio"
                     id="radFC1"
                   />
                   <Input
-                    onClick={() => { this.setState({ radForumsComitees: 2 }) }}
-                    checked={radForumsComitees === 2 ? true : false}
+                    onClick={() => { this.setState({ Q2_3: 2 }) }}
+                    checked={Q2_3 === 2 ? true : false}
                     label="Only by request in existing administrative and political forums/committees."
                     type="radio"
                     id="radFC2"
                   />
                   <Input
-                    onClick={() => { this.setState({ radForumsComitees: 3 }) }}
-                    checked={radForumsComitees === 3 ? true : false}
+                    onClick={() => { this.setState({ Q2_3: 3 }) }}
+                    checked={Q2_3 === 3 ? true : false}
                     label="Climate change in a standing item in administrative and political provincial, municipal and sector forum/committee agendas."
                     type="radio"
                     id="radFC3"
@@ -278,7 +580,16 @@ class Goal2Contrib extends React.Component {
 
             <Row>
               <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", marginTop: "15px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                <Button
+                  color=""
+                  style={{
+                    marginLeft: "0px",
+                    marginTop: "15px",
+                    backgroundColor: DEAGreen,
+                    color: "black",
+                    fontSize: "16px"
+                  }}
+                  onClick={this.submit} >
                   <b>Submit</b>
                 </Button>
               </Col>
@@ -309,6 +620,28 @@ class Goal2Contrib extends React.Component {
             </Row>
           </Col>
         </Row>
+
+        {/* Message modal */}
+        <Container>
+          <Modal isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
+            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>
+              {this.state.title}
+            </ModalHeader>
+            <ModalBody>
+              <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
+                {_gf.StringToHTML(this.state.message)}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                size="sm"
+                style={{ width: "100px", backgroundColor: DEAGreen }}
+                color="" onClick={() => this.setState({ messageModal: false })} >
+                Close
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </Container>
 
       </>
     )

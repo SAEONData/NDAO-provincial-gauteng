@@ -5,19 +5,25 @@ using System.Threading.Tasks;
 
 namespace CCIS_API.Database.Models
 {
-    public class Goal2
+    public class Goal2 : IGoal
     {
         public Guid Id { get; set; }
 
         public bool DedicatedChampion { get; set; }
         public string DocumentLink { get; set; }
         public bool DedicatedFunding { get; set; }
-        public decimal TotalBudget { get; set; }
-        public string FundingDuration { get; set; }
+        public int TotalBudget { get; set; }
+        public int FundingDuration { get; set; }
+        public string FundingAgency { get; set; }
         public string PartneringDepartments { get; set; }
         public int IncludedInForums { get; set; }
-        public int Status { get; set; }
 
-        public string MetadataLink { get; set; }
+        //Shared fields
+        public string Created { get; set; }
+        public string CreateUserId { get; set; }
+        public string LastUpdated { get; set; }
+        public string LastUpdateUserId { get; set; }
+
+        //public string MetadataLink { get; set; }
     }
 }
