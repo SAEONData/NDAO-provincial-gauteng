@@ -9,7 +9,8 @@ namespace CCIS_API.Database.Models
     {
         public Guid Id { get; set; }
 
-        public int IncludedInForums { get; set; }
+        public int ProfilesAndAssessments { get; set; }
+        public string EvidenceLink { get; set; }
 
         //Shared fields
         public string Created { get; set; }

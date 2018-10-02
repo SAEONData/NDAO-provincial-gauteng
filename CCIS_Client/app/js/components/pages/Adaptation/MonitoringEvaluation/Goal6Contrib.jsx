@@ -2,25 +2,43 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Input } from 'mdbreact'
+import { Row, Col, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, Container } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
+import { apiBaseURL } from '../../../../config/serviceURLs.cfg'
+import FileUpload from '../../../input/FileUpload.jsx'
+import buildQuery from 'odata-query'
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
 
+const o = require("odata")
 const _gf = require('../../../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
-  return {}
+  let user = state.oidc.user
+  return { user }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updateNav: payload => {
       dispatch({ type: "NAV", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
+}
+
+const defaultState = {
+  messageModal: false,
+  message: "",
+  title: "",
+  goalStatus: "R",
+  goalId: _gf.GetUID(),
+  Q6_1: 1,
+  Q6_2: ""
 }
 
 class Goal6Contrib extends React.Component {
@@ -28,19 +46,128 @@ class Goal6Contrib extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      radFC: 1,
-      goalStatus: "R"
-    }
+    this.submit = this.submit.bind(this)
+    this.reset = this.reset.bind(this)
+    this.showMessage = this.showMessage.bind(this)
+
+    this.state = defaultState
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
   }
 
+  componentDidUpdate() {
+    let { editGoalId } = this.props
+    if (editGoalId) {
+      this.getEditGoalData(editGoalId)
+    }
+  }
+
+  async waitForMessageClosed() {
+
+    while (this.state.messageModal === true) {
+      await _gf.wait(250)
+    }
+
+    return true
+  }
+
+  async getEditGoalData(editGoalId) {
+
+    this.props.setLoading(true)
+    this.props.resetEdit()
+
+    //Fetch goal details from server
+    const query = buildQuery({
+      key: { Id: editGoalId }
+    })
+
+    try {
+      let res = await fetch(apiBaseURL + `Goal6${query}`)
+      res = await res.json()
+      if (res.value && res.value.length > 0) {
+        let data = res.value[0]
+        this.setState({
+          goalId: editGoalId,
+          Q6_1: data.ProfilesAndAssessments,
+          Q6_2: data.EvidenceLink
+        })
+      }
+
+      this.props.setLoading(false)
+    }
+    catch (ex) {
+      this.props.setLoading(false)
+      console.error(ex)
+    }
+  }
+
+  async reset() {
+
+    await this.waitForMessageClosed();
+
+    this.setState(defaultState)
+
+    setTimeout(() => {
+      window.scroll({
+        top: 180,
+        left: 0,
+        behavior: 'smooth'
+      })
+    }, 100)
+  }
+
+  async submit() {
+
+    let { goalId, Q6_1, Q6_2 } = this.state
+    let { setLoading, next, user } = this.props
+
+    //Validate
+    // if (Q2_1 == true && Q2_1_A === "") {
+    //   this.showMessage("Required", "Organogram attachment required")
+    //   return
+    // }
+
+    // if (isNaN(Q2_2_A)) {
+    //   this.showMessage("Required", "Total budget must be a number")
+    //   return
+    // }
+
+    setLoading(true)
+
+    //Submit
+    try {
+      let oHandler = await o(apiBaseURL + "Goal6")
+        .post({
+          Id: goalId,
+          ProfilesAndAssessments: Q6_1,
+          EvidenceLink: Q6_2,
+          CreateUserId: user.profile.UserId
+        })
+        .save()
+
+      setLoading(false)
+      this.showMessage("Success", "Goal submitted successfully")
+      setTimeout(this.reset, 250)
+    }
+    catch (ex) {
+      setLoading(false)
+      this.showMessage("An error occurred", ex.message)
+    }
+  }
+
+  showMessage(title, message) {
+    this.setState({
+      title,
+      message,
+      messageModal: true
+    })
+  }
+
   render() {
 
-    let { goalStatus, radFC } = this.state
+    let { goalStatus, goalId, Q6_1, Q6_2 } = this.state
 
     return (
       <>
@@ -120,22 +247,22 @@ class Goal6Contrib extends React.Component {
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
-                    onClick={() => { this.setState({ radFC: 1 }) }}
-                    checked={radFC === 1 ? true : false}
+                    onClick={() => { this.setState({ Q6_1: 1 }) }}
+                    checked={Q6_1 === 1 ? true : false}
                     label="No risk and vulnerability profiles."
                     type="radio"
                     id="radFC1"
                   />
                   <Input
-                    onClick={() => { this.setState({ radFC: 2 }) }}
-                    checked={radFC === 2 ? true : false}
+                    onClick={() => { this.setState({ Q6_1: 2 }) }}
+                    checked={Q6_1 === 2 ? true : false}
                     label="Risk and vulnerability profiles identified."
                     type="radio"
                     id="radFC2"
                   />
                   <Input
-                    onClick={() => { this.setState({ radFC: 3 }) }}
-                    checked={radFC === 3 ? true : false}
+                    onClick={() => { this.setState({ Q6_1: 3 }) }}
+                    checked={Q6_1 === 3 ? true : false}
                     label="Risks, impacts and vulnerabilities addressed in policies, plans and actions."
                     type="radio"
                     id="radFC3"
@@ -145,25 +272,44 @@ class Goal6Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row>
+            <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginTop: "5px" }}>
                   6.2 Add attachments to any evidence:
                 </label>
                 <br />
-                <TextInput width="95%" />
+                <TextInput
+                  width="95%"
+                  value={Q6_2}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q6_2: value })
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="4">
+                <FileUpload
+                  key={"fu_" + goalId}
+                  style={{ marginTop: "-15px", marginBottom: "20px" }}
+                  width="100%"
+                  callback={(fileInfo) => { this.setState({ Q6_2: fileInfo.ViewLink }) }}
+                  goalId={goalId}
+                />
               </Col>
             </Row>
 
             <Row>
               <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}>
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
+                  onClick={this.submit} >
                   <b>Submit</b>
                 </Button>
               </Col>
             </Row>
 
-            <Row style={{ marginTop: "15px"}}>
+            <Row style={{ marginTop: "15px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px", marginTop: "5px" }}>
                   Based on your submission, your Goal 6 status is:
@@ -189,6 +335,28 @@ class Goal6Contrib extends React.Component {
 
           </Col>
         </Row>
+
+        {/* Message modal */}
+        <Container>
+          <Modal isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
+            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>
+              {this.state.title}
+            </ModalHeader>
+            <ModalBody>
+              <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
+                {_gf.StringToHTML(this.state.message)}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                size="sm"
+                style={{ width: "100px", backgroundColor: DEAGreen }}
+                color="" onClick={() => this.setState({ messageModal: false })} >
+                Close
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </Container>
 
       </>
     )
