@@ -3,13 +3,14 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import {
-  SideNav as MSBSideNav, SideNavNav, SideNavCat, SideNavItem, Fa, Container, Button,
-  Modal, ModalHeader, ModalFooter, ModalBody, Row, Col
+  SideNav as MSBSideNav, Fa, SideNavItem, SideNavCat, SideNavNav, SideNavLink, Container, Row, Button,
+  Modal, ModalBody, ModalHeader, ModalFooter
 } from 'mdbreact'
 import { DEAGreen } from '../../config/colours.cfg'
 import TreeInput from '../input/TreeInput.jsx'
 
 import '../../../css/mdbreact-sidenav.css'
+import loader from '../../../images/ajax-loader.gif'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -74,12 +75,11 @@ class SideNav extends React.Component {
       if (typeof x.children !== 'undefined') {
         links.push(
           <SideNavCat
-            style={{ fontSize: "15px", fontWeight: "400" }}
-            isOpen={navOpen.includes(x.id)}
-            key={x.id}
-            onClick={() => this.toggleNav(x.id)}
+            id={"cat_" + x.id}
+            key={"cat_" + x.id}
             name={x.text + " "}
-            /*icon="chevron-right"*/ >
+            icon="chevron-right"
+          >
             {this.renderLinks(x.children, level + 1)}
           </SideNavCat>
         )
@@ -87,23 +87,28 @@ class SideNav extends React.Component {
       else {
         if (typeof x.link !== 'undefined') {
           links.push(
-            <SideNavItem key={x.id} onClick={() => this.showContent(x.link, x.text)} style={{ marginTop: "3px", marginLeft: "-20px" }}>
-              <Fa style={{ marginRight: "5px" }} icon="link" />
+            <SideNavItem
+              key={"lnk_" + x.id}
+              onClick={() => {
+                this.showContent(x.link, x.text)
+              }}
+            >
+              <Fa style={{ marginRight: "10px" }} icon="link" />
               {x.text}
             </SideNavItem>
           )
         }
         else {
           links.push(
-            <SideNavItem key={x.id} style={{ marginTop: "3px", marginLeft: "-20px" }}>
-              <Fa style={{ marginRight: "5px" }} icon="unlink" />
+            <SideNavItem
+              key={"lnk_" + x.id}
+            >
+              <Fa style={{ marginRight: "10px" }} icon="unlink" />
               {x.text}
             </SideNavItem>
           )
         }
       }
-
-
     })
 
     return links
@@ -111,7 +116,7 @@ class SideNav extends React.Component {
 
   closeModal() {
     this.setState({ showContent: false })
-    this.props.toggleSideNav(false)
+    //this.props.toggleSideNav(false)
   }
 
   showContent(link, title) {
@@ -128,127 +133,59 @@ class SideNav extends React.Component {
     return (
       <>
 
-        {/* <MSBSideNav isOpenWithButton={isOpen} className="white side-nav-light">
+        <MSBSideNav hidden triggerOpening={isOpen} breakWidth={1300} className="white side-nav-light">
+
+          <div className="text-center" style={{ color: "black", marginBottom: "-5px" }}>
+            {data.logoTop &&
+              <img src={data.logoTop.src} style={{ width: data.logoTop.width, marginTop: "15px" }} />
+            }
+            <hr />
+            <h4>{data.title}</h4>
+            <hr />
+          </div>
+
+          <SideNavNav>
+            {this.renderLinks(data.nav)}
+          </SideNavNav>
+
+          <hr />
+          <div className="text-center">
+            {data.logoBottom &&
+              <img src={data.logoBottom.src} style={{ width: data.logoBottom.width }} />
+            }
+          </div>
+
+        </MSBSideNav>
+
+        <Modal
+          isOpen={showContent}
+          toggle={() => this.closeModal()}
+          style={{ width: (width - sideNavWidth - 5) + "px" }}
+          size="fluid"
+          fullHeight position="right"
+        >
           <ModalHeader toggle={() => this.closeModal()}>
-            <div className="text-center" style={{ color: "black", marginBottom: "-5px" }}>
-              {data.logoTop &&
-                <img src={data.logoTop.src} style={{ width: data.logoTop.width }} />
-              }
-              <hr />
-              <h4>{data.title}</h4>
-            </div>
+            <h4 style={{ marginBottom: "0px" }}>
+              {contentTitle}
+            </h4>
           </ModalHeader>
           <ModalBody>
-            <SideNavNav style={{ marginLeft: "-25px", marginTop: "-24px" }}>
-              {this.renderLinks(data.nav)}
-            </SideNavNav>
-            <ModalFooter>
-              <div className="text-center">
-                {data.logoBottom &&
-                  <img src={data.logoBottom.src} style={{ width: data.logoBottom.width }} />
-                }
-              </div>
-            </ModalFooter>
+            <iframe
+              style={{
+                marginLeft: "-15px",
+                marginRight: "0px",
+                marginTop: "-15px",
+                marginBottom: "-20px",
+                width: (width - sideNavWidth - 5) + "px",
+                height: (height - 70) + "px",
+                border: "0px solid black",
+                backgroundImage: `url(${loader})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "50% 50%"
+              }}
+              src={contentLink}
+            />
           </ModalBody>
-
-          {showContent &&
-            <Container style={{
-              backgroundColor: "white",
-              width: (width - sideNavWidth - 45) + "px",
-              height: (height - 30) + "px",
-              top: "15px",
-              left: (sideNavWidth + 15) + "px",
-              position: "fixed"
-            }}>
-
-              <h4 style={{ margin: "0px -15px 0px -15px", padding: "5px 10px 5px 10px", backgroundColor: "gainsboro", borderBottom: "1px solid grey" }}>
-                {contentTitle}
-              </h4>
-              <Button
-                color="grey"
-                size="sm"
-                style={{ padding: "3px 6px 3px 6px", position: "absolute", top: "2px", right: "5px" }}
-                onClick={() => { this.setState({ showContent: false, contentLink: "", contentTitle: "" }) }}>
-                <Fa icon="close" />
-              </Button>
-              <iframe
-                style={{
-                  marginLeft: "-15px",
-                  marginRight: "0px",
-                  marginTop: "0px",
-                  marginBottom: "0px",
-                  width: (width - sideNavWidth - 45) + "px",
-                  height: (height - 70) + "px",
-                  border: "0px solid black"
-                }}
-                src={contentLink}
-              />
-
-            </Container>
-          }
-        </MSBSideNav> */}
-
-        <Modal key={"side-nav-" + isOpen} isOpen={isOpen} toggle={() => this.closeModal()} fullHeight position="left"
-          style={{ width: sideNavWidth + "px" }} className={"animated slideInLeft fast"}>
-
-          <ModalHeader toggle={() => this.closeModal()}>
-            <div className="text-center" style={{ color: "black", marginBottom: "-5px" }}>
-              {data.logoTop &&
-                <img src={data.logoTop.src} style={{ width: data.logoTop.width }} />
-              }
-              <hr />
-              <h4>{data.title}</h4>
-            </div>
-          </ModalHeader>
-          <ModalBody>
-            <SideNavNav style={{ marginLeft: "-25px", marginTop: "-24px" }}>
-              {this.renderLinks(data.nav)}
-            </SideNavNav>
-            <ModalFooter>
-              <div className="text-center">
-                {data.logoBottom &&
-                  <img src={data.logoBottom.src} style={{ width: data.logoBottom.width }} />
-                }
-              </div>
-            </ModalFooter>
-          </ModalBody>
-
-          {showContent &&
-            <Container style={{
-              backgroundColor: "white",
-              width: (width - sideNavWidth - 45) + "px",
-              height: (height - 30) + "px",
-              top: "15px",
-              left: (sideNavWidth + 15) + "px",
-              position: "absolute"
-            }}>
-
-              <h4 style={{ margin: "0px -15px 0px -15px", padding: "5px 10px 5px 10px", backgroundColor: "gainsboro", borderBottom: "1px solid grey" }}>
-                {contentTitle}
-              </h4>
-              <Button
-                color="grey"
-                size="sm"
-                style={{ padding: "3px 6px 3px 6px", position: "absolute", top: "2px", right: "5px" }}
-                onClick={() => { this.setState({ showContent: false, contentLink: "", contentTitle: "" }) }}>
-                <Fa icon="close" />
-              </Button>
-              <iframe
-                style={{
-                  marginLeft: "-15px",
-                  marginRight: "0px",
-                  marginTop: "0px",
-                  marginBottom: "0px",
-                  width: (width - sideNavWidth - 45) + "px",
-                  height: (height - 70) + "px",
-                  border: "0px solid black"
-                }}
-                src={contentLink}
-              />
-
-            </Container>
-          }
-
         </Modal>
       </>
     )
