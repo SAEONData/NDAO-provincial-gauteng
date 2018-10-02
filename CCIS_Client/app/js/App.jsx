@@ -19,7 +19,10 @@ import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
+import SideNav from './components/navigation/SideNav.jsx'
 
+//Data
+const NavData = require('../data/sideNavData')
 const _gf = require('./globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -91,7 +94,7 @@ class App extends React.Component {
             {navbar && <Header />}
             {navbar && <Navbar />}
 
-            {/* <SideNav style={{ width: "500px"}} isOpen={showSideNav} /> */}
+            <SideNav data={NavData.data} isOpen={showSideNav} />
 
             <Switch>
               <Route path="/" component={Home} exact />
