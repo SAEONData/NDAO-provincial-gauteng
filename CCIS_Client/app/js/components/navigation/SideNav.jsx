@@ -10,7 +10,7 @@ import { DEAGreen } from '../../config/colours.cfg'
 import TreeInput from '../input/TreeInput.jsx'
 
 import '../../../css/mdbreact-sidenav.css'
-import loader from '../../../images/ajax-loader.gif'
+import loader from '../../../images/loader.gif'
 
 const mapStateToProps = (state, props) => {
   return {}
