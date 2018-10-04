@@ -4,6 +4,8 @@ import React from 'react'
 import * as globalFunctions from '../../globalFunctions'
 import { Col, Row, Container, Footer as MDBFooter, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
 
+import loader from '../../../images/ajax-loader.gif'
+
 // Properties:
 //  - source : Component label
 //  - width : Width; Default - 100%
@@ -51,7 +53,10 @@ class HostedContentFrame extends React.Component {
                   width: width,
                   height: height,
                   margin: "0px",
-                  border: "1px solid gainsboro"
+                  border: "1px solid gainsboro",
+                  backgroundImage: `url(${loader})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "50% 50%"
                 }}
                 src={source}
               />
