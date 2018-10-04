@@ -52,7 +52,7 @@ namespace CCIS_API.Controllers
                 }
 
                 //ADD
-                HelperExtensions.ClearIdentityValue(goal);
+                //HelperExtensions.ClearIdentityValue(goal);
                 HelperExtensions.ClearNullableInts(goal);
                 _context.Goal1.Add(goal);
                 await _context.SaveChangesAsync();

@@ -20,6 +20,7 @@ import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 import SideNav from './components/navigation/SideNav.jsx'
+import { processSilentRenew } from 'redux-oidc'
 
 //Data
 const NavData = require('../data/sideNavData')
@@ -49,6 +50,7 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+    processSilentRenew()
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
   }

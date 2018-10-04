@@ -54,8 +54,7 @@ class Goal1Contrib extends React.Component {
     this.NCCRD_CloseCallback = this.NCCRD_CloseCallback.bind(this)
     this.reset = this.reset.bind(this)
     this.submit = this.submit.bind(this)
-    this.showMessage = this.showMessage.bind(this)
-
+    this.showMessage = this.showMessage.bind(this)   
     this.state = defaultState
   }
 
@@ -68,6 +67,9 @@ class Goal1Contrib extends React.Component {
   }
 
   componentDidMount() {
+
+    console.log("GoalId", defaultState.goalId)
+
     let { updateNav } = this.props
     updateNav(location.hash)
   }
@@ -126,6 +128,14 @@ class Goal1Contrib extends React.Component {
     }
 
     setLoading(true)
+
+    console.log("POST", JSON.stringify({
+      Id: goalId,
+      DocumentLink: Q1_1,
+      HasAssessment: Q1_3,
+      DocLastUpdated: Q1_4,
+      CreateUserId: user.profile.UserId
+    }))
 
     //Submit
     try {
@@ -396,7 +406,7 @@ class Goal1Contrib extends React.Component {
         <br />
 
         {showNCCRD &&
-          <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />
+          <NCCRD goalId={goalId} closeCallback={() => { this.setState({ showNCCRD: false }) }} />
         }
 
         {/* Message modal */}

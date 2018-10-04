@@ -13,7 +13,8 @@ module.exports = {
   devtool: 'inline-source-map',
   mode,
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 8091
   },
   entry: {
     app: ["babel-polyfill", './js/index.jsx'],

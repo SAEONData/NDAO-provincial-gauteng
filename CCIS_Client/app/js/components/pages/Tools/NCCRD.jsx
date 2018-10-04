@@ -3,6 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
+import { ccrdSiteBaseURL } from '../../../config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -28,15 +29,21 @@ class NCCRD extends React.Component {
 
   render() {
 
-    let { closeCallback } = this.props
+    let { closeCallback, goalId } = this.props
+
+    let url = `${ccrdSiteBaseURL}projects?navbar=hidden`
+    if(goalId){
+      url = url + `&daoid=${goalId}`
+    }
 
     return (
       <>
         <br />
         <HostedContentFrame
           title="Climate Change Responses"
-          source="http://app01.saeon.ac.za/nccrdsite/#/projects/add?navbar=hidden"
+          source={url}
           closeCallback={closeCallback}
+          showSource={true}
          />
       </>
     )
