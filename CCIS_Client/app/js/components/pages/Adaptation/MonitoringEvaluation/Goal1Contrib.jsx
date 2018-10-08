@@ -8,7 +8,7 @@ import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/co
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
-import { apiBaseURL } from '../../../../config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
 import buildQuery from 'odata-query'
 
@@ -54,7 +54,9 @@ class Goal1Contrib extends React.Component {
     this.NCCRD_CloseCallback = this.NCCRD_CloseCallback.bind(this)
     this.reset = this.reset.bind(this)
     this.submit = this.submit.bind(this)
-    this.showMessage = this.showMessage.bind(this)   
+    this.showMessage = this.showMessage.bind(this)
+    this.assessGoalStatus = this.assessGoalStatus.bind(this)
+
     this.state = defaultState
   }
 
@@ -74,14 +76,16 @@ class Goal1Contrib extends React.Component {
     updateNav(location.hash)
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     let { editGoalId } = this.props
-    if(editGoalId){
+    if (editGoalId) {
       this.getEditGoalData(editGoalId)
-    }   
+    }
+
+    this.assessGoalStatus()
   }
 
-  async getEditGoalData(editGoalId){
+  async getEditGoalData(editGoalId) {
 
     this.props.setLoading(true)
     this.props.resetEdit()
@@ -91,10 +95,10 @@ class Goal1Contrib extends React.Component {
       key: { Id: editGoalId }
     })
 
-    try{
+    try {
       let res = await fetch(apiBaseURL + `Goal1${query}`)
       res = await res.json()
-      if(res.value && res.value.length > 0){
+      if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           goalId: editGoalId,
@@ -103,10 +107,10 @@ class Goal1Contrib extends React.Component {
           Q1_4: data.DocLastUpdated
         })
       }
-      
+
       this.props.setLoading(false)
     }
-    catch(ex){
+    catch (ex) {
       this.props.setLoading(false)
       console.error(ex)
     }
@@ -141,10 +145,10 @@ class Goal1Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goal1', {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
-         },
+        },
         body: JSON.stringify({
           Id: goalId,
           DocumentLink: Q1_1,
@@ -185,7 +189,7 @@ class Goal1Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState( { ...defaultState, goalId: _gf.GetUID() })
+    this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({
@@ -194,6 +198,73 @@ class Goal1Contrib extends React.Component {
         behavior: 'smooth'
       })
     }, 100)
+  }
+
+  async assessGoalStatus() {
+
+    let { goalStatus, goalId, Q1_1 } = this.state
+    let statusValues = ["R", "A", "G"]
+    let goalStatusNew = 0
+
+    //Checkpoint 1 - Document Link
+    if (!_gf.isEmptyValue(Q1_1)) {
+      goalStatusNew += 1
+    }
+
+    //Checkpoint 2 - Ataptation/Mitigation >> Operational/Complete
+    let query = buildQuery({
+      filter: {
+        AdaptationDetails: {
+          any: {
+            ProjectStatusId: {
+              gt: 1
+            }
+          }
+        }
+      },
+      filter: {
+        MitigationDetails: {
+          any: {
+            ProjectStatusId: {
+              gt: 1
+            }
+          }
+        }
+      },
+      filter: {
+        LinkedDAOGoalId: {
+          eq: {
+            type: 'guid',
+            value: goalId
+          }
+        }
+      }
+    })
+
+    try {
+
+      let res = await fetch(`${ccrdBaseURL}Projects${query}`)
+
+      if (!res.ok) {
+        //Get response body
+        res = await res.json()
+        throw new Error(res.error.message)
+      }
+      else {
+        res = await res.json()
+        if(res.value && res.value.length > 0){
+          goalStatusNew += 1
+        }
+      }
+    }
+    catch (ex) {
+      console.error(ex)
+    }
+
+    //Conclusion
+    if (statusValues[goalStatusNew] !== goalStatus) {
+      this.setState({ goalStatus: statusValues[goalStatusNew] })
+    }
   }
 
   render() {

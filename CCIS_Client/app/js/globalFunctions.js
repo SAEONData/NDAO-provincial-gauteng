@@ -12,7 +12,7 @@ export function fixEmptyValue(value, defaultValue) {
 }
 
 export function isEmptyValue(value){
-  return (typeof value === 'undefined' || value === "" || value === undefined)
+  return (typeof value === 'undefined' || value === "" || value === undefined || value === null)
 }
 
 export function getFontColour(editMode) {
