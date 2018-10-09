@@ -65,6 +65,7 @@ class Goal2Contrib extends React.Component {
     this.submit = this.submit.bind(this)
     this.reset = this.reset.bind(this)
     this.showMessage = this.showMessage.bind(this)
+    this.assessGoalStatus = this.assessGoalStatus.bind(this)
 
     this.state = defaultState
   }
@@ -78,6 +79,63 @@ class Goal2Contrib extends React.Component {
     if (editGoalId) {
       this.getEditGoalData(editGoalId)
     }
+
+    this.assessGoalStatus()
+  }
+
+  assessGoalStatus(){
+
+    let { goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_3 } = this.state
+    let newGoalStatus = "R"
+    let redPoints = 0
+    let amberPoints = 0
+    let greenPoints = 0
+   
+    //Check red conditions
+    if(Q2_1 === false){
+      redPoints += 1
+    }
+    if(Q2_2 === false){
+      redPoints += 1
+    }
+    if(Q2_3 === 1){
+      redPoints += 1
+    }
+
+    //Check amber conditions
+    if(Q2_1 === true){
+      amberPoints += 1
+    }
+    if(Q2_3 === 2){
+      amberPoints += 1
+    }
+
+    //Check green conditions
+    if(Q2_1 === true && !_gf.isEmptyValue(Q2_1_A)){
+      greenPoints += 1
+    }
+    if(Q2_2 === true){
+      greenPoints += 1
+    }
+    if(Q2_3 === 3){
+      greenPoints += 1
+    }
+
+    //Parse result to status colour    
+    if(greenPoints === 3){
+      newGoalStatus = "G"
+    }
+    else if(redPoints <= 1 || amberPoints > 0){
+      newGoalStatus = "A"
+    }
+    else if(redPoints >= 2){
+      newGoalStatus = "R"
+    }
+
+    //Update status
+    if (newGoalStatus !== goalStatus) {
+      this.setState({ goalStatus: newGoalStatus })
+    }   
   }
 
   async waitForMessageClosed() {
