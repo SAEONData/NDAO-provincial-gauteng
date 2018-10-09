@@ -83,59 +83,59 @@ class Goal2Contrib extends React.Component {
     this.assessGoalStatus()
   }
 
-  assessGoalStatus(){
+  assessGoalStatus() {
 
     let { goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_3 } = this.state
     let newGoalStatus = "R"
     let redPoints = 0
     let amberPoints = 0
     let greenPoints = 0
-   
+
     //Check red conditions
-    if(Q2_1 === false){
+    if (Q2_1 === false) {
       redPoints += 1
     }
-    if(Q2_2 === false){
+    if (Q2_2 === false) {
       redPoints += 1
     }
-    if(Q2_3 === 1){
+    if (Q2_3 === 1) {
       redPoints += 1
     }
 
     //Check amber conditions
-    if(Q2_1 === true){
+    if (Q2_1 === true) {
       amberPoints += 1
     }
-    if(Q2_3 === 2){
+    if (Q2_3 === 2) {
       amberPoints += 1
     }
 
     //Check green conditions
-    if(Q2_1 === true && !_gf.isEmptyValue(Q2_1_A)){
+    if (Q2_1 === true && !_gf.isEmptyValue(Q2_1_A)) {
       greenPoints += 1
     }
-    if(Q2_2 === true){
+    if (Q2_2 === true) {
       greenPoints += 1
     }
-    if(Q2_3 === 3){
+    if (Q2_3 === 3) {
       greenPoints += 1
     }
 
     //Parse result to status colour    
-    if(greenPoints === 3){
+    if (greenPoints === 3) {
       newGoalStatus = "G"
     }
-    else if(redPoints <= 1 || amberPoints > 0){
+    else if (redPoints <= 1 || amberPoints > 0) {
       newGoalStatus = "A"
     }
-    else if(redPoints >= 2){
+    else if (redPoints >= 2) {
       newGoalStatus = "R"
     }
 
     //Update status
     if (newGoalStatus !== goalStatus) {
       this.setState({ goalStatus: newGoalStatus })
-    }   
+    }
   }
 
   async waitForMessageClosed() {
@@ -187,7 +187,7 @@ class Goal2Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState( { ...defaultState, goalId: _gf.GetUID() })
+    this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({
@@ -220,7 +220,7 @@ class Goal2Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goal2', {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
@@ -403,7 +403,12 @@ class Goal2Contrib extends React.Component {
                 <TextInput
                   width="95%"
                   value={Q2_1_A}
-                  callback={(value) => { this.setState({ Q2_1_A: value }) }} />
+                  callback={(value) => { 
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q2_1_A: value }) 
+                  }}
+                  readOnly={true}
+                />
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>

@@ -28,7 +28,7 @@ class TextInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, allowEdit, hint, type, width, height, value } = this.props
+    let { label, tooltip, allowEdit, hint, type, width, height, value, readOnly } = this.props
 
     label = globalFunctions.fixEmptyValue(label, "")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
@@ -58,7 +58,7 @@ class TextInput extends React.Component {
         <Input disabled={!allowEdit} size="sm"
           style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: width, height: height, fontSize: "15px", border: "1px solid lightgrey", borderRadius: "5px", padding: "5px" }}
           onChange={this.onChange.bind(this)} hint={hint} type={type}
-          value={value} />
+          value={value} readOnly={readOnly} />
       </>
     )
   }

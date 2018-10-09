@@ -338,6 +338,7 @@ class Goal9Contrib extends React.Component {
                     value = _gf.fixEmptyValue(value, "")
                     this.setState({ Q9_2: value })
                   }}
+                  readOnly={true}
                 />
               </Col>
             </Row>
