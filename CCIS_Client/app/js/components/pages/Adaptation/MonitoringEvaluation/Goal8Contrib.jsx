@@ -31,6 +31,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const defaultState = {
+  editing: false,
   messageModal: false,
   message: "",
   title: "",
@@ -131,6 +132,7 @@ class Goal8Contrib extends React.Component {
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
+          editing: true,
           goalId: editGoalId,
           Q8_1: data.NonClimateChange,
           Q8_2: data.EvidenceLink
@@ -162,7 +164,7 @@ class Goal8Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, Q8_1, Q8_2 } = this.state
+    let {  goalId, Q8_1, Q8_2 } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -202,6 +204,8 @@ class Goal8Contrib extends React.Component {
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
+      await this.waitForMessageClosed()
+      this.reset()
     }
     catch (ex) {
       setLoading(false)
@@ -220,7 +224,7 @@ class Goal8Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, goalId, Q8_1, Q8_2 } = this.state
+    let { editing, goalStatus, goalId, Q8_1, Q8_2 } = this.state
 
     return (
       <>
@@ -369,7 +373,7 @@ class Goal8Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>Submit</b>
+                  <b>{editing === true ? "Update" : "Add"}</b>
                 </Button>
               </Col>
             </Row>

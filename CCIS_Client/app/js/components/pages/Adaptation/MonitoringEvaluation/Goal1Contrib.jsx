@@ -35,6 +35,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const defaultState = {
+  editing: false,
   messageModal: false,
   message: "",
   title: "",
@@ -101,6 +102,7 @@ class Goal1Contrib extends React.Component {
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
+          editing: true,
           goalId: editGoalId,
           Q1_1: data.DocumentLink,
           Q1_3: data.HasAssessment,
@@ -252,7 +254,7 @@ class Goal1Contrib extends React.Component {
       }
       else {
         res = await res.json()
-        if(res.value && res.value.length > 0){
+        if (res.value && res.value.length > 0) {
           goalStatusNew += 1
         }
       }
@@ -269,7 +271,7 @@ class Goal1Contrib extends React.Component {
 
   render() {
 
-    let { goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4 } = this.state
+    let { editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4 } = this.state
 
     return (
       <>
@@ -444,7 +446,7 @@ class Goal1Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit}>
-                  <b>Submit</b>
+                  <b>{editing === true ? "Update" : "Add"}</b>
                 </Button>
               </Col>
             </Row>

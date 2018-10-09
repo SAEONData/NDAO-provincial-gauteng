@@ -37,6 +37,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const defaultState = {
+  editing: false,
   messageModal: false,
   message: "",
   title: "",
@@ -150,6 +151,7 @@ class Goal3Contrib extends React.Component {
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
+          editing: true,
           goalId: editGoalId,
           Q3_1: data.DisseminationUtilisation,
           Q3_2: data.MonitoringForcasting,
@@ -229,6 +231,8 @@ class Goal3Contrib extends React.Component {
 
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
+      await this.waitForMessageClosed()
+      this.reset()
     }
     catch (ex) {
       setLoading(false)
@@ -247,7 +251,7 @@ class Goal3Contrib extends React.Component {
 
   render() {
 
-    let { goalStatus, goalId, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D } = this.state
+    let { editing, goalStatus, goalId, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D } = this.state
 
     return (
       <>
@@ -614,7 +618,7 @@ class Goal3Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>Submit</b>
+                  <b>{editing === true ? "Update" : "Add"}</b>
                 </Button>
               </Col>
             </Row>
