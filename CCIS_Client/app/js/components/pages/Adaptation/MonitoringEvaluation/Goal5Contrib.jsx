@@ -59,6 +59,7 @@ class Goal5Contrib extends React.Component {
     this.submit = this.submit.bind(this)
     this.reset = this.reset.bind(this)
     this.showMessage = this.showMessage.bind(this)
+    this.assessGoalStatus = this.assessGoalStatus.bind(this)
 
     this.state = defaultState
   }
@@ -72,6 +73,48 @@ class Goal5Contrib extends React.Component {
     if (editGoalId) {
       this.getEditGoalData(editGoalId)
     }
+
+    this.assessGoalStatus()
+  }
+
+  assessGoalStatus(){
+
+    let { goalStatus, Q5_1 } = this.state
+    let newGoalStatus = "R"
+    let redPoints = 0
+    let amberPoints = 0
+    let greenPoints = 0
+   
+    //Check red conditions
+    if(Q5_1 === 1){
+      redPoints += 1
+    }
+
+    //Check amber conditions
+    if(Q5_1 === 2){
+      amberPoints += 1
+    }
+
+    //Check green conditions
+    if(Q5_1 === 3){
+      greenPoints += 1
+    }
+
+    //Parse result to status colour    
+    if(greenPoints > 0){
+      newGoalStatus = "G"
+    }
+    else if(amberPoints > 0){
+      newGoalStatus = "A"
+    }
+    else if(redPoints > 0){
+      newGoalStatus = "R"
+    }
+
+    //Update status
+    if (newGoalStatus !== goalStatus) {
+      this.setState({ goalStatus: newGoalStatus })
+    }   
   }
 
   async waitForMessageClosed() {
