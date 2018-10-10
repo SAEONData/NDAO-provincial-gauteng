@@ -124,7 +124,7 @@ class Goal1Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, Q1_1, Q1_3, Q1_4 } = this.state
+    let { goalId, goalStatus, Q1_1, Q1_3, Q1_4 } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -134,14 +134,6 @@ class Goal1Contrib extends React.Component {
     }
 
     setLoading(true)
-
-    console.log("POST", JSON.stringify({
-      Id: goalId,
-      DocumentLink: Q1_1,
-      HasAssessment: Q1_3,
-      DocLastUpdated: Q1_4,
-      CreateUserId: user.profile.UserId
-    }))
 
     //Submit
     try {
@@ -156,7 +148,8 @@ class Goal1Contrib extends React.Component {
           DocumentLink: Q1_1,
           HasAssessment: Q1_3,
           DocLastUpdated: Q1_4,
-          CreateUserId: user.profile.UserId
+          CreateUserId: user.profile.UserId,
+          Status: goalStatus
         })
       })
 

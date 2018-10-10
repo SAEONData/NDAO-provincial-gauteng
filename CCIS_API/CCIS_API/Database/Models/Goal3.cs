@@ -15,6 +15,7 @@ namespace CCIS_API.Database.Models
         public int BudgetDuration { get; set; }
         public string FundingAgency { get; set; }
         public string PartneringDepartments { get; set; }
+        public string Status { get; set; }
 
         //Shared fields
         public string Created { get; set; }

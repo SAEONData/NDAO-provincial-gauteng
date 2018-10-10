@@ -202,7 +202,7 @@ class Goal2Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3 } = this.state
+    let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3 } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -236,7 +236,8 @@ class Goal2Contrib extends React.Component {
           FundingAgency: Q2_2_C,
           PartneringDepartments: Q2_2_D,
           IncludedInForums: Q2_3,
-          CreateUserId: user.profile.UserId
+          CreateUserId: user.profile.UserId,
+          Status: goalStatus
         })
       })
 

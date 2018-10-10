@@ -164,7 +164,7 @@ class Goal8Contrib extends React.Component {
 
   async submit() {
 
-    let {  goalId, Q8_1, Q8_2 } = this.state
+    let {  goalId, goalStatus, Q8_1, Q8_2 } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -192,7 +192,8 @@ class Goal8Contrib extends React.Component {
           Id: goalId,
           NonClimateChange: Q8_1,
           EvidenceLink: Q8_2,
-          CreateUserId: user.profile.UserId
+          CreateUserId: user.profile.UserId,
+          Status: goalStatus
         })
       })
 

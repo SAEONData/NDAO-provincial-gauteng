@@ -179,7 +179,7 @@ class Goal5Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, Q5_1, Q5_2, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D } = this.state
+    let { goalId, goalStatus, Q5_1, Q5_2, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -211,7 +211,8 @@ class Goal5Contrib extends React.Component {
           BudgetDuration: Q5_3_B,
           FundingAgency: Q5_3_C,
           PartneringDepartments: Q5_3_D,
-          CreateUserId: user.profile.UserId
+          CreateUserId: user.profile.UserId,
+          Status: goalStatus
         })
       })
 
