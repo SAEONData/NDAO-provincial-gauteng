@@ -20,9 +20,11 @@ import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 import SideNav from './components/navigation/SideNav.jsx'
-import { processSilentRenew } from 'redux-oidc'
+//import { processSilentRenew } from 'redux-oidc'
+import userManager from './components/Authentication/userManager'
 
 //Data
+const Oidc = require("oidc-client")
 const NavData = require('../data/sideNavData')
 const _gf = require('./globalFunctions')
 
@@ -30,6 +32,10 @@ const mapStateToProps = (state, props) => {
   let { general: { loading, showSideNav } } = state
   return { loading, showSideNav }
 }
+
+//Enable OIDC Logging
+Oidc.Log.logger = console
+Oidc.Log.level = Oidc.Log.INFO
 
 class App extends React.Component {
 
@@ -50,9 +56,10 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    processSilentRenew()
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
+
+    userManager.signinSilent()
   }
 
   ignoreURL(){
