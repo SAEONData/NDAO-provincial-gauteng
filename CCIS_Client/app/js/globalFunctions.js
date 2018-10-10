@@ -116,3 +116,41 @@ export function ReadCookie(name) {
   }
   return null;
 } 
+
+//Data requires the following columns in order
+// 1) An ID column.
+// 2) a Value/Text column.
+// 3) a ParentId column. The name must be the ID column's name with Parent prepended.
+export function TransformDataToTree(effectiveData, globalData, level = 0) {
+
+  let treeNodes = []
+
+  if (effectiveData && effectiveData.length > 0) {
+    let parentIdKey = "Parent" + Object.keys(effectiveData[0])[0].toString()
+
+    if (typeof globalData === 'undefined') {
+      globalData = effectiveData
+    }
+
+    if (level === 0) {
+      effectiveData = effectiveData.filter(x => x[parentIdKey] === null)
+    }
+
+    effectiveData.map(item => {
+
+      let newTreeNode = {
+        id: item[Object.keys(item)[0]],
+        text: item[Object.keys(item)[1]],
+      }
+
+      let children = globalData.filter(x => x[parentIdKey] == newTreeNode.id)
+      if (children.length > 0) {
+        newTreeNode.children = this.TransformDataToTree(children, globalData, (level + 1))
+      }
+
+      treeNodes.push(newTreeNode)
+    })
+  }
+
+  return treeNodes
+}

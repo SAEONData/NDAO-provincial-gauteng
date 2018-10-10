@@ -7,6 +7,9 @@ namespace CCIS_API.Database.Models
 {
     public interface IGoal
     {
+        string Status { get; set; }
+        int RegionId { get; set; }
+
         string Created { get; set; }
         string CreateUserId { get; set; }
         string LastUpdated { get; set; }

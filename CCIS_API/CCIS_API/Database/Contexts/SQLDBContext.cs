@@ -18,6 +18,7 @@ namespace CCIS_API.Database.Contexts
         public DbSet<Goal7> Goal7 { get; set; }
         public DbSet<Goal8> Goal8 { get; set; }
         public DbSet<Goal9> Goal9 { get; set; }
+        public DbSet<StatusHistory> StatusHistory { get; set; }
 
         public SQLDBContext() : base() { }
 

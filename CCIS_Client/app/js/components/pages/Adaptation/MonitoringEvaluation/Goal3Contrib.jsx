@@ -48,7 +48,8 @@ const defaultState = {
   Q3_3_A: 1,
   Q3_3_B: 1,
   Q3_3_C: "",
-  Q3_3_D: ""
+  Q3_3_D: "",
+  Q3_4: 0 //Region
 }
 
 class Goal3Contrib extends React.Component {
@@ -159,6 +160,7 @@ class Goal3Contrib extends React.Component {
           Q3_3_B: data.BudgetDuration,
           Q3_3_C: data.FundingAgency,
           Q3_3_D: data.PartneringDepartments,
+          Q3_4: data.RegionId
         })
       }
 
@@ -187,7 +189,7 @@ class Goal3Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D } = this.state
+    let { goalId, goalStatus, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4 } = this.state
     let { setLoading, next, user } = this.props
 
     //Validate
@@ -220,7 +222,8 @@ class Goal3Contrib extends React.Component {
           FundingAgency: Q3_3_C,
           PartneringDepartments: Q3_3_D,
           CreateUserId: user.profile.UserId,
-          Status: goalStatus
+          Status: goalStatus,
+          RegionId: Q3_4
         })
       })
 
@@ -252,7 +255,7 @@ class Goal3Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D } = this.state
+    let { editing, goalStatus, goalId, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4 } = this.state
 
     return (
       <>
@@ -614,6 +617,63 @@ class Goal3Contrib extends React.Component {
               </Col>
             </Row>
             <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  3.4 What is the effective region for this goal?
+                </label>
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Regions`}
+                  query={{
+                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
+                    orderBy: ['RegionName']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let regions = []
+
+                    if (loading) {
+                      regions = [{ id: 1, text: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data && data.value.length > 0) {
+                      regions = data.value
+                    }
+
+                    //Get current value
+                    let value = ""
+                    if (regions && regions.length > 0) {
+                      let f = regions.filter(x => x.RegionId == Q3_4)
+                      if (f && f.length > 0 && f[0].RegionName) {
+                        value = f[0].RegionName
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={_gf.TransformDataToTree(regions)}
+                        allowClear={true}
+                        value={value}
+                        callback={(value) => { this.setState({ Q3_4: value.id }) }}
+                        placeHolder={"National"}
+                      />
+                    )
+
+                  }}
+                </OData>
+
+                <label style={{ fontSize: "14px", marginTop: "5px" }}>
+                  <i>* Leave empty for National</i>
+                </label>
+              </Col>
+            </Row>
+            <br />            
 
             <Row>
               <Col md="4">

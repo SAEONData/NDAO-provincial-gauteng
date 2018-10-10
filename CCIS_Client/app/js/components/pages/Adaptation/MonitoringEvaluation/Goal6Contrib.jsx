@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, Container } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
-import { apiBaseURL } from '../../../../config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL } from '../../../../config/serviceURLs.cfg'
 import FileUpload from '../../../input/FileUpload.jsx'
+import OData from 'react-odata'
 import buildQuery from 'odata-query'
+import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
@@ -38,7 +40,8 @@ const defaultState = {
   goalStatus: "R",
   goalId: _gf.GetUID(),
   Q6_1: 1,
-  Q6_2: ""
+  Q6_2: "",
+  Q6_3: 0 //Region
 }
 
 class Goal6Contrib extends React.Component {
@@ -135,7 +138,8 @@ class Goal6Contrib extends React.Component {
           editing: true,
           goalId: editGoalId,
           Q6_1: data.ProfilesAndAssessments,
-          Q6_2: data.EvidenceLink
+          Q6_2: data.EvidenceLink,
+          Q6_3: data.RegionId
         })
       }
 
@@ -164,19 +168,8 @@ class Goal6Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q6_1, Q6_2 } = this.state
+    let { goalId, goalStatus, Q6_1, Q6_2, Q6_3 } = this.state
     let { setLoading, next, user } = this.props
-
-    //Validate
-    // if (Q2_1 == true && Q2_1_A === "") {
-    //   this.showMessage("Required", "Organogram attachment required")
-    //   return
-    // }
-
-    // if (isNaN(Q2_2_A)) {
-    //   this.showMessage("Required", "Total budget must be a number")
-    //   return
-    // }
 
     setLoading(true)
 
@@ -193,7 +186,8 @@ class Goal6Contrib extends React.Component {
           ProfilesAndAssessments: Q6_1,
           EvidenceLink: Q6_2,
           CreateUserId: user.profile.UserId,
-          Status: goalStatus
+          Status: goalStatus,
+          RegionId: Q6_3
         })
       })
 
@@ -225,7 +219,7 @@ class Goal6Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q6_1, Q6_2 } = this.state
+    let { editing, goalStatus, goalId, Q6_1, Q6_2, Q6_3 } = this.state
 
     return (
       <>
@@ -358,6 +352,63 @@ class Goal6Contrib extends React.Component {
                 />
               </Col>
             </Row>
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  6.3 What is the effective region for this goal?
+                </label>
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Regions`}
+                  query={{
+                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
+                    orderBy: ['RegionName']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let regions = []
+
+                    if (loading) {
+                      regions = [{ id: 1, text: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data && data.value.length > 0) {
+                      regions = data.value
+                    }
+
+                    //Get current value
+                    let value = ""
+                    if (regions && regions.length > 0) {
+                      let f = regions.filter(x => x.RegionId == Q6_3)
+                      if (f && f.length > 0 && f[0].RegionName) {
+                        value = f[0].RegionName
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={_gf.TransformDataToTree(regions)}
+                        allowClear={true}
+                        value={value}
+                        callback={(value) => { this.setState({ Q6_3: value.id }) }}
+                        placeHolder={"National"}
+                      />
+                    )
+
+                  }}
+                </OData>
+
+                <label style={{ fontSize: "14px", marginTop: "5px" }}>
+                  <i>* Leave empty for National</i>
+                </label>
+              </Col>
+            </Row>
+            <br />
 
             <Row>
               <Col md="4">

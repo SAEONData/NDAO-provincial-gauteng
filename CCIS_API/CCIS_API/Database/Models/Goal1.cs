@@ -13,13 +13,11 @@ namespace CCIS_API.Database.Models
         public bool HasAssessment { get; set; }
         public string DocLastUpdated { get; set; }
         public string Status { get; set; }
+        public int RegionId { get; set; }
 
-        //Shared fields
         public string Created { get; set; }
         public string CreateUserId { get; set; }
         public string LastUpdated { get; set; }
         public string LastUpdateUserId { get; set; }
-
-        //public string MetadataLink { get; set; }
     }
 }

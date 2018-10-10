@@ -216,12 +216,10 @@ namespace CCIS_API.Controllers
 
                 return service;
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 return null;
             }
-
-            return null;
         }
 
         private string SearchByName(string fileName)

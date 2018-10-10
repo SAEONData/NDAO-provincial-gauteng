@@ -4,14 +4,16 @@ using CCIS_API.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CCIS_API.Migrations
 {
     [DbContext(typeof(SQLDBContext))]
-    partial class SQLDBContextModelSnapshot : ModelSnapshot
+    [Migration("20181010090143_Added StatusHistory table")]
+    partial class AddedStatusHistorytable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,8 +39,6 @@ namespace CCIS_API.Migrations
                     b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("LastUpdated");
-
-                    b.Property<int>("RegionId");
 
                     b.Property<string>("Status");
 
@@ -74,8 +74,6 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("PartneringDepartments");
 
-                    b.Property<int>("RegionId");
-
                     b.Property<string>("Status");
 
                     b.Property<int>("TotalBudget");
@@ -108,8 +106,6 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("PartneringDepartments");
 
-                    b.Property<int>("RegionId");
-
                     b.Property<string>("Status");
 
                     b.Property<int>("TotalBudget");
@@ -139,8 +135,6 @@ namespace CCIS_API.Migrations
                     b.Property<string>("LastUpdated");
 
                     b.Property<string>("PartneringDepartments");
-
-                    b.Property<int>("RegionId");
 
                     b.Property<string>("Status");
 
@@ -172,8 +166,6 @@ namespace CCIS_API.Migrations
 
                     b.Property<string>("PartneringDepartments");
 
-                    b.Property<int>("RegionId");
-
                     b.Property<string>("Status");
 
                     b.Property<int>("TechnologyAwareness");
@@ -202,8 +194,6 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("ProfilesAndAssessments");
 
-                    b.Property<int>("RegionId");
-
                     b.Property<string>("Status");
 
                     b.HasKey("Id");
@@ -225,8 +215,6 @@ namespace CCIS_API.Migrations
                     b.Property<string>("LastUpdateUserId");
 
                     b.Property<string>("LastUpdated");
-
-                    b.Property<int>("RegionId");
 
                     b.Property<int>("ResultingChange");
 
@@ -254,8 +242,6 @@ namespace CCIS_API.Migrations
 
                     b.Property<int>("NonClimateChange");
 
-                    b.Property<int>("RegionId");
-
                     b.Property<string>("Status");
 
                     b.HasKey("Id");
@@ -279,8 +265,6 @@ namespace CCIS_API.Migrations
                     b.Property<string>("LastUpdated");
 
                     b.Property<int>("Practices");
-
-                    b.Property<int>("RegionId");
 
                     b.Property<string>("Status");
 

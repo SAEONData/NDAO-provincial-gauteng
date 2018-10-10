@@ -55,7 +55,8 @@ const defaultState = {
   Q2_2_B: 1,
   Q2_2_C: "",
   Q2_2_D: "",
-  Q2_3: 1
+  Q2_3: 1,
+  Q2_4: 0 //Region
 }
 
 class Goal2Contrib extends React.Component {
@@ -173,7 +174,8 @@ class Goal2Contrib extends React.Component {
           Q2_2_B: data.FundingDuration,
           Q2_2_C: data.FundingAgency,
           Q2_2_D: data.PartneringDepartments,
-          Q2_3: data.IncludedInForums
+          Q2_3: data.IncludedInForums,
+          Q2_4: data.RegionId
         })
       }
 
@@ -202,19 +204,8 @@ class Goal2Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3 } = this.state
+    let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4 } = this.state
     let { setLoading, next, user } = this.props
-
-    //Validate
-    if (Q2_1 == true && Q2_1_A === "") {
-      this.showMessage("Required", "Organogram attachment required")
-      return
-    }
-
-    if (isNaN(Q2_2_A)) {
-      this.showMessage("Required", "Total budget must be a number")
-      return
-    }
 
     setLoading(true)
 
@@ -237,7 +228,8 @@ class Goal2Contrib extends React.Component {
           PartneringDepartments: Q2_2_D,
           IncludedInForums: Q2_3,
           CreateUserId: user.profile.UserId,
-          Status: goalStatus
+          Status: goalStatus,
+          RegionId: Q2_4
         })
       })
 
@@ -269,7 +261,7 @@ class Goal2Contrib extends React.Component {
 
   render() {
 
-    let { editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, goalStatus, goalId } = this.state
+    let { editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, goalStatus, goalId } = this.state
 
     return (
       <>
@@ -408,9 +400,9 @@ class Goal2Contrib extends React.Component {
                 <TextInput
                   width="95%"
                   value={Q2_1_A}
-                  callback={(value) => { 
+                  callback={(value) => {
                     value = _gf.fixEmptyValue(value, "")
-                    this.setState({ Q2_1_A: value }) 
+                    this.setState({ Q2_1_A: value })
                   }}
                   readOnly={true}
                 />
@@ -614,7 +606,7 @@ class Goal2Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row>
+            <Row style={{ marginBottom: "15px"}}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   2.3 Are climate change items included in existing administrative and political
@@ -645,6 +637,63 @@ class Goal2Contrib extends React.Component {
                 </div>
               </Col>
             </Row>
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  2.4 What is the effective region for this goal?
+                </label>
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Regions`}
+                  query={{
+                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
+                    orderBy: ['RegionName']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let regions = []
+
+                    if (loading) {
+                      regions = [{ id: 1, text: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data && data.value.length > 0) {
+                      regions = data.value
+                    }
+
+                    //Get current value
+                    let value = ""
+                    if (regions && regions.length > 0) {
+                      let f = regions.filter(x => x.RegionId == Q2_4)
+                      if (f && f.length > 0 && f[0].RegionName) {
+                        value = f[0].RegionName
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={_gf.TransformDataToTree(regions)}
+                        allowClear={true}
+                        value={value}
+                        callback={(value) => { this.setState({ Q2_4: value.id }) }}
+                        placeHolder={"National"}
+                      />
+                    )
+
+                  }}
+                </OData>
+
+                <label style={{ fontSize: "14px", marginTop: "5px" }}>
+                  <i>* Leave empty for National</i>
+                </label>
+              </Col>
+            </Row>
+            <br />
 
             <Row>
               <Col md="4">

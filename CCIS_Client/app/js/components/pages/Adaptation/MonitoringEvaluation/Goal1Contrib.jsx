@@ -4,12 +4,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Container, Modal, ModalHeader, ModalBody, ModalFooter } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
+import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { apiBaseURL, ccrdBaseURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
+import OData from 'react-odata'
 import buildQuery from 'odata-query'
 
 //Images
@@ -44,7 +46,8 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q1_1: "",
   Q1_3: false,
-  Q1_4: moment().format("YYYY-MM-DD")
+  Q1_4: moment().format("YYYY-MM-DD"),
+  Q1_5: 0 //Region
 }
 
 class Goal1Contrib extends React.Component {
@@ -106,7 +109,8 @@ class Goal1Contrib extends React.Component {
           goalId: editGoalId,
           Q1_1: data.DocumentLink,
           Q1_3: data.HasAssessment,
-          Q1_4: data.DocLastUpdated
+          Q1_4: data.DocLastUpdated,
+          Q1_5: data.RegionId
         })
       }
 
@@ -124,14 +128,8 @@ class Goal1Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q1_1, Q1_3, Q1_4 } = this.state
+    let { goalId, goalStatus, Q1_1, Q1_3, Q1_4, Q1_5 } = this.state
     let { setLoading, next, user } = this.props
-
-    //Validate
-    if (Q1_1 === "") {
-      this.showMessage("Required", "Document link required")
-      return
-    }
 
     setLoading(true)
 
@@ -149,7 +147,8 @@ class Goal1Contrib extends React.Component {
           HasAssessment: Q1_3,
           DocLastUpdated: Q1_4,
           CreateUserId: user.profile.UserId,
-          Status: goalStatus
+          Status: goalStatus,
+          RegionId: Q1_5
         })
       })
 
@@ -264,7 +263,7 @@ class Goal1Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4 } = this.state
+    let { editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5 } = this.state
 
     return (
       <>
@@ -431,6 +430,63 @@ class Goal1Contrib extends React.Component {
                   callback={(dateString) => { this.setState({ Q1_4: dateString }) }}
                   allowClear={false}
                 />
+              </Col>
+            </Row>
+            <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  1.5 What is the effective region for this goal?
+                </label>
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Regions`}
+                  query={{
+                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
+                    orderBy: ['RegionName']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let regions = []
+
+                    if (loading) {
+                      regions = [{ id: 1, text: "Loading..."}]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data && data.value.length > 0) {
+                      regions = data.value
+                    }
+
+                    //Get current value
+                    let value = ""
+                    if(regions && regions.length > 0){
+                      let f = regions.filter(x => x.RegionId == Q1_5)
+                      if(f && f.length > 0 && f[0].RegionName){
+                        value = f[0].RegionName                        
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput 
+                        data={_gf.TransformDataToTree(regions)}
+                        allowClear={true}
+                        value={value}
+                        callback={(value) => { this.setState({ Q1_5: value.id }) }}
+                        placeHolder={"National"}
+                      />
+                    )
+
+                  }}
+                </OData>
+
+                <label style={{ fontSize: "14px", marginTop: "5px" }}>
+                  <i>* Leave empty for National</i>
+                </label>
               </Col>
             </Row>
             <br />

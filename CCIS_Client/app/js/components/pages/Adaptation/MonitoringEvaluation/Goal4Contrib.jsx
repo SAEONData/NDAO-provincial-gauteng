@@ -47,7 +47,8 @@ const defaultState = {
   Q4_2_A: 1,
   Q4_2_B: 1,
   Q4_2_C: "",
-  Q4_2_D: ""
+  Q4_2_D: "",
+  Q4_3: 0 //Region
 }
 
 class Goal4Contrib extends React.Component {
@@ -148,6 +149,7 @@ class Goal4Contrib extends React.Component {
           Q4_2_B: data.BudgetDuration,
           Q4_2_C: data.FundingAgency,
           Q4_2_D: data.PartneringDepartments,
+          Q4_3: data.RegionId
         })
       }
 
@@ -176,19 +178,8 @@ class Goal4Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D } = this.state
+    let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3 } = this.state
     let { setLoading, next, user } = this.props
-
-    //Validate
-    // if (Q2_1 == true && Q2_1_A === "") {
-    //   this.showMessage("Required", "Organogram attachment required")
-    //   return
-    // }
-
-    // if (isNaN(Q2_2_A)) {
-    //   this.showMessage("Required", "Total budget must be a number")
-    //   return
-    // }
 
     setLoading(true)
 
@@ -208,7 +199,8 @@ class Goal4Contrib extends React.Component {
           FundingAgency: Q4_2_C,
           PartneringDepartments: Q4_2_D,
           CreateUserId: user.profile.UserId,
-          Status: goalStatus
+          Status: goalStatus,
+          RegionId: Q4_3
         })
       })
 
@@ -240,7 +232,7 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D } = this.state
+    let { editing, goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3 } = this.state
 
     return (
       <>
@@ -535,6 +527,63 @@ class Goal4Contrib extends React.Component {
               </Col>
             </Row>
             <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  4.3 What is the effective region for this goal?
+                </label>
+
+                <OData
+                  baseUrl={ccrdBaseURL + `Regions`}
+                  query={{
+                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
+                    orderBy: ['RegionName']
+                  }}>
+                  {({ loading, error, data }) => {
+
+                    let regions = []
+
+                    if (loading) {
+                      regions = [{ id: 1, text: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data && data.value.length > 0) {
+                      regions = data.value
+                    }
+
+                    //Get current value
+                    let value = ""
+                    if (regions && regions.length > 0) {
+                      let f = regions.filter(x => x.RegionId == Q4_3)
+                      if (f && f.length > 0 && f[0].RegionName) {
+                        value = f[0].RegionName
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={_gf.TransformDataToTree(regions)}
+                        allowClear={true}
+                        value={value}
+                        callback={(value) => { this.setState({ Q4_3: value.id }) }}
+                        placeHolder={"National"}
+                      />
+                    )
+
+                  }}
+                </OData>
+
+                <label style={{ fontSize: "14px", marginTop: "5px" }}>
+                  <i>* Leave empty for National</i>
+                </label>
+              </Col>
+            </Row>
+            <br />              
 
             <Row>
               <Col md="4">
