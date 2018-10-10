@@ -36,14 +36,17 @@ class TreeSelectInput extends React.Component {
           item = transform(item)
         }
 
+        let valCol = "text"
+        if(!item.text) valCol = "value"
+
         if (item.children) {
           return (
-            <TreeSelectNode value={item.text} title={item.text} key={item.id}>
+            <TreeSelectNode value={item[valCol]} title={item[valCol]} key={item.id}>
               {this.renderTreeSelectNodes(item.children)}
             </TreeSelectNode>
           )
         }
-        return <TreeSelectNode value={item.text} title={item.text} key={item.id} />
+        return <TreeSelectNode value={item[valCol]} title={item[valCol]} key={item.id} />
       })
     }
   }

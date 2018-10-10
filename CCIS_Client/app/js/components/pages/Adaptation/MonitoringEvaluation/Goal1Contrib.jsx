@@ -9,7 +9,7 @@ import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/co
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
-import { apiBaseURL, ccrdBaseURL } from '../../../../config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
@@ -441,33 +441,31 @@ class Goal1Contrib extends React.Component {
                 </label>
 
                 <OData
-                  baseUrl={ccrdBaseURL + `Regions`}
-                  query={{
-                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
-                    orderBy: ['RegionName']
-                  }}>
+                  baseUrl={vmsBaseURL + `Regions/Flat`}>
                   {({ loading, error, data }) => {
 
                     let regions = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading..."}]
+                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-
-                    if (data && data.value.length > 0) {
-                      regions = data.value
+                
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        regions = data.items
+                      }
                     }
 
                     //Get current value
                     let value = ""
                     if(regions && regions.length > 0){
-                      let f = regions.filter(x => x.RegionId == Q1_5)
-                      if(f && f.length > 0 && f[0].RegionName){
-                        value = f[0].RegionName                        
+                      let f = regions.filter(x => x.id == Q1_5)
+                      if(f && f.length > 0 && f[0].value){
+                        value = f[0].value                        
                       }
                     }
 

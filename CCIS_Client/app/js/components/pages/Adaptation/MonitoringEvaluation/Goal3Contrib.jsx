@@ -625,38 +625,36 @@ class Goal3Contrib extends React.Component {
                 </label>
 
                 <OData
-                  baseUrl={ccrdBaseURL + `Regions`}
-                  query={{
-                    select: ["RegionId", "RegionName", "LocationTypeId", "ParentRegionId"],
-                    orderBy: ['RegionName']
-                  }}>
+                  baseUrl={vmsBaseURL + `Regions/Flat`}>
                   {({ loading, error, data }) => {
 
                     let regions = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading..." }]
+                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-
-                    if (data && data.value.length > 0) {
-                      regions = data.value
+                
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        regions = data.items
+                      }
                     }
 
                     //Get current value
                     let value = ""
-                    if (regions && regions.length > 0) {
-                      let f = regions.filter(x => x.RegionId == Q3_4)
-                      if (f && f.length > 0 && f[0].RegionName) {
-                        value = f[0].RegionName
+                    if(regions && regions.length > 0){
+                      let f = regions.filter(x => x.id == Q3_4)
+                      if(f && f.length > 0 && f[0].value){
+                        value = f[0].value                        
                       }
                     }
 
                     return (
-                      <TreeSelectInput
+                      <TreeSelectInput 
                         data={_gf.TransformDataToTree(regions)}
                         allowClear={true}
                         value={value}
