@@ -11,8 +11,11 @@ import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
 import DAO_Info from './DAO_Info.jsx'
 import LessInfoBtn from './LessInfoBtn.jsx'
-import YearSlider from './Filters/YearSlider.jsx'
 import TrafficLights from './TrafficLights.jsx'
+import YearFilter from './Filters/YearFilter.jsx'
+import RegionFilter from './Filters/RegionFilter.jsx'
+import SectorFilter from './Filters/SectorFilter.jsx'
+import GoalFilter from './Filters/GoalFilter.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -33,7 +36,10 @@ class Home extends React.Component {
 
     this.state = {
       infoSection: true,
-      filterYear: (new Date()).getFullYear()
+      filterYear: (new Date()).getFullYear(),
+      filterRegion: 0,
+      filterSector: 0,
+      filterGoal: 0
     }
   }
 
@@ -43,7 +49,7 @@ class Home extends React.Component {
 
   render() {
 
-    let { infoSection, filterYear } = this.state
+    let { infoSection, filterYear, filterRegion, filterSector, filterGoal } = this.state
 
     return (
       <>
@@ -93,64 +99,50 @@ class Home extends React.Component {
         <hr />
         <Row >
           <Col md="3" style={{ marginBottom: "3px" }}>
-            <TreeSelectInput
-              placeHolder="Select Region to filter..."
-              data={[
-                {
-                  id: 1, text: "Gauteng", children: [
-                    { id: 11, text: "Johannesburg Metropolitan Municipality (JHB)" },
-                    {
-                      id: 12, text: "Metsweding District Municipality (DC46)", children: [
-                        { id: 121, text: "Kungwini Local Municipality (GT02b2)" },
-                        { id: 122, text: "Nokeng tsa Taemane Local Municipality (GT02b1)" },
-                        { id: 123, text: "..." }
-                      ]
-                    },
-                    { id: 11, text: "..." },
-                  ]
-                },
-                {
-                  id: 2, text: "Western Cape", children: [
-                    { id: 21, text: "Cape Town Metropolitan Municipality (CPT)" },
-                    {
-                      id: 22, text: "Cape Winelands District Municipality (DC2)", children: [
-                        { id: 221, text: "Breede River/Winelands Local Municipality (WC026)" },
-                        { id: 222, text: "Breede Valley Local Municipality (WC025)" },
-                        { id: 223, text: "..." }
-                      ]
-                    },
-                    { id: 21, text: "..." }
-                  ]
-                },
-                { id: 3, text: "..." }
-              ]} //mock data
-              allowEdit={true}
+            <RegionFilter
+              value={filterRegion}
+              callback={(value) => { this.setState({ filterRegion: value }) }}
             />
           </Col>
           <Col md="3" style={{ marginBottom: "3px" }}>
-            <TreeSelectInput
-              placeHolder="Select Sector to filter..."
-              data={[{ id: 1, text: "Agriculture" }, { id: 2, text: "Mining" }, { id: 3, text: "..." }]} //mock data
-              allowEdit={true}
+            <SectorFilter
+              value={filterSector}
+              callback={(value) => { this.setState({ filterSector: value }) }}
             />
           </Col>
           <Col md="3" style={{ marginBottom: "3px" }}>
-            <SelectInput
-              placeHolder="Select Goal to filter..."
-              data={[
-                { id: 1, text: "Goal 1" },
-                { id: 2, text: "Goal 2" },
-                { id: 3, text: "..." }
-              ]}
-              allowEdit={true}
+            <GoalFilter
+              value={filterGoal}
+              callback={(value) => { this.setState({ filterGoal: value }) }}
             />
           </Col>
           <Col md="3">
-            <Button size="sm" style={{ height: "35px", marginTop: "0px", width: "100%", fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }} color="" >Clear Filters</Button>
+            <Button
+              size="sm"
+              style={{
+                height: "35px",
+                marginTop: "0px",
+                width: "100%",
+                fontSize: "13px",
+                marginLeft: "0px",
+                backgroundColor: DEAGreen
+              }}
+              color=""
+              onClick={() => {
+                this.setState({
+                  filterYear: (new Date()).getFullYear(),
+                  filterRegion: 0,
+                  filterSector: 0,
+                  filterGoal: 0
+                })
+              }}
+            >
+              Clear Filters
+            </Button>
           </Col>
         </Row>
 
-        <YearSlider
+        <YearFilter
           value={filterYear}
           callback={(value) => { this.setState({ filterYear: value }) }}
         />

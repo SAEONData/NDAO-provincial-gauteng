@@ -5,7 +5,7 @@ import { Row, Col } from 'mdbreact'
 import Slider from 'antd/lib/slider'
 import 'antd/lib/slider/style/css'
 
-class LessInfoBtn extends React.Component {
+class YearFilter extends React.Component {
 
   constructor(props) {
     super(props);
@@ -34,4 +34,4 @@ class LessInfoBtn extends React.Component {
   }
 }
 
-export default LessInfoBtn
+export default YearFilter
