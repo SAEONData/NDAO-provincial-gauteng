@@ -36,7 +36,6 @@ class FileUpload extends React.Component {
     this.removeFile = this.removeFile.bind(this)
     this.uploadFile = this.uploadFile.bind(this)
     this.readFileData = this.readFileData.bind(this)
-    this.waitForFileRead = this.waitForFileRead.bind(this)
 
     this.state = {
       uploading: false,
@@ -47,38 +46,18 @@ class FileUpload extends React.Component {
   }
 
   async readFileData(file) {
-
-    // Initialize an instance of the `FileReader`
-    const reader = new FileReader()
-
-    // Specify the handler for the `load` event
-    reader.onload = (e) => {
-      // Do something with the file
-      // E.g. Send it to the cloud
-      this.setState({ fileData: e.target.result })
-    }
-
-    // Read the file
-    reader.readAsDataURL(file)
-
-    //Wait for 'background' file read
-    await this.waitForFileRead()
-
-    //Get file data and reset state
-    let fileData = this.state.fileData
-    this.setState({ fileData: "" })
-
-    return fileData
-  }
-
-
-  async waitForFileRead() {
-
-    while (this.state.fileData === "") {
-      await _gf.wait(250)
-    }
-
-    return true
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        let encoded = e.target.result.replace(/^data:(.*;base64,)?/, '');
+        // if ((encoded.length % 4) > 0) {
+        //   encoded += '='.repeat(4 - (encoded.length % 4));
+        // }
+        resolve(encoded);
+      };
+      reader.onerror = error => reject(error);
+    });
   }
 
   async removeFile(file) {
@@ -129,6 +108,12 @@ class FileUpload extends React.Component {
     let result = ""
     file.data = await this.readFileData(file)
 
+    console.log("FD", JSON.stringify({
+      FileName: this.props.goalId,
+      Base64Data: file.data,
+      MimeType: file.type
+    }))
+
     //Upload
     try {
       let res = await fetch(apiBaseURL + "UploadFile", {
@@ -145,6 +130,9 @@ class FileUpload extends React.Component {
       })
 
       let resBody = await res.json()
+
+      console.log("RES", resBody)
+
       if (res.ok) {
         result = resBody
       }

@@ -107,6 +107,6 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc|pptx|ignore)$/)
+    new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
   ]
 }

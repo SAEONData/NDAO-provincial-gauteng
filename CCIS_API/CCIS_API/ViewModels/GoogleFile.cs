@@ -10,5 +10,12 @@ namespace CCIS_API.ViewModels
         public string Id { get; set; }
         public string ViewLink { get; set; }
         public long? Version { get; set; }
+
+        public GoogleFile()
+        {
+            Id = "";
+            ViewLink = "";
+            Version = 0;
+        }
     }
 }

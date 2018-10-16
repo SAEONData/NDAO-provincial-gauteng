@@ -11,6 +11,10 @@ const mode = 'production'
 module.exports = {
   context: path.join(cwd, 'app'),
   mode,
+  optimization: {
+		// We no not want to minimize our code.
+		minimize: false
+	},
   entry: {
     app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
@@ -24,6 +28,12 @@ module.exports = {
       'react-router-redux',
       'history'
     ],
+    config : [
+      './js/config/serviceURLs.cfg',
+      './js/secrets.cfg',
+      './js/config/colours.cfg',
+      './js/config/ui_config.cfg'
+    ]
   },
 
   output: {
@@ -102,13 +112,14 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
-    new CopyWebpackPlugin([
-      {
-        from: 'js/config/*.cfg',
-        to: '[name].[ext]',
-        toType: 'template'
-      }
-    ])
+    new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
+    // new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: 'js/config/*.cfg',
+    //     to: '[name].[ext]',
+    //     toType: 'template'
+    //   }
+    // ])
   ]
 }

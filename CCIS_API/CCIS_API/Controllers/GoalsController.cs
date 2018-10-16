@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using CCIS_API.Database.Contexts;
 using CCIS_API.Database.Models;
@@ -33,13 +34,21 @@ namespace CCIS_API.Controllers
 
         public GoalsController(SQLDBContext context, IConfiguration config)
         {
-            _context = context;
-            _config = config;
+            try
+            {
+                _context = context;
+                _config = config;
 
-            //Authenticate
-            string keyFilePath = _config.GetSection("GAPI")["KeyFileName"];
-            string serviceAccountEmail = _config.GetSection("GAPI")["ServiceAccountEmail"];
-            _service = AuthenticateServiceAccount(serviceAccountEmail, keyFilePath);
+                //Authenticate
+                string keyFilePath = _config.GetSection("GAPI")["KeyFileName"];
+                string serviceAccountEmail = _config.GetSection("GAPI")["ServiceAccountEmail"];
+                _service = AuthenticateServiceAccount(serviceAccountEmail, keyFilePath);
+            }
+            catch (Exception ex)
+            {
+                LogInternalError(ex);
+                throw ex;
+            }
         }
 
         [HttpGet]
@@ -69,13 +78,14 @@ namespace CCIS_API.Controllers
         [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         public GoogleFile UploadFile([FromBody] UploadFile fileData)
         {
-            GoogleFile result = null;
+            GoogleFile result = new GoogleFile();
 
             try
             {
+                byte[] fileBytes = Convert.FromBase64String(fileData.Base64Data);
+
                 //Prep for upload
-                string fileDataBase64 = fileData.Base64Data.Replace($"data:{fileData.MimeType};base64,", "");
-                byte[] fileBytes = Convert.FromBase64String(fileDataBase64);
+                //string fileDataBase64 = fileData.Base64Data.Replace($"data:{fileData.MimeType};base64,", "");
                 var fileMetadata = new Google.Apis.Drive.v3.Data.File()
                 {
                     Name = fileData.FileName,
@@ -99,12 +109,9 @@ namespace CCIS_API.Controllers
                     var file = request.ResponseBody;
 
                     //Set result
-                    result = new GoogleFile
-                    {
-                        Id = file.Id,
-                        ViewLink = file.WebViewLink,
-                        Version = file.Version
-                    };
+                    result.Id = file.Id;
+                    result.ViewLink = file.WebViewLink;
+                    result.Version = file.Version;
                 }
                 else
                 {
@@ -127,17 +134,15 @@ namespace CCIS_API.Controllers
                     _service.Permissions.Create(perm, file.Id).Execute(); //Creating Permission after file/folder creation.
 
                     //Set result
-                    result = new GoogleFile
-                    {
-                        Id = file.Id,
-                        ViewLink = file.WebViewLink,
-                        Version = file.Version
-                    };
+                    result.Id = file.Id;
+                    result.ViewLink = file.WebViewLink;
+                    result.Version = file.Version;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                LogInternalError(ex);
+                throw ex;
             }
 
             return result;
@@ -166,7 +171,8 @@ namespace CCIS_API.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                LogInternalError(ex);
+                throw ex;
             }
 
             return result;
@@ -189,23 +195,33 @@ namespace CCIS_API.Controllers
         }
 
         //Helper Functions
-        private static DriveService AuthenticateServiceAccount(string serviceAccountEmail, string keyFilePath)
+        private DriveService AuthenticateServiceAccount(string serviceAccountEmail, string keyFilePath)
         {
-            var keyFile = new System.IO.FileInfo(keyFilePath);
-            if (!keyFile.Exists)
-            {
-                return null;
-            }
-
-            string[] scopes = { DriveService.Scope.Drive };
-            var certificate = new X509Certificate2(keyFile.FullName, "notasecret", X509KeyStorageFlags.Exportable);
             try
             {
-                ServiceAccountCredential credential = new ServiceAccountCredential(
-                    new ServiceAccountCredential.Initializer(serviceAccountEmail)
-                    {
-                        Scopes = scopes
-                    }.FromCertificate(certificate));
+                if (!System.IO.File.Exists(keyFilePath))
+                {
+                    throw new FileNotFoundException($"KeyFile missing. ({keyFilePath})");
+                }
+
+                //string[] scopes = { DriveService.Scope.Drive };
+                //var certificate = new X509Certificate2(keyFile.FullName, "notasecret", X509KeyStorageFlags.Exportable);
+
+                //ServiceAccountCredential credential = new ServiceAccountCredential(
+                //    new ServiceAccountCredential.Initializer(serviceAccountEmail)
+                //    {
+                //        Scopes = scopes
+                //    }.FromCertificate(certificate));
+
+                // These are the scopes of permissions you need. It is best to request only what you need and not all of them
+                string[] scopes = new string[] { DriveService.Scope.Drive }; // View your Google Analytics data
+
+                //Load json key
+                GoogleCredential credential;
+                using (var stream = new FileStream(keyFilePath, FileMode.Open, FileAccess.Read))
+                {
+                    credential = GoogleCredential.FromStream(stream).CreateScoped(scopes);
+                }
 
                 //Create the service
                 DriveService service = new DriveService(new BaseClientService.Initializer()
@@ -216,9 +232,10 @@ namespace CCIS_API.Controllers
 
                 return service;
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
-                return null;
+                LogInternalError(ex);
+                throw ex;
             }
         }
 
@@ -243,10 +260,22 @@ namespace CCIS_API.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                LogInternalError(ex);
+                throw ex;
             }
 
             return result;
+        }
+
+        private void LogInternalError(Exception ex)
+        {
+            if (!Directory.Exists("logs"))
+            {
+                Directory.CreateDirectory("logs");
+            }
+
+            string uid = Guid.NewGuid().ToString();
+            System.IO.File.WriteAllText($"logs\\internalError_{uid}.txt", ex.ToString());
         }
     }
 
