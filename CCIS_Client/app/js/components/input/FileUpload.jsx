@@ -130,9 +130,6 @@ class FileUpload extends React.Component {
       })
 
       let resBody = await res.json()
-
-      console.log("RES", resBody)
-
       if (res.ok) {
         result = resBody
       }

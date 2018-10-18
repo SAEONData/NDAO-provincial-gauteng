@@ -126,20 +126,21 @@ class Goal6Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal6${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q6_1: data.ProfilesAndAssessments,
-          Q6_2: data.EvidenceLink,
-          Q6_3: data.RegionId
+          Q6_1: parseInt(data.Questions.filter(x => x.Key === "ProfilesAndAssessments")[0].Value),
+          Q6_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
+          Q6_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -169,26 +170,32 @@ class Goal6Contrib extends React.Component {
   async submit() {
 
     let { goalId, goalStatus, Q6_1, Q6_2, Q6_3 } = this.state
-    let { setLoading, next, user } = this.props
+    let { setLoading, user } = this.props
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 6,
+      Questions: [
+        { Key: "ProfilesAndAssessments", Value: Q6_1.toString() },
+        { Key: "EvidenceLink", Value: Q6_2 },
+        { Key: "Region", Value: Q6_3.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal6', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token) 
         },
-        body: JSON.stringify({
-          Id: goalId,
-          ProfilesAndAssessments: Q6_1,
-          EvidenceLink: Q6_2,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q6_3
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {

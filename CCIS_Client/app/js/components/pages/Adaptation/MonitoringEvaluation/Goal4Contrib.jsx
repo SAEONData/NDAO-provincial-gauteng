@@ -133,23 +133,24 @@ class Goal4Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal4${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q4_1: data.CapacityBuilding,
-          Q4_2_A: data.TotalBudget,
-          Q4_2_B: data.BudgetDuration,
-          Q4_2_C: data.FundingAgency,
-          Q4_2_D: data.PartneringDepartments,
-          Q4_3: data.RegionId
+          Q4_1: parseInt(data.Questions.filter(x => x.Key === "CapacityBuilding")[0].Value),
+          Q4_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
+          Q4_2_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
+          Q4_2_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q4_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q4_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -179,29 +180,35 @@ class Goal4Contrib extends React.Component {
   async submit() {
 
     let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3 } = this.state
-    let { setLoading, next, user } = this.props
+    let { setLoading, user } = this.props
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 4,
+      Questions: [
+        { Key: "CapacityBuilding", Value: Q4_1.toString() },
+        { Key: "TotalBudget", Value: Q4_2_A.toString() },
+        { Key: "BudgetDuration", Value: Q4_2_B.toString() },
+        { Key: "FundingAgency", Value: Q4_2_C },
+        { Key: "PartneringDepartments", Value: Q4_2_D },
+        { Key: "Region", Value: Q4_3.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal4', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
          },
-        body: JSON.stringify({
-          Id: goalId,
-          CapacityBuilding: Q4_1,
-          TotalBudget: Q4_2_A,
-          BudgetDuration: Q4_2_B,
-          FundingAgency: Q4_2_C,
-          PartneringDepartments: Q4_2_D,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q4_3
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {

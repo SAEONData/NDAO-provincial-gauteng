@@ -156,26 +156,27 @@ class Goal2Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal2${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q2_1: data.DedicatedChampion,
-          Q2_1_A: data.DocumentLink,
-          Q2_2: data.DedicatedFunding,
-          Q2_2_A: data.TotalBudget,
-          Q2_2_B: data.FundingDuration,
-          Q2_2_C: data.FundingAgency,
-          Q2_2_D: data.PartneringDepartments,
-          Q2_3: data.IncludedInForums,
-          Q2_4: data.RegionId
+          Q2_1: data.Questions.filter(x => x.Key === "DedicatedChampion")[0].Value === 'true',
+          Q2_1_A: data.Questions.filter(x => x.Key === "DocumentLink")[0].Value,
+          Q2_2: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
+          Q2_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
+          Q2_2_B: parseInt(data.Questions.filter(x => x.Key === "FundingDuration")[0].Value),
+          Q2_2_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q2_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q2_3: parseInt(data.Questions.filter(x => x.Key === "IncludedInForums")[0].Value),
+          Q2_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -205,32 +206,38 @@ class Goal2Contrib extends React.Component {
   async submit() {
 
     let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4 } = this.state
-    let { setLoading, next, user } = this.props
+    let { setLoading, user } = this.props
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 2,
+      Questions: [
+        { Key: "DedicatedChampion", Value: Q2_1.toString() },
+        { Key: "DocumentLink", Value: Q2_1_A },
+        { Key: "DedicatedFunding", Value: Q2_2.toString() },
+        { Key: "TotalBudget", Value: Q2_2_A.toString() },
+        { Key: "FundingDuration", Value: Q2_2_B.toString() },
+        { Key: "FundingAgency", Value: Q2_2_C },
+        { Key: "PartneringDepartments", Value: Q2_2_D },
+        { Key: "IncludedInForums", Value: Q2_3.toString() },
+        { Key: "Region", Value: Q2_4.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal2', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
-        body: JSON.stringify({
-          Id: goalId,
-          DedicatedChampion: Q2_1,
-          DocumentLink: Q2_1_A,
-          DedicatedFunding: Q2_2,
-          TotalBudget: Q2_2_A,
-          FundingDuration: Q2_2_B,
-          FundingAgency: Q2_2_C,
-          PartneringDepartments: Q2_2_D,
-          IncludedInForums: Q2_3,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q2_4
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {
@@ -606,7 +613,7 @@ class Goal2Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row style={{ marginBottom: "15px"}}>
+            <Row style={{ marginBottom: "15px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   2.3 Are climate change items included in existing administrative and political
@@ -651,13 +658,13 @@ class Goal2Contrib extends React.Component {
                     let regions = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
+                      regions = [{ id: 1, text: "Loading...", additionalData: [] }]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-                
+
                     if (data) {
                       if (data.items && data.items.length > 0) {
                         regions = data.items
@@ -666,15 +673,15 @@ class Goal2Contrib extends React.Component {
 
                     //Get current value
                     let value = ""
-                    if(regions && regions.length > 0){
+                    if (regions && regions.length > 0) {
                       let f = regions.filter(x => x.id == Q2_4)
-                      if(f && f.length > 0 && f[0].value){
-                        value = f[0].value                        
+                      if (f && f.length > 0 && f[0].value) {
+                        value = f[0].value
                       }
                     }
 
                     return (
-                      <TreeSelectInput 
+                      <TreeSelectInput
                         data={_gf.TransformDataToTree(regions)}
                         allowClear={true}
                         value={value}

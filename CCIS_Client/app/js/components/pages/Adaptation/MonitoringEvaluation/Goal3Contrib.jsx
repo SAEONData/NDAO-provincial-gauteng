@@ -143,24 +143,25 @@ class Goal3Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal3${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q3_1: data.DisseminationUtilisation,
-          Q3_2: data.MonitoringForcasting,
-          Q3_3_A: data.TotalBudget,
-          Q3_3_B: data.BudgetDuration,
-          Q3_3_C: data.FundingAgency,
-          Q3_3_D: data.PartneringDepartments,
-          Q3_4: data.RegionId
+          Q3_1: parseInt(data.Questions.filter(x => x.Key === "DisseminationUtilisation")[0].Value),
+          Q3_2: parseInt(data.Questions.filter(x => x.Key === "MonitoringForcasting")[0].Value),
+          Q3_3_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
+          Q3_3_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
+          Q3_3_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q3_3_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q3_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -192,39 +193,34 @@ class Goal3Contrib extends React.Component {
     let { goalId, goalStatus, Q3_1, Q3_2, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4 } = this.state
     let { setLoading, next, user } = this.props
 
-    //Validate
-    // if (Q2_1 == true && Q2_1_A === "") {
-    //   this.showMessage("Required", "Organogram attachment required")
-    //   return
-    // }
-
-    // if (isNaN(Q2_2_A)) {
-    //   this.showMessage("Required", "Total budget must be a number")
-    //   return
-    // }
-
     setLoading(true)
+
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 3,
+      Questions: [
+        { Key: "DisseminationUtilisation", Value: Q3_1.toString() },
+        { Key: "MonitoringForcasting", Value: Q3_2.toString() },
+        { Key: "TotalBudget", Value: Q3_3_A.toString() },
+        { Key: "BudgetDuration", Value: Q3_3_B.toString() },
+        { Key: "FundingAgency", Value: Q3_3_C },
+        { Key: "PartneringDepartments", Value: Q3_3_D },
+        { Key: "Region", Value: Q3_4.toString() }
+      ]
+    }
 
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal3', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
-        body: JSON.stringify({
-          Id: goalId,
-          DisseminationUtilisation: Q3_1,
-          MonitoringForcasting: Q3_2,
-          TotalBudget: Q3_3_A,
-          BudgetDuration: Q3_3_B,
-          FundingAgency: Q3_3_C,
-          PartneringDepartments: Q3_3_D,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q3_4
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {

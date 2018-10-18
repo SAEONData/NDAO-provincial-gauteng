@@ -126,20 +126,21 @@ class Goal7Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal7${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q7_1: data.ResultingChange,
-          Q7_2: data.EvidenceLink,
-          Q7_3: data.RegionId
+          Q7_1: parseInt(data.Questions.filter(x => x.Key === "ResultingChange")[0].Value),
+          Q7_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
+          Q7_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -169,26 +170,32 @@ class Goal7Contrib extends React.Component {
   async submit() {
 
     let { goalId, goalStatus, Q7_1, Q7_2, Q7_3 } = this.state
-    let { setLoading, next, user } = this.props
+    let { setLoading, user } = this.props
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 7,
+      Questions: [
+        { Key: "ResultingChange", Value: Q7_1.toString() },
+        { Key: "EvidenceLink", Value: Q7_2 },
+        { Key: "Region", Value: Q7_3.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal7', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
-        body: JSON.stringify({
-          Id: goalId,
-          ResultingChange: Q7_1,
-          EvidenceLink: Q7_2,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q7_3
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {

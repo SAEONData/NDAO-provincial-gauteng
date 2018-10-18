@@ -96,21 +96,23 @@ class Goal1Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal1${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
+
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q1_1: data.DocumentLink,
-          Q1_3: data.HasAssessment,
-          Q1_4: data.DocLastUpdated,
-          Q1_5: data.RegionId
+          Q1_1: data.Questions.filter(x => x.Key === "DocumentLink")[0].Value,
+          Q1_3: data.Questions.filter(x => x.Key === "HasAssessment")[0].Value === 'true',
+          Q1_4: data.Questions.filter(x => x.Key === "DocLastUpdated")[0].Value,
+          Q1_5: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
         })
       }
 
@@ -133,23 +135,29 @@ class Goal1Contrib extends React.Component {
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 1,
+      Questions: [
+        { Key: "DocumentLink", Value: Q1_1 },
+        { Key: "HasAssessment", Value: Q1_3.toString() },
+        { Key: "DocLastUpdated", Value: Q1_4 },
+        { Key: "Region", Value: Q1_5.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal1', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
-        body: JSON.stringify({
-          Id: goalId,
-          DocumentLink: Q1_1,
-          HasAssessment: Q1_3,
-          DocLastUpdated: Q1_4,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q1_5
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {
@@ -447,13 +455,13 @@ class Goal1Contrib extends React.Component {
                     let regions = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
+                      regions = [{ id: 1, text: "Loading...", additionalData: [] }]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-                
+
                     if (data) {
                       if (data.items && data.items.length > 0) {
                         regions = data.items
@@ -462,15 +470,15 @@ class Goal1Contrib extends React.Component {
 
                     //Get current value
                     let value = ""
-                    if(regions && regions.length > 0){
+                    if (regions && regions.length > 0) {
                       let f = regions.filter(x => x.id == Q1_5)
-                      if(f && f.length > 0 && f[0].value){
-                        value = f[0].value                        
+                      if (f && f.length > 0 && f[0].value) {
+                        value = f[0].value
                       }
                     }
 
                     return (
-                      <TreeSelectInput 
+                      <TreeSelectInput
                         data={_gf.TransformDataToTree(regions)}
                         allowClear={true}
                         value={value}

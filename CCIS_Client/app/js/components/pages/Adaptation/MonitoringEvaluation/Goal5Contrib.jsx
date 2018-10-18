@@ -135,24 +135,25 @@ class Goal5Contrib extends React.Component {
 
     //Fetch goal details from server
     const query = buildQuery({
-      key: { Id: editGoalId }
+      filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
+      expand: "Questions"
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goal5${query}`)
+      let res = await fetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
         this.setState({
           editing: true,
           goalId: editGoalId,
-          Q5_1: data.TechnologyAwareness,
-          Q5_2: data.EvidenceLink,
-          Q5_3_A: data.TotalBudget,
-          Q5_3_B: data.BudgetDuration,
-          Q5_3_C: data.FundingAgency,
-          Q5_3_D: data.PartneringDepartments,
-          Q5_4: data.RegionId
+          Q5_1: parseInt(data.Questions.filter(x => x.Key === "TechnologyAwareness")[0].Value),
+          Q5_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
+          Q5_3_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
+          Q5_3_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
+          Q5_3_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q5_3_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q5_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
         })
       }
 
@@ -182,30 +183,36 @@ class Goal5Contrib extends React.Component {
   async submit() {
 
     let { goalId, goalStatus, Q5_1, Q5_2, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4 } = this.state
-    let { setLoading, next, user } = this.props
+    let { setLoading, user } = this.props
 
     setLoading(true)
 
+    //Construct post body
+    let goal = {
+      Id: goalId,
+      CreateUser: user.profile.UserId,
+      Status: goalStatus,
+      Type: 5,
+      Questions: [
+        { Key: "TechnologyAwareness", Value: Q5_1.toString() },
+        { Key: "EvidenceLink", Value: Q5_2 },
+        { Key: "TotalBudget", Value: Q5_3_A.toString() },
+        { Key: "BudgetDuration", Value: Q5_3_B.toString() },
+        { Key: "FundingAgency", Value: Q5_3_C },
+        { Key: "PartneringDepartments", Value: Q5_3_D },
+        { Key: "Region", Value: Q5_4.toString() }
+      ]
+    }
+
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goal5', {
+      let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
-        body: JSON.stringify({
-          Id: goalId,
-          TechnologyAwareness: Q5_1,
-          EvidenceLink: Q5_2,
-          TotalBudget: Q5_3_A,
-          BudgetDuration: Q5_3_B,
-          FundingAgency: Q5_3_C,
-          PartneringDepartments: Q5_3_D,
-          CreateUserId: user.profile.UserId,
-          Status: goalStatus,
-          RegionId: Q5_4
-        })
+        body: JSON.stringify(goal)
       })
 
       if (!res.ok) {

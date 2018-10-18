@@ -232,10 +232,10 @@ class AME extends React.Component {
               {
                 (user && !user.expired) &&
                 <OData
-                  baseUrl={apiBaseURL + `Goal${selectedGoal}`}
+                  baseUrl={apiBaseURL + 'Goals'}
                   query={{
-                    filter: { CreateUserId: user.profile.UserId },
-                    select: ['Id', 'Created', 'LastUpdated']
+                    filter: { CreateUser: { eq: { type: 'guid', value: user.profile.UserId } }, Type: selectedGoal },
+                    select: ['Id', 'CreateDate', 'UpdateDate']
                   }}>
                   {({ loading, error, data }) => {
 
@@ -264,9 +264,9 @@ class AME extends React.Component {
                             <Card key={item.Id}>
                               <CardBody>
                                 <CardText>
-                                  <b>Created on: </b>{item.Created}
+                                  <b>Created on: </b>{item.CreateDate}
                                   <br />
-                                  <b>Last updated on: </b>{item.LastUpdated === null ? item.Created : item.LastUpdated}
+                                  <b>Last updated on: </b>{item.UpdateDate === null ? item.CreateDate : item.UpdateDate}
                                 </CardText>
                                 <Button
                                   size="sm"

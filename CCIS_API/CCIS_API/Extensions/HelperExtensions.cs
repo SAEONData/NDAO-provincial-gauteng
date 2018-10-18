@@ -41,28 +41,28 @@ namespace CCIS_API.Extensions
             }
         }
 
-        public static bool CheckGoalCreateValues(IGoal goal)
+        public static bool CheckGoalCreateValues(Goal goal)
         {
-            if(string.IsNullOrEmpty(goal.CreateUserId))
+            if(goal.CreateUser == null)
             {
                 return false;
             }
-            goal.Created = DateTime.Now.ToString("yyyy-MM-dd");
+            goal.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             return true;
         }
 
-        public static bool CheckGoalUpdateValues(IGoal goal)
+        public static bool CheckGoalUpdateValues(Goal goal)
         {
-            if (string.IsNullOrEmpty(goal.CreateUserId) && string.IsNullOrEmpty(goal.LastUpdateUserId))
+            if (goal.CreateUser == null && goal.UpdateUser == null)
             {
                 return false;
             }
-            else if(!string.IsNullOrEmpty(goal.CreateUserId) && string.IsNullOrEmpty(goal.LastUpdateUserId))
+            else if(goal.CreateUser != null && goal.UpdateUser == null)
             {
-                goal.LastUpdateUserId = goal.CreateUserId;
+                goal.UpdateUser = goal.CreateUser;
             }
-            goal.LastUpdated = DateTime.Now.ToString("yyyy-MM-dd");
+            goal.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             return true;
         }
