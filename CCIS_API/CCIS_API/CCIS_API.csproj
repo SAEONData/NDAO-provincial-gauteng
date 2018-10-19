@@ -25,10 +25,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="ccis-217116-0d169b4a4e6d.p12">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

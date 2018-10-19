@@ -51,6 +51,34 @@ class TreeSelectInput extends React.Component {
     }
   }
 
+  //Performs a recursive search by Id and
+  //returns the corresponding value/text
+  getValueById(data, id){
+
+    let { transform } = this.props
+    
+    if(data && data.length > 0){
+
+      for(let item of data){
+
+        let tItem = transform(item)
+      
+        if(tItem.id == id){
+          return tItem.text
+        }
+        else if(tItem.children && tItem.children.length > 0){
+          let tmpVal = this.getValueById(tItem.children, id)
+          if(tmpVal !== id){
+            return tmpVal
+          }
+        }
+
+      }
+    }
+
+    return id
+  }
+
   onChange(value, label, extra) {
 
     this.setState({ value: value })
@@ -69,12 +97,14 @@ class TreeSelectInput extends React.Component {
   render() {
 
     let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value } = this.props
-
-    if (typeof value === 'undefined' || value === "" || value === null) {
+    
+    if (typeof value === 'undefined' || value === "" || value === null || value === 0) {
       value = undefined
     }
-
-    // label = globalFunctions.fixEmptyValue(label, "Label:")
+    else {
+      value = this.getValueById(data, value)
+    }
+    
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")

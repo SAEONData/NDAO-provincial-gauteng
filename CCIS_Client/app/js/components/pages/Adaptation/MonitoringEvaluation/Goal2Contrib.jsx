@@ -48,15 +48,17 @@ const defaultState = {
   title: "",
   goalStatus: "R",
   goalId: _gf.GetUID(),
-  Q2_1: false,
-  Q2_1_A: "",
-  Q2_2: false,
-  Q2_2_A: 1,
-  Q2_2_B: 1,
-  Q2_2_C: "",
-  Q2_2_D: "",
-  Q2_3: 1,
-  Q2_4: 0 //Region
+  Q2_1: false, //DedicatedChampion
+  Q2_1_A: "", //DocumentLink
+  Q2_2: false, //DedicatedFunding
+  Q2_2_A: 1, //TotalBudget
+  Q2_2_B: 1, //FundingDuration
+  Q2_2_C: 0, //FundingAgency
+  Q2_2_D: 0, //PartneringDepartments
+  Q2_3: 1, //IncludedInForums
+  Q2_4: 0, //Region
+  Q2_5: 0, //Institution
+  Q2_6: "" //InstitutionCustom
 }
 
 class Goal2Contrib extends React.Component {
@@ -173,10 +175,12 @@ class Goal2Contrib extends React.Component {
           Q2_2: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
           Q2_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q2_2_B: parseInt(data.Questions.filter(x => x.Key === "FundingDuration")[0].Value),
-          Q2_2_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q2_2_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
           Q2_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
           Q2_3: parseInt(data.Questions.filter(x => x.Key === "IncludedInForums")[0].Value),
-          Q2_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
+          Q2_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
+          Q2_5: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
+          Q2_6: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
         })
       }
 
@@ -205,7 +209,7 @@ class Goal2Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4 } = this.state
+    let { goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -222,10 +226,12 @@ class Goal2Contrib extends React.Component {
         { Key: "DedicatedFunding", Value: Q2_2.toString() },
         { Key: "TotalBudget", Value: Q2_2_A.toString() },
         { Key: "FundingDuration", Value: Q2_2_B.toString() },
-        { Key: "FundingAgency", Value: Q2_2_C },
+        { Key: "FundingAgency", Value: Q2_2_C.toString() },
         { Key: "PartneringDepartments", Value: Q2_2_D },
         { Key: "IncludedInForums", Value: Q2_3.toString() },
-        { Key: "Region", Value: Q2_4.toString() }
+        { Key: "Region", Value: Q2_4.toString() },
+        { Key: "Institution", Value: Q2_5.toString() },
+        { Key: "InstitutionCustom", Value: Q2_6 },
       ]
     }
 
@@ -268,7 +274,7 @@ class Goal2Contrib extends React.Component {
 
   render() {
 
-    let { editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, goalStatus, goalId } = this.state
+    let { editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6, goalStatus, goalId } = this.state
 
     return (
       <>
@@ -525,17 +531,18 @@ class Goal2Contrib extends React.Component {
                 </label>
 
                 <OData
-                  baseUrl={ccrdBaseURL + `Funders`}
+                  baseUrl={ccrdBaseURL + 'Funders'}
                   query={{
                     select: ['FunderId', 'FundingAgency'],
                     orderBy: ['FundingAgency']
                   }}>
+
                   {({ loading, error, data }) => {
 
-                    let distinctFunders = []
+                    let processedData = []
 
                     if (loading) {
-                      distinctFunders = ["Loading..."]
+                      processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
                     }
 
                     if (error) {
@@ -543,26 +550,21 @@ class Goal2Contrib extends React.Component {
                     }
 
                     if (data) {
-                      if (data && data.value.length > 0) {
-
-                        //Get distinct funders by 'FundingAgency'
-                        data.value.forEach(item => {
-                          if (!distinctFunders.includes(item.FundingAgency)) {
-                            distinctFunders.push(item.FundingAgency)
-                          }
-                        })
+                      if (data.value && data.value.length > 0) {
+                        processedData = data.value
                       }
                     }
 
                     return (
-                      <SelectInput
-                        data={distinctFunders.map(x => ({ id: distinctFunders.indexOf(x), text: x }))}
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
                         value={Q2_2_C}
-                        callback={(value) => { this.setState({ Q2_2_C: value.text }) }}
-                        allowClear={false}
+                        callback={(value) => { this.setState({ Q2_2_C: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
                       />
                     )
-
                   }}
                 </OData>
               </Col>
@@ -601,14 +603,13 @@ class Goal2Contrib extends React.Component {
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q2_2_D}
-                        callback={(value) => { this.setState({ Q2_2_D: value.text }) }}
-                        allowClear={false}
+                        callback={(value) => { this.setState({ Q2_2_D: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
                       />
                     )
-
                   }}
                 </OData>
-
               </Col>
             </Row>
             <br />
@@ -648,17 +649,18 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.4 What is the effective region for this goal?
+                  2.4 Select a Region for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + `Regions/Flat`}>
+                  baseUrl={vmsBaseURL + 'Regions'}>
+
                   {({ loading, error, data }) => {
 
-                    let regions = []
+                    let processedData = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading...", additionalData: [] }]
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
                     }
 
                     if (error) {
@@ -667,38 +669,85 @@ class Goal2Contrib extends React.Component {
 
                     if (data) {
                       if (data.items && data.items.length > 0) {
-                        regions = data.items
-                      }
-                    }
-
-                    //Get current value
-                    let value = ""
-                    if (regions && regions.length > 0) {
-                      let f = regions.filter(x => x.id == Q2_4)
-                      if (f && f.length > 0 && f[0].value) {
-                        value = f[0].value
+                        processedData = data.items
                       }
                     }
 
                     return (
                       <TreeSelectInput
-                        data={_gf.TransformDataToTree(regions)}
-                        allowClear={true}
-                        value={value}
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q2_4}
                         callback={(value) => { this.setState({ Q2_4: value.id }) }}
-                        placeHolder={"National"}
+                        allowClear={true}
+                        placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
                     )
 
                   }}
                 </OData>
-
-                <label style={{ fontSize: "14px", marginTop: "5px" }}>
-                  <i>* Leave empty for National</i>
-                </label>
               </Col>
             </Row>
             <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  2.5 Select your Institution/Organisation?
+                </label>
+
+                <OData
+                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                  {({ loading, error, data }) => {
+
+                    let processedData = []
+
+                    if (loading) {
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        processedData = data.items
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q2_5}
+                        callback={(value) => { this.setState({ Q2_5: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                      />
+                    )
+                  }}
+                </OData>
+              </Col>
+            </Row>
+            <br />
+
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  2.6 If your Institution/Organisation is not in the list above, please type it here?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q2_6}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q2_6: value })
+                  }}
+                />
+              </Col>
+            </Row>
 
             <Row>
               <Col md="4">

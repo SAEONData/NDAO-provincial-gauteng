@@ -39,9 +39,11 @@ const defaultState = {
   title: "",
   goalStatus: "R",
   goalId: _gf.GetUID(),
-  Q8_1: 1,
-  Q8_2: "",
-  Q8_3: 0 //Region
+  Q8_1: 1, //NonClimateChange
+  Q8_2: "", //EvidenceLink
+  Q8_3: 0, //Region
+  Q8_4: 0, //Institution
+  Q8_5: "" //InstitutionCustom
 }
 
 class Goal8Contrib extends React.Component {
@@ -70,44 +72,44 @@ class Goal8Contrib extends React.Component {
     this.assessGoalStatus()
   }
 
-  assessGoalStatus(){
+  assessGoalStatus() {
 
     let { goalStatus, Q8_1 } = this.state
     let newGoalStatus = "R"
     let redPoints = 0
     let amberPoints = 0
     let greenPoints = 0
-   
+
     //Check red conditions
-    if(Q8_1 === 1){
+    if (Q8_1 === 1) {
       redPoints += 1
     }
 
     //Check amber conditions
-    if(Q8_1 === 2){
+    if (Q8_1 === 2) {
       amberPoints += 1
     }
 
     //Check green conditions
-    if(Q8_1 === 3){
+    if (Q8_1 === 3) {
       greenPoints += 1
     }
 
     //Parse result to status colour    
-    if(greenPoints > 0){
+    if (greenPoints > 0) {
       newGoalStatus = "G"
     }
-    else if(amberPoints > 0){
+    else if (amberPoints > 0) {
       newGoalStatus = "A"
     }
-    else if(redPoints > 0){
+    else if (redPoints > 0) {
       newGoalStatus = "R"
     }
 
     //Update status
     if (newGoalStatus !== goalStatus) {
       this.setState({ goalStatus: newGoalStatus })
-    }   
+    }
   }
 
   async waitForMessageClosed() {
@@ -140,7 +142,9 @@ class Goal8Contrib extends React.Component {
           goalId: editGoalId,
           Q8_1: parseInt(data.Questions.filter(x => x.Key === "NonClimateChange")[0].Value),
           Q8_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
-          Q8_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
+          Q8_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
+          Q8_4: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
+          Q8_5: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
         })
       }
 
@@ -156,7 +160,7 @@ class Goal8Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState( { ...defaultState, goalId: _gf.GetUID() })
+    this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({
@@ -169,7 +173,7 @@ class Goal8Contrib extends React.Component {
 
   async submit() {
 
-    let {  goalId, goalStatus, Q8_1, Q8_2, Q8_3 } = this.state
+    let { goalId, goalStatus, Q8_1, Q8_2, Q8_3, Q8_4, Q8_5 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -183,7 +187,9 @@ class Goal8Contrib extends React.Component {
       Questions: [
         { Key: "NonClimateChange", Value: Q8_1.toString() },
         { Key: "EvidenceLink", Value: Q8_2 },
-        { Key: "Region", Value: Q8_3.toString() }
+        { Key: "Region", Value: Q8_3.toString() },
+        { Key: "Institution", Value: Q8_4.toString() },
+        { Key: "InstitutionCustom", Value: Q8_5 }
       ]
     }
 
@@ -191,7 +197,7 @@ class Goal8Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
@@ -226,7 +232,7 @@ class Goal8Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q8_1, Q8_2, Q8_3 } = this.state
+    let { editing, goalStatus, goalId, Q8_1, Q8_2, Q8_3, Q8_4, Q8_5 } = this.state
 
     return (
       <>
@@ -374,57 +380,105 @@ class Goal8Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  8.3 What is the effective region for this goal?
+                  8.3 Select a Region for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + `Regions/Flat`}>
+                  baseUrl={vmsBaseURL + 'Regions'}>
+
                   {({ loading, error, data }) => {
 
-                    let regions = []
+                    let processedData = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-                
+
                     if (data) {
                       if (data.items && data.items.length > 0) {
-                        regions = data.items
-                      }
-                    }
-
-                    //Get current value
-                    let value = ""
-                    if(regions && regions.length > 0){
-                      let f = regions.filter(x => x.id == Q8_3)
-                      if(f && f.length > 0 && f[0].value){
-                        value = f[0].value                        
+                        processedData = data.items
                       }
                     }
 
                     return (
-                      <TreeSelectInput 
-                        data={_gf.TransformDataToTree(regions)}
-                        allowClear={true}
-                        value={value}
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q8_3}
                         callback={(value) => { this.setState({ Q8_3: value.id }) }}
-                        placeHolder={"National"}
+                        allowClear={true}
+                        placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
                     )
 
                   }}
                 </OData>
-
-                <label style={{ fontSize: "14px", marginTop: "5px" }}>
-                  <i>* Leave empty for National</i>
-                </label>
               </Col>
             </Row>
             <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  8.4 Select your Institution/Organisation?
+                </label>
+
+                <OData
+                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                  {({ loading, error, data }) => {
+
+                    let processedData = []
+
+                    if (loading) {
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        processedData = data.items
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q8_4}
+                        callback={(value) => { this.setState({ Q8_4: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                      />
+                    )
+                  }}
+                </OData>
+              </Col>
+            </Row>
+            <br />
+
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  8.5 If your Institution/Organisation is not in the list above, please type it here?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q8_5}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q8_5: value })
+                  }}
+                />
+              </Col>
+            </Row>
 
             <Row>
               <Col md="4">

@@ -43,12 +43,14 @@ const defaultState = {
   title: "",
   goalStatus: "R",
   goalId: _gf.GetUID(),
-  Q4_1: 1,
-  Q4_2_A: 1,
-  Q4_2_B: 1,
-  Q4_2_C: "",
-  Q4_2_D: "",
-  Q4_3: 0 //Region
+  Q4_1: 1, //CapacityBuilding
+  Q4_2_A: 1, //TotalBudget
+  Q4_2_B: 1, //BudgetDuration
+  Q4_2_C: 0, //FundingAgency
+  Q4_2_D: "", //PartneringDepartments
+  Q4_3: 0, //Region
+  Q4_4: 0, //Institution
+  Q4_5: "" //InstitutionCustom
 }
 
 class Goal4Contrib extends React.Component {
@@ -77,44 +79,44 @@ class Goal4Contrib extends React.Component {
     this.assessGoalStatus()
   }
 
-  assessGoalStatus(){
+  assessGoalStatus() {
 
     let { goalStatus, Q4_1 } = this.state
     let newGoalStatus = "R"
     let redPoints = 0
     let amberPoints = 0
     let greenPoints = 0
-   
+
     //Check red conditions
-    if(Q4_1 === 1){
+    if (Q4_1 === 1) {
       redPoints += 1
     }
 
     //Check amber conditions
-    if(Q4_1 === 2){
+    if (Q4_1 === 2) {
       amberPoints += 1
     }
 
     //Check green conditions
-    if(Q4_1 === 3){
+    if (Q4_1 === 3) {
       greenPoints += 1
     }
 
     //Parse result to status colour    
-    if(greenPoints > 0){
+    if (greenPoints > 0) {
       newGoalStatus = "G"
     }
-    else if(amberPoints > 0){
+    else if (amberPoints > 0) {
       newGoalStatus = "A"
     }
-    else if(redPoints > 0){
+    else if (redPoints > 0) {
       newGoalStatus = "R"
     }
 
     //Update status
     if (newGoalStatus !== goalStatus) {
       this.setState({ goalStatus: newGoalStatus })
-    }   
+    }
   }
 
   async waitForMessageClosed() {
@@ -148,9 +150,11 @@ class Goal4Contrib extends React.Component {
           Q4_1: parseInt(data.Questions.filter(x => x.Key === "CapacityBuilding")[0].Value),
           Q4_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q4_2_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
-          Q4_2_C: data.Questions.filter(x => x.Key === "FundingAgency")[0].Value,
+          Q4_2_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
           Q4_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
-          Q4_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value)
+          Q4_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
+          Q4_4: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
+          Q4_5: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value,
         })
       }
 
@@ -166,7 +170,7 @@ class Goal4Contrib extends React.Component {
 
     await this.waitForMessageClosed();
 
-    this.setState( { ...defaultState, goalId: _gf.GetUID() })
+    this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
       window.scroll({
@@ -179,7 +183,7 @@ class Goal4Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3 } = this.state
+    let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -196,7 +200,9 @@ class Goal4Contrib extends React.Component {
         { Key: "BudgetDuration", Value: Q4_2_B.toString() },
         { Key: "FundingAgency", Value: Q4_2_C },
         { Key: "PartneringDepartments", Value: Q4_2_D },
-        { Key: "Region", Value: Q4_3.toString() }
+        { Key: "Region", Value: Q4_3.toString() },
+        { Key: "Institution", Value: Q4_4.toString() },
+        { Key: "InstitutionCustom", Value: Q4_5 }
       ]
     }
 
@@ -204,10 +210,10 @@ class Goal4Contrib extends React.Component {
     try {
       let res = await fetch(apiBaseURL + 'Goals', {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
-         },
+        },
         body: JSON.stringify(goal)
       })
 
@@ -239,7 +245,7 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3 } = this.state
+    let { editing, goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
 
     return (
       <>
@@ -446,17 +452,18 @@ class Goal4Contrib extends React.Component {
                 </label>
 
                 <OData
-                  baseUrl={ccrdBaseURL + `Funders`}
+                  baseUrl={ccrdBaseURL + 'Funders'}
                   query={{
                     select: ['FunderId', 'FundingAgency'],
                     orderBy: ['FundingAgency']
                   }}>
+
                   {({ loading, error, data }) => {
 
-                    let distinctFunders = []
+                    let processedData = []
 
                     if (loading) {
-                      distinctFunders = ["Loading..."]
+                      processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
                     }
 
                     if (error) {
@@ -464,26 +471,21 @@ class Goal4Contrib extends React.Component {
                     }
 
                     if (data) {
-                      if (data && data.value.length > 0) {
-
-                        //Get distinct funders by 'FundingAgency'
-                        data.value.forEach(item => {
-                          if (!distinctFunders.includes(item.FundingAgency)) {
-                            distinctFunders.push(item.FundingAgency)
-                          }
-                        })
+                      if (data.value && data.value.length > 0) {
+                        processedData = data.value
                       }
                     }
 
                     return (
-                      <SelectInput
-                        data={distinctFunders.map(x => ({ id: distinctFunders.indexOf(x), text: x }))}
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
                         value={Q4_2_C}
-                        callback={(value) => { this.setState({ Q4_2_C: value.text }) }}
-                        allowClear={false}
+                        callback={(value) => { this.setState({ Q4_2_C: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
                       />
                     )
-
                   }}
                 </OData>
               </Col>
@@ -523,11 +525,11 @@ class Goal4Contrib extends React.Component {
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q4_2_D}
-                        callback={(value) => { this.setState({ Q4_2_D: value.text }) }}
-                        allowClear={false}
+                        callback={(value) => { this.setState({ Q4_2_D: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
                       />
                     )
-
                   }}
                 </OData>
 
@@ -538,57 +540,105 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  4.3 What is the effective region for this goal?
+                  4.3 Select a Region for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + `Regions/Flat`}>
+                  baseUrl={vmsBaseURL + 'Regions'}>
+
                   {({ loading, error, data }) => {
 
-                    let regions = []
+                    let processedData = []
 
                     if (loading) {
-                      regions = [{ id: 1, text: "Loading...", additionalData: []}]
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
                     }
 
                     if (error) {
                       console.error(error)
                     }
-                
+
                     if (data) {
                       if (data.items && data.items.length > 0) {
-                        regions = data.items
-                      }
-                    }
-
-                    //Get current value
-                    let value = ""
-                    if(regions && regions.length > 0){
-                      let f = regions.filter(x => x.id == Q4_3)
-                      if(f && f.length > 0 && f[0].value){
-                        value = f[0].value                        
+                        processedData = data.items
                       }
                     }
 
                     return (
-                      <TreeSelectInput 
-                        data={_gf.TransformDataToTree(regions)}
-                        allowClear={true}
-                        value={value}
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q4_3}
                         callback={(value) => { this.setState({ Q4_3: value.id }) }}
-                        placeHolder={"National"}
+                        allowClear={true}
+                        placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
                     )
 
                   }}
                 </OData>
-
-                <label style={{ fontSize: "14px", marginTop: "5px" }}>
-                  <i>* Leave empty for National</i>
-                </label>
               </Col>
             </Row>
-            <br />              
+            <br />
+
+            <Row>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  4.4 Select your Institution/Organisation?
+                </label>
+
+                <OData
+                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                  {({ loading, error, data }) => {
+
+                    let processedData = []
+
+                    if (loading) {
+                      processedData = [{ id: "Loading...", value: "Loading..." }]
+                    }
+
+                    if (error) {
+                      console.error(error)
+                    }
+
+                    if (data) {
+                      if (data.items && data.items.length > 0) {
+                        processedData = data.items
+                      }
+                    }
+
+                    return (
+                      <TreeSelectInput
+                        data={processedData}
+                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                        value={Q4_4}
+                        callback={(value) => { this.setState({ Q4_4: value.id }) }}
+                        allowClear={true}
+                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                      />
+                    )
+                  }}
+                </OData>
+              </Col>
+            </Row>
+            <br />
+
+            <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  4.5 If your Institution/Organisation is not in the list above, please type it here?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q4_5}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q4_5: value })
+                  }}
+                />
+              </Col>
+            </Row>
 
             <Row>
               <Col md="4">
