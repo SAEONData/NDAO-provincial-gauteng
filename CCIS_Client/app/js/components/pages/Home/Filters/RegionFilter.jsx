@@ -19,7 +19,7 @@ class RegionFilter extends React.Component {
 
     return (
       <>
-        <OData
+        {/* <OData
           baseUrl={vmsBaseURL + `Regions/Flat`}>
           {({ loading, error, data }) => {
 
@@ -59,6 +59,42 @@ class RegionFilter extends React.Component {
               />
             )
 
+          }}
+        </OData> */}
+
+        <OData
+          baseUrl={vmsBaseURL + 'Regions'}>
+
+          {({ loading, error, data }) => {
+
+            let processedData = []
+
+            if (loading) {
+              processedData = [{ id: "Loading...", value: "Loading..." }]
+            }
+
+            if (error) {
+              console.error(error)
+            }
+
+            if (data) {
+              if (data.items && data.items.length > 0) {
+                processedData = data.items
+              }
+            }
+
+            return (
+              <TreeSelectInput
+                data={processedData}
+                transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                value={value}
+                allowClear={true}
+                callback={(value) => {
+                  callback(value.id)
+                }}
+                placeHolder={"National"}
+              />
+            )
           }}
         </OData>
       </>

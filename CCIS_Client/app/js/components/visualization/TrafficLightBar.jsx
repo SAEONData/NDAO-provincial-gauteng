@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Popover, PopoverBody, PopoverHeader } from 'mdbreact'
+import { Popover, PopoverBody, PopoverHeader, Modal, ModalHeader, ModalBody } from 'mdbreact'
+import { DEAGreen, Red, Amber, Green } from '../../config/colours.cfg'
 
 const _gf = require('../../globalFunctions')
 
@@ -12,160 +13,230 @@ import paper_clip_blue from "../../../images/paper_clip_blue.png"
 import paper_clip_grey from "../../../images/paper_clip_grey.png"
 
 
+const rowHeight = 35 //Adjust for global row height
+const rowSpacing = 7 //Adjust for global row spacing
+
+const segDivStyle = (data) => {
+  return {
+    width: ((100 / (data.length + 3)) + "%"),
+    height: rowHeight + "px",
+    // border: "1px dashed gainsboro",
+    float: "left",
+    marginBottom: rowSpacing + "px",
+    textAlign: "center",
+    paddingTop: ((rowHeight - 26) / 2) + "px"
+  }
+}
+
 class TrafficLightBar extends React.Component {
 
   constructor(props) {
     super(props);
-  }
 
-  renderHeaders(data) {
-
-    let headers = []
-
-    if (data !== 'undefined' && data.length > 0) {
-      data.map(item => {
-        headers.push(
-          <label key={item.key} style={{ width: ((100 / data.length) + "%"), textAlign: "center", fontSize: "18px" }}>
-            <b>{item.key}</b>
-          </label>
-        )
-      })
+    this.state = {
+      infoModal: false,
+      infoHeader: null,
+      infoContent: null
     }
 
-    return headers
+    this.showInfo = this.showInfo.bind(this)
   }
 
-  renderHeadersCondensed(data) {
+  showInfo(header, content) {
+    this.setState({
+      infoHeader: header,
+      infoContent: content,
+      infoModal: true
+    })
+  }
 
+  //HEADER//
+  headers(goal, data) {
     let headers = []
-    let lastIndex = (data.length - 1)
 
-    if (data !== 'undefined' && lastIndex >= 0) {
+    if (data) {
+
+      //PREFIX//
       headers.push(
-        <label key={data[0].key} style={{ width: ((100 / 3) + "%"), textAlign: "left", fontSize: "18px", paddingLeft: "10px" }}>
-          <b>{data[0].key}</b>
-        </label>
-      )
-      headers.push(
-        <label key="..." style={{ width: ((100 / 3) + "%"), textAlign: "center", fontSize: "18px" }}>
-          <b>...</b>
-        </label>
-      )      
-      headers.push(
-        <label key={data[lastIndex].key} style={{ width: ((100 / 3) + "%"), textAlign: "right", fontSize: "18px", paddingRight: "10px" }}>
-          <b>{data[lastIndex].key}</b>
-        </label>
-      )
-    }
-
-    return headers
-  }
-
-  renderParts(data) {
-
-    let parts = []
-
-    data.map(item => {
-      parts.push(
-        <label
-          key={item.key}
-          style={{ width: ((100 / data.length) + "%"), height: "100%", backgroundColor: _gf.getPartColour(item.value), border: "0px solid gainsboro" }}
+        <div
+          key={`head${goal}_pre`}
+          style={segDivStyle(data)}
         />
       )
-    })
 
-    return parts
+      //CONTENT//
+      data.forEach(item => {
+        headers.push(
+          <div
+            key={`head${goal}_${item.key}`}
+            style={segDivStyle(data)}
+          >
+            <p
+              style={{
+                fontSize: "18px",
+                fontWeight: "bold"
+              }}
+            >
+              {item.key}
+            </p>
+          </div>
+        )
+      })
+
+      //SUFFIX-1//
+      headers.push(
+        <div
+          key={`head${goal}_post0`}
+          style={segDivStyle(data)}
+        />
+      )
+
+      //SUFFIX-2//
+      headers.push(
+        <div
+          key={`head${goal}_post2`}
+          style={segDivStyle(data)}
+        />
+      )
+    }
+
+    return headers
+  }
+
+  //SEGMENT|PARTS//
+  segments(goal, data, description, attachment, explanation) {
+
+    let segments = []
+
+    if (data) {
+
+      //PREFIX//
+      segments.push(
+        <div
+          key={`goal${goal}_pre`}
+          style={{
+            ...segDivStyle(data)
+          }}
+        >
+          <img
+            src={gear}
+            style={{
+              maxHeight: (rowHeight + "px"),
+              maxWidth: "75%",
+              marginTop: "-20%",
+              marginBottom: "-20%",
+              cursor: description ? "pointer" : "default"
+            }}
+            onClick={() => {
+              if (description) this.showInfo("Goal details", description)
+            }}
+          />
+          <sub style={{ fontSize: "17px" }}>
+            {goal}
+          </sub>
+        </div>
+      )
+
+      //CONTENT//
+      data.forEach(item => {
+        segments.push(
+          <div
+            key={`goal${goal}_${item.key}`}
+            style={{
+              ...segDivStyle(data),
+              backgroundColor: this.backgroundColor(item.value)
+            }}
+          />
+        )
+      })
+
+      //SUFFIX-1//
+      segments.push(
+        <div
+          key={`goal${goal}_post1`}
+          style={{
+            ...segDivStyle(data)
+          }}
+        >
+          <img
+            src={traffic_light}
+            style={{
+              maxHeight: (rowHeight + "px"),
+              maxWidth: "85%",
+              marginTop: "-21%",
+              marginBottom: "-21%",
+              cursor: explanation ? "pointer" : "default"
+            }}
+            onClick={() => {
+              if (explanation) this.showInfo("How it is being evaluated", explanation)
+            }}
+          />
+        </div>
+      )
+
+      //SUFFIX-2//
+      segments.push(
+        <div
+          key={`goal${goal}_post2`}
+          style={{
+            ...segDivStyle(data)
+          }}
+        >
+          <img
+            src={attachment ? paper_clip_blue : paper_clip_grey}
+            style={{
+              maxHeight: (rowHeight + "px"),
+              maxWidth: "70%",
+              marginTop: "-19%",
+              marginBottom: "-19%",
+              cursor: attachment ? "pointer" : "default"
+            }}
+            onClick={() => {
+              if (attachment) this.showInfo("Download attachment",
+                <a href={attachment}>
+                  <span onClick={() => { this.setState({ infoModal: false }) }}>{attachment}</span>
+                </a>)
+            }}
+          />
+        </div>
+      )
+    }
+
+    return segments
+  }
+
+  backgroundColor(value) {
+    switch (value) {
+      case "R":
+        return Red
+      case "A":
+        return Amber
+      case "G":
+        return Green
+      default:
+        return "lightgrey"
+    }
   }
 
   render() {
 
-    let { data, showTitle, goal, attachment, description, explanation } = this.props
+    let { data, showHeaders, goal, attachment, description, explanation } = this.props
+    let { infoModal, infoHeader, infoContent } = this.state
 
     return (
-      <div style={{ marginBottom: "10px" }}>
 
-        <table>
-          <tbody>
+      <div>
+        {showHeaders && this.headers(goal, data)}
+        {this.segments(goal, data, description, attachment, explanation)}
 
-            {/* HEADERS (OPTIONAL) */}
-            {
-              showTitle &&
-              <tr>
-                <th>
-                  <img src="" style={{ width: "40px" }} />
-                </th>
-                <th>
-                  <label style={{ fontSize: "18px", marginTop: "30px", marginLeft: "-3px", width: "15px" }}></label>
-                </th>
-                <th width="100%">
-                  <div className="d-none d-md-block" style={{ width: "100%" }}>
-                    {this.renderHeaders(data)}
-                  </div>
-                  <div className="d-block d-md-none" style={{ width: "100%" }}>
-                    {this.renderHeadersCondensed(data)}
-                  </div>
-                </th>
-                <th>
-                  <img src="" style={{ height: "40px", marginLeft: "5px" }} />
-                </th>
-                <th>
-                  <img src="" style={{ height: "35px" }} />
-                </th>
-              </tr>
-            }
-
-            {/* PARTS */}
-            <tr>
-              <td>
-                {description &&
-                  <Popover
-                    component="a"
-                    placement="right"
-                    popoverBody={<img src={gear} style={{ width: "40px" }} />}
-                  >
-                    <PopoverHeader>
-                      Goal details:
-                  </PopoverHeader>
-                    <PopoverBody>
-                      {description}
-                    </PopoverBody>
-                  </Popover>
-                }
-                {!description && <img src={gear} style={{ width: "40px" }} />}
-              </td>
-              <td>
-                <label style={{ fontSize: "18px", marginTop: "30px", marginLeft: "-3px", width: "15px" }}>{goal}</label>
-              </td>
-              <td width="100%">
-                <div style={{ height: "50px", border: "1px solid gainsboro", width: "100%", backgroundColor: "whitesmoke" }}>
-                  {this.renderParts(data)}
-                </div>
-              </td>
-              <td>
-                {explanation &&
-                  <Popover
-                    component="a"
-                    placement="left"
-                    popoverBody={<img src={traffic_light} style={{ height: "40px", marginLeft: "5px" }} />}
-                  >
-                    <PopoverHeader>
-                      How it is being evaluated:
-                    </PopoverHeader>
-                    <PopoverBody>
-                      {explanation}
-                    </PopoverBody>
-                  </Popover>
-                }
-                {!explanation && <img src={traffic_light} style={{ height: "40px", marginLeft: "5px" }} />}
-              </td>
-              <td>
-                {attachment && <a href={attachment}><img src={paper_clip_blue} style={{ height: "35px" }} /></a>}
-                {!attachment && <img src={paper_clip_grey} style={{ height: "35px" }} />}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
+        <Modal isOpen={infoModal} toggle={() => { this.setState({ infoModal: false }) }} centered >
+          <ModalHeader toggle={() => { this.setState({ infoModal: false }) }}>
+            {infoHeader}
+          </ModalHeader>
+          <ModalBody>
+            {infoContent}
+          </ModalBody>
+        </Modal>
       </div>
     )
   }

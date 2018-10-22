@@ -46,6 +46,12 @@ namespace CCIS_API.Database.Contexts
             builder
                 .Action("RemoveAllFiles");
 
+            builder
+                .Action("GetFilterInstitutions")
+                .ReturnsCollection<Institution>()
+                .Parameter<Filters>("filters");
+
+
             return builder.GetEdmModel();
         }
     }

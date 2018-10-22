@@ -26,7 +26,7 @@ class TrafficLights extends React.Component {
 
             <TrafficLightBar
               goal="1"
-              showTitle={true}
+              showHeaders={true}
               description={
                 <p>
                   Goal 1. Robust/integrated plans, policies and actions for effective delivery of climate change

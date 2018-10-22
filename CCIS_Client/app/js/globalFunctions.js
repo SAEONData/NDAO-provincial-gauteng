@@ -1,5 +1,5 @@
 import React from 'react'
-import { DEAGreen, Red, Amber, Green} from './config/colours.cfg'
+import { DEAGreen } from './config/colours.cfg'
 const queryString = require('query-string')
 
 export function fixEmptyValue(value, defaultValue) {
@@ -42,17 +42,6 @@ export function GetUID() {
     var r = crypto.getRandomValues(new Uint8Array(1))[0] % 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
-}
-
-export function getPartColour(value) {
-  switch (value) {
-    case "R":
-      return Red
-    case "A":
-      return Amber
-    case "G":
-      return Green
-  }
 }
 
 export function StringToHTML(strVal) {

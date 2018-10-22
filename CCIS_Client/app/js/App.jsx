@@ -55,11 +55,16 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
 
-    userManager.signinSilent()
+    try{
+      await userManager.signinSilent()
+    }
+    catch(ex){
+      console.warn("Sign-in-silent failed!", ex)
+    }
   }
 
   ignoreURL(){

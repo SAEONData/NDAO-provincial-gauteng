@@ -3,9 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen, DEAGreenDark, Red, Amber, Green } from "../../../config/colours.cfg"
-import TreeSelectInput from '../../input/TreeSelectInput.jsx';
-import SelectInput from '../../input/SelectInput.jsx';
+import { DEAGreen, Red, Amber, Green } from "../../../config/colours.cfg"
 import MapsCarouselView from '../../layout/MapsCarouselView.jsx';
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
@@ -16,6 +14,8 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
+import buildQuery from 'odata-query'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -35,16 +35,80 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      infoSection: true,
-      filterYear: (new Date()).getFullYear(),
+      infoSection: false,
       filterRegion: 0,
       filterSector: 0,
-      filterGoal: 0
+      filterGoal: 0,
+      filterYear: (new Date()).getFullYear()
     }
+
+    this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
+  }
+
+  // componentDidUpdate(){
+  //   this.handleFilterChange()
+  // }
+
+  async handleFilterChange(filters) {
+
+    let { filterRegion, filterSector, filterGoal, filterYear } = this.state
+    let updateNeeded = false
+
+    if (filters.filterRegion && filters.filterRegion !== filterRegion) {
+      updateNeeded = true
+    }
+    if (filters.filterSector && filters.filterSector !== filterSector) {
+      updateNeeded = true
+    }
+    if (filters.filterGoal && filters.filterGoal !== filterGoal) {
+      updateNeeded = true
+    }
+    if (filters.filterYear && filters.filterYear !== filterYear) {
+      updateNeeded = true
+    }
+
+    if (updateNeeded === true) {
+
+      //update state
+      this.setState({ ...filters }, async () => {
+
+        let { filterRegion, filterSector, filterGoal, filterYear } = this.state
+
+        //fetch goals
+        try {
+          let res = await fetch(apiBaseURL + "GetFilterInstitutions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              Region: filterRegion, 
+              Sector: filterSector, 
+              Goal: filterGoal, 
+              Year: filterYear
+            })
+          })
+
+          console.log("res1", res)
+          res = await res.json()
+          console.log("res2", res)
+
+          // if (res.value && res.value.length > 0) {
+
+          //   let data = res.value
+          //   console.log("data", data)
+          // }
+
+        }
+        catch (ex) {
+          console.error(ex)
+        }
+      })
+    }
   }
 
   render() {
@@ -79,7 +143,18 @@ class Home extends React.Component {
           <Col md="12">
             <h3>
               <b style={{ marginRight: "15px" }}>Climate Change Adaptation Status Across South Africa</b>
-              <Button style={{ marginTop: "0px", marginLeft: "0px", height: "40px", fontSize: "16px" }} size="sm" color="grey">View Gauteng</Button>
+              {/* <Button 
+                style={{ 
+                  marginTop: "0px", 
+                  marginLeft: "0px", 
+                  height: "40px", 
+                  fontSize: "16px" 
+                }} 
+                size="sm" 
+                color="grey"
+              >
+                View Gauteng
+              </Button> */}
             </h3>
             <p style={{ marginBottom: "0px" }}>
               A simple pragmatic approach has been developed to monitor and evaluate the progress being made
@@ -101,7 +176,7 @@ class Home extends React.Component {
           <Col md="3" style={{ marginBottom: "3px" }}>
             <RegionFilter
               value={filterRegion}
-              callback={(value) => { this.setState({ filterRegion: value }) }}
+              callback={(value) => { this.handleFilterChange({ filterRegion: value }) }}
             />
           </Col>
           <Col md="3" style={{ marginBottom: "3px" }}>
@@ -148,6 +223,15 @@ class Home extends React.Component {
         />
 
         <hr style={{ marginTop: "15px" }} />
+
+        <Row style={{ textAlign: "center" }}>
+          <Col md="12">
+            <h4 style={{ fontWeight: "bold", marginTop: "10px", marginBottom: "0px" }}>
+              [Institution]
+            </h4>
+          </Col>
+        </Row>
+
         <br />
         <TrafficLights />
         <br />
