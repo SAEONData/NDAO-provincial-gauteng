@@ -42,8 +42,8 @@ const defaultState = {
   Q9_1: 1, //Practices
   Q9_2: "", //EvidenceLink
   Q9_3: 0, //Region
-  Q9_4: 0, //Institution
-  Q9_5: "" //InstitutionCustom
+  Q9_4: "", //Institution
+  Q9_5: 0 //Sector
 }
 
 class Goal9Contrib extends React.Component {
@@ -143,8 +143,8 @@ class Goal9Contrib extends React.Component {
           Q9_1: parseInt(data.Questions.filter(x => x.Key === "Practices")[0].Value),
           Q9_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
           Q9_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
-          Q9_4: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
-          Q9_5: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
+          Q9_4: data.Questions.filter(x => x.Key === "Institution")[0].Value,
+          Q9_5: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
         })
       }
 
@@ -188,8 +188,8 @@ class Goal9Contrib extends React.Component {
         { Key: "Practices", Value: Q9_1.toString() },
         { Key: "EvidenceLink", Value: Q9_2 },
         { Key: "Region", Value: Q9_3.toString() },
-        { Key: "Institution", Value: Q9_4.toString() },
-        { Key: "InstitutionCustom", Value: Q9_5 }
+        { Key: "Institution", Value: Q9_4 },
+        { Key: "Sector", Value: Q9_5.toString() }
       ]
     }
 
@@ -410,13 +410,29 @@ class Goal9Contrib extends React.Component {
             <br />
 
             <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  9.4 Specify non-government organisation name (if applicable)?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q9_4}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q9_4: value })
+                  }}
+                />
+              </Col>
+            </Row>
+
+            <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  9.4 Select your Institution/Organisation?
+                  9.5 Select a sector for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                  baseUrl={vmsBaseURL + 'sectors'}>
 
                   {({ loading, error, data }) => {
 
@@ -440,33 +456,17 @@ class Goal9Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q9_4}
-                        callback={(value) => { this.setState({ Q9_4: value.id }) }}
+                        value={Q9_5}
+                        callback={(value) => { this.setState({ Q9_5: value.id }) }}
                         allowClear={true}
-                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                        placeHolder={"Select Sector...  (Leave empty for 'Any')"}
                       />
                     )
                   }}
                 </OData>
               </Col>
             </Row>
-            <br />
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  9.5 If your Institution/Organisation is not in the list above, please type it here?
-                </label>
-                <TextInput
-                  width="95%"
-                  value={Q9_5}
-                  callback={(value) => {
-                    value = _gf.fixEmptyValue(value, "")
-                    this.setState({ Q9_5: value })
-                  }}
-                />
-              </Col>
-            </Row>
+            <br />            
 
             <Row>
               <Col md="4">

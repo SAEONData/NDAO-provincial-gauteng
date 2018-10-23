@@ -45,11 +45,11 @@ const defaultState = {
   showNCCRD: false,
   goalId: _gf.GetUID(),
   Q1_1: "", //DocumentLink
-  Q1_2: false, //HasAssessment
-  Q1_3: moment().format("YYYY-MM-DD"), //DocLastUpdated
-  Q1_4: 0, //Region
-  Q1_5: 0, //Institution
-  Q1_6: ""//InstitutionCustom
+  Q1_3: false, //HasAssessment
+  Q1_4: moment().format("YYYY-MM-DD"), //DocLastUpdated
+  Q1_5: 0, //Region
+  Q1_6: "", //Institution
+  Q1_7: 0//Sector
 }
 
 class Goal1Contrib extends React.Component {
@@ -109,11 +109,11 @@ class Goal1Contrib extends React.Component {
           editing: true,
           goalId: editGoalId,
           Q1_1: data.Questions.filter(x => x.Key === "DocumentLink")[0].Value,
-          Q1_2: data.Questions.filter(x => x.Key === "HasAssessment")[0].Value === 'true',
-          Q1_3: data.Questions.filter(x => x.Key === "DocLastUpdated")[0].Value,
-          Q1_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
-          Q1_5: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
-          Q1_6: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
+          Q1_3: data.Questions.filter(x => x.Key === "HasAssessment")[0].Value === 'true',
+          Q1_4: data.Questions.filter(x => x.Key === "DocLastUpdated")[0].Value,
+          Q1_5: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
+          Q1_6: data.Questions.filter(x => x.Key === "Institution")[0].Value,
+          Q1_7: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
         })
       }
 
@@ -131,7 +131,7 @@ class Goal1Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q1_1, Q1_2, Q1_3, Q1_4, Q1_5, Q1_6 } = this.state
+    let { goalId, goalStatus, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -144,11 +144,11 @@ class Goal1Contrib extends React.Component {
       Type: 1,
       Questions: [
         { Key: "DocumentLink", Value: Q1_1 },
-        { Key: "HasAssessment", Value: Q1_2.toString() },
-        { Key: "DocLastUpdated", Value: Q1_3 },
-        { Key: "Region", Value: Q1_4.toString() },
-        { Key: "Institution", Value: Q1_5.toString() },
-        { Key: "InstitutionCustom", Value: Q1_6 },
+        { Key: "HasAssessment", Value: Q1_3.toString() },
+        { Key: "DocLastUpdated", Value: Q1_4 },
+        { Key: "Region", Value: Q1_5.toString() },
+        { Key: "Institution", Value: Q1_6 },
+        { Key: "Sector", Value: Q1_7.toString() },
       ]
     }
 
@@ -274,7 +274,7 @@ class Goal1Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_2, Q1_3, Q1_4, Q1_5, Q1_6 } = this.state
+    let { editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7 } = this.state
 
     return (
       <>
@@ -410,16 +410,16 @@ class Goal1Contrib extends React.Component {
                 </label>
                 <br />
                 <Button
-                  onClick={() => { this.setState({ Q1_2: true }) }}
+                  onClick={() => { this.setState({ Q1_3: true }) }}
                   color=""
-                  style={{ fontSize: Q1_2 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q1_2 ? DEAGreen : "grey" }}
+                  style={{ fontSize: Q1_3 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   YES
                 </Button>
                 <Button
-                  onClick={() => { this.setState({ Q1_2: false }) }}
+                  onClick={() => { this.setState({ Q1_3: false }) }}
                   color=""
-                  style={{ fontSize: !Q1_2 ? "13px" : "10px", backgroundColor: !Q1_2 ? DEAGreen : "grey" }}
+                  style={{ fontSize: !Q1_3 ? "13px" : "10px", backgroundColor: !Q1_3 ? DEAGreen : "grey" }}
                   size="sm">
                   NO
                 </Button>
@@ -437,8 +437,8 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="5">
                 <DateInput
-                  value={Q1_3}
-                  callback={(dateString) => { this.setState({ Q1_3: dateString }) }}
+                  value={Q1_4}
+                  callback={(dateString) => { this.setState({ Q1_4: dateString }) }}
                   allowClear={false}
                 />
               </Col>
@@ -448,7 +448,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.5 Select a Region for this plan?
+                  1.5 Select a region for this plan?
                 </label>
 
                 <OData
@@ -476,8 +476,8 @@ class Goal1Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q1_4}
-                        callback={(value) => { this.setState({ Q1_4: value.id }) }}
+                        value={Q1_5}
+                        callback={(value) => { this.setState({ Q1_5: value.id }) }}
                         allowClear={true}
                         placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
@@ -490,13 +490,29 @@ class Goal1Contrib extends React.Component {
             <br />
 
             <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  1.6 Specify non-government organisation name (if applicable)?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q1_6}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q1_6: value })
+                  }}
+                />
+              </Col>
+            </Row>
+
+            <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.6 Select your Institution/Organisation?
+                  1.7 Select a sector for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                  baseUrl={vmsBaseURL + 'sectors'}>
 
                   {({ loading, error, data }) => {
 
@@ -520,33 +536,17 @@ class Goal1Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q1_5}
-                        callback={(value) => { this.setState({ Q1_5: value.id }) }}
+                        value={Q1_7}
+                        callback={(value) => { this.setState({ Q1_7: value.id }) }}
                         allowClear={true}
-                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                        placeHolder={"Select Sector...  (Leave empty for 'Any')"}
                       />
                     )
                   }}
                 </OData>
               </Col>
             </Row>
-            <br />
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  1.7 If your Institution/Organisation is not in the list above, please type it here?
-                </label>
-                <TextInput
-                  width="95%"
-                  value={Q1_6}
-                  callback={(value) => {
-                    value = _gf.fixEmptyValue(value, "")
-                    this.setState({ Q1_6: value })
-                  }}
-                />
-              </Col>
-            </Row>
+            <br />          
 
             <Row>
               <Col md="4">

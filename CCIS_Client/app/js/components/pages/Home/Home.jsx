@@ -14,8 +14,8 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
-import buildQuery from 'odata-query'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../config/serviceURLs.cfg'
+import { apiBaseURL } from '../../../config/serviceURLs.cfg'
+import TreeSelectInput from '../../input/TreeSelectInput.jsx';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -39,44 +39,49 @@ class Home extends React.Component {
       filterRegion: 0,
       filterSector: 0,
       filterGoal: 0,
-      filterYear: (new Date()).getFullYear()
+      filterYear: (new Date()).getFullYear(),
+      filterInstitution: "",
+      filterInstitutionOptions: []
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
+    this.handleInstitutionChange = this.handleInstitutionChange.bind(this)
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
+
+    //Apply default filtering
+    let { filterRegion, filterSector, filterGoal, filterYear } = this.state
+    this.handleFilterChange({
+      filterRegion, filterSector, filterGoal, filterYear
+    }, true)
   }
 
-  // componentDidUpdate(){
-  //   this.handleFilterChange()
-  // }
-
-  async handleFilterChange(filters) {
+  async handleFilterChange(filters, autoSelect) {
 
     let { filterRegion, filterSector, filterGoal, filterYear } = this.state
     let updateNeeded = false
 
-    if (filters.filterRegion && filters.filterRegion !== filterRegion) {
+    if (filters.filterRegion !== filterRegion) {
       updateNeeded = true
     }
-    if (filters.filterSector && filters.filterSector !== filterSector) {
+    if (filters.filterSector !== filterSector) {
       updateNeeded = true
     }
-    if (filters.filterGoal && filters.filterGoal !== filterGoal) {
+    if (filters.filterGoal !== filterGoal) {
       updateNeeded = true
     }
-    if (filters.filterYear && filters.filterYear !== filterYear) {
+    if (filters.filterYear !== filterYear) {
       updateNeeded = true
     }
 
-    if (updateNeeded === true) {
+    if (updateNeeded === true || autoSelect === true) {
 
       //update state
       this.setState({ ...filters }, async () => {
 
-        let { filterRegion, filterSector, filterGoal, filterYear } = this.state
+        let { filterRegion, filterSector, filterGoal, filterYear, filterInstitution } = this.state
 
         //fetch goals
         try {
@@ -93,22 +98,30 @@ class Home extends React.Component {
             })
           })
 
-          console.log("res1", res)
-          res = await res.json()
-          console.log("res2", res)
+          if(res.ok){
+            res = await res.json() //parse response
 
-          // if (res.value && res.value.length > 0) {
-
-          //   let data = res.value
-          //   console.log("data", data)
-          // }
-
+            if (res.value) {
+              this.setState({ 
+                filterInstitutionOptions: res.value,
+                filterInstitution: res.value.filter(x => x === filterInstitution).length > 0 ? filterInstitution : ""
+              })
+            }
+          }
         }
         catch (ex) {
           console.error(ex)
         }
       })
     }
+  }
+
+  handleInstitutionChange(value){
+
+    // Fetch goals data
+
+
+    this.setState({ filterInstitution: value.text })
   }
 
   render() {
@@ -182,13 +195,13 @@ class Home extends React.Component {
           <Col md="3" style={{ marginBottom: "3px" }}>
             <SectorFilter
               value={filterSector}
-              callback={(value) => { this.setState({ filterSector: value }) }}
+              callback={(value) => { this.handleFilterChange({ filterSector: value }) }}
             />
           </Col>
           <Col md="3" style={{ marginBottom: "3px" }}>
             <GoalFilter
               value={filterGoal}
-              callback={(value) => { this.setState({ filterGoal: value }) }}
+              callback={(value) => { this.handleFilterChange({ filterGoal: value }) }}
             />
           </Col>
           <Col md="3">
@@ -204,7 +217,7 @@ class Home extends React.Component {
               }}
               color=""
               onClick={() => {
-                this.setState({
+                this.handleFilterChange({
                   filterYear: (new Date()).getFullYear(),
                   filterRegion: 0,
                   filterSector: 0,
@@ -219,17 +232,27 @@ class Home extends React.Component {
 
         <YearFilter
           value={filterYear}
-          callback={(value) => { this.setState({ filterYear: value }) }}
+          callback={(value) => { this.handleFilterChange({ filterYear: value }) }}
         />
 
         <hr style={{ marginTop: "15px" }} />
 
         <Row style={{ textAlign: "center" }}>
-          <Col md="12">
-            <h4 style={{ fontWeight: "bold", marginTop: "10px", marginBottom: "0px" }}>
-              [Institution]
-            </h4>
-          </Col>
+          <Col md="3" />
+          <Col md="6">
+            
+            <TreeSelectInput
+                data={this.state.filterInstitutionOptions}
+                transform={(item) => { return { id: item, text: item } }}
+                value={this.state.filterInstitution}
+                allowClear={true}
+                callback={(value) => {
+                  this.handleInstitutionChange(value)
+                }}
+                placeHolder={"Organisation/Institution  (Government)"}
+              />
+
+          </Col>          
         </Row>
 
         <br />

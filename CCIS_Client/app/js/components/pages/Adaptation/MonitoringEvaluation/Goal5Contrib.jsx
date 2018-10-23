@@ -51,8 +51,8 @@ const defaultState = {
   Q5_3_C: 0, //FundingAgency
   Q5_3_D: "", //PartneringDepartments
   Q5_4: 0, //Region
-  Q5_5: 0, //Institution
-  Q5_6: 0 //InstitutionCustom
+  Q5_5: "", //Institution
+  Q5_6: 0 //Sector
 }
 
 class Goal5Contrib extends React.Component {
@@ -156,8 +156,8 @@ class Goal5Contrib extends React.Component {
           Q5_3_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
           Q5_3_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
           Q5_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
-          Q5_5: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
-          Q5_6: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
+          Q5_5: data.Questions.filter(x => x.Key === "Institution")[0].Value,
+          Q5_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
         })
       }
 
@@ -205,8 +205,8 @@ class Goal5Contrib extends React.Component {
         { Key: "FundingAgency", Value: Q5_3_C },
         { Key: "PartneringDepartments", Value: Q5_3_D },
         { Key: "Region", Value: Q5_4.toString() },
-        { Key: "Institution", Value: Q5_5.toString() },
-        { Key: "InstitutionCustom", Value: Q5_6 }
+        { Key: "Institution", Value: Q5_5 },
+        { Key: "Sector", Value: Q5_6.toString() }
       ]
     }
 
@@ -613,13 +613,29 @@ class Goal5Contrib extends React.Component {
             <br />
 
             <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  5.5 Specify non-government organisation name (if applicable)?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q5_5}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q5_5: value })
+                  }}
+                />
+              </Col>
+            </Row>
+
+            <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  5.5 Select your Institution/Organisation?
+                  5.6 Select a sector for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                  baseUrl={vmsBaseURL + 'sectors'}>
 
                   {({ loading, error, data }) => {
 
@@ -643,33 +659,17 @@ class Goal5Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q5_5}
-                        callback={(value) => { this.setState({ Q5_5: value.id }) }}
+                        value={Q5_6}
+                        callback={(value) => { this.setState({ Q5_6: value.id }) }}
                         allowClear={true}
-                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                        placeHolder={"Select Sector...  (Leave empty for 'Any')"}
                       />
                     )
                   }}
                 </OData>
               </Col>
             </Row>
-            <br />
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  5.6 If your Institution/Organisation is not in the list above, please type it here?
-                </label>
-                <TextInput
-                  width="95%"
-                  value={Q5_6}
-                  callback={(value) => {
-                    value = _gf.fixEmptyValue(value, "")
-                    this.setState({ Q5_6: value })
-                  }}
-                />
-              </Col>
-            </Row>
+            <br />            
 
             <Row>
               <Col md="4">

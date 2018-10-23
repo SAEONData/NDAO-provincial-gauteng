@@ -29,76 +29,57 @@ namespace CCIS_API.Controllers
         [HttpPost]
         [ODataRoute("GetFilterInstitutions")]
         [EnableCors("CORSPolicy")]
-        public IQueryable<Institution> GetFilterInstitutions([FromBody] Filters filters)
+        public IQueryable<string> GetFilterInstitutions([FromBody] Filters filters)
         {
-            var result = new List<Institution>();
-            var goalIDs = new List<Guid>();
+            var result = new List<string>();
+            var regionGoals = new List<Guid>();
+            var sectorGoals = new List<Guid>();
+            var typeGoals = new List<Guid>();
+            var yearGoals = new List<Guid>();
 
-            if (filters.Region > 0)
-            {
-                //Get IDs for Goals in Region
-                goalIDs.AddRange(_context.Goals
-                    .Where(g => g.Questions.Any(q => q.Key == "Region" && q.Value == filters.Region.ToString()))
-                    .Select(g => g.Id));                    
+            //Get IDs for Goals in Region
+            regionGoals.AddRange(_context.Goals
+                .Where(g => g.Questions.Any(q => q.Key == "Region" && q.Value == filters.Region.ToString()))
+                .Select(g => g.Id));
+
+            //Get IDs for Goals in Sector
+            if (filters.Sector > 0) {
+                sectorGoals.AddRange(_context.Goals
+                    .Where(g => g.Questions.Any(q => q.Key == "Sector" && q.Value == filters.Sector.ToString()))
+                    .Select(g => g.Id));
             }
 
-            //if (filters.sector > 0)
-            //{
+            //Get IDs for Goals in Goal-Type
+            if (filters.Goal > 0)
+            {
+                typeGoals.AddRange(_context.Goals
+                    .Where(g => g.Type == filters.Goal)
+                    .Select(g => g.Id));
+            }
 
-            //}
-
-            //if (filters.goal > 0)
-            //{
-
-            //}
-
-            //if (filters.year > 0)
-            //{
-
-            //}
-
-            //Remove duplicates
-            goalIDs = goalIDs.Distinct().ToList();
-
-            //Get and return Institution IDs
-            var institutionIDs = _context.Questions
-                .Where(q => goalIDs.Contains(q.Goal.Id) && q.Key == "Institution")
-                .Select(q => int.Parse(q.Value))
-                .Distinct();
-
-            //Get institutions
-            var institutions = GetInstitutions().Result;
-
-            //Filter institutions
-            result.AddRange(institutions.Where(i => institutionIDs.Contains(i.Id)));
+            //Get IDs for Goals in date range
+            yearGoals.AddRange(_context.Goals
+                .Where(g => 
+                    (DateTime.Parse(g.CreateDate).Year >= (filters.Year - 5)) &&
+                    (DateTime.Parse(g.CreateDate).Year <= filters.Year)
+                )
+                .Select(g => g.Id));
 
             //Inject NGOs
             result.AddRange(_context.Questions
-                .Where(q => goalIDs.Contains(q.Goal.Id) && q.Key == "InstitutionCustom" && (!string.IsNullOrEmpty(q.Value) && q.Value != "0"))
-                .Select(q => new Institution() { Id = 0, Value = q.Value })
-                .Distinct());
+                .Where(q =>
+                    regionGoals.Contains(q.Goal.Id) &&
+                    (filters.Sector == 0 || sectorGoals.Contains(q.Goal.Id)) &&
+                    (filters.Goal == 0 || typeGoals.Contains(q.Goal.Id)) &&
+                    (yearGoals.Contains(q.Goal.Id)) &&
+                    (q.Key == "Institution" && !string.IsNullOrEmpty(q.Value))
+                )
+                .Select(q => q.Value)
+                .Distinct()
+                .OrderBy(x => x));
 
             //Return result
-            return result.OrderBy(x => x.Value).AsQueryable();
-        }
-
-        private async Task<List<Institution>> GetInstitutions()
-        {
-            var result = new List<Institution>();
-
-            HttpClient vmsClient = new HttpClient();
-            vmsClient.BaseAddress = new Uri("http://app01.saeon.ac.za/VMS/api/");
-            vmsClient.DefaultRequestHeaders.Accept.Clear();
-            vmsClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response = await vmsClient.GetAsync("SAGovDepts/flat");
-            if (response.IsSuccessStatusCode)
-            {
-                var responseObj = await response.Content.ReadAsAsync<StandardVocabOutput>();
-                result.AddRange(responseObj.Items.Select(x => new Institution() { Id = int.Parse(x.Id), Value = x.Value }));
-            }
-
-            return result;
+            return result.AsQueryable();
         }
     }
 }

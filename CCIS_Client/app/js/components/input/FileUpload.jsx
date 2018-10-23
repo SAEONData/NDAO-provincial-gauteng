@@ -108,12 +108,6 @@ class FileUpload extends React.Component {
     let result = ""
     file.data = await this.readFileData(file)
 
-    console.log("FD", JSON.stringify({
-      FileName: this.props.goalId,
-      Base64Data: file.data,
-      MimeType: file.type
-    }))
-
     //Upload
     try {
       let res = await fetch(apiBaseURL + "UploadFile", {

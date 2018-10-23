@@ -57,8 +57,8 @@ const defaultState = {
   Q2_2_D: 0, //PartneringDepartments
   Q2_3: 1, //IncludedInForums
   Q2_4: 0, //Region
-  Q2_5: 0, //Institution
-  Q2_6: "" //InstitutionCustom
+  Q2_5: "", //Institution
+  Q2_6: 0 //Sector
 }
 
 class Goal2Contrib extends React.Component {
@@ -179,11 +179,10 @@ class Goal2Contrib extends React.Component {
           Q2_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
           Q2_3: parseInt(data.Questions.filter(x => x.Key === "IncludedInForums")[0].Value),
           Q2_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
-          Q2_5: parseInt(data.Questions.filter(x => x.Key === "Institution")[0].Value),
-          Q2_6: data.Questions.filter(x => x.Key === "InstitutionCustom")[0].Value
+          Q2_5: data.Questions.filter(x => x.Key === "Institution")[0].Value,
+          Q2_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
         })
       }
-
       this.props.setLoading(false)
     }
     catch (ex) {
@@ -230,8 +229,8 @@ class Goal2Contrib extends React.Component {
         { Key: "PartneringDepartments", Value: Q2_2_D },
         { Key: "IncludedInForums", Value: Q2_3.toString() },
         { Key: "Region", Value: Q2_4.toString() },
-        { Key: "Institution", Value: Q2_5.toString() },
-        { Key: "InstitutionCustom", Value: Q2_6 },
+        { Key: "Institution", Value: Q2_5 },
+        { Key: "Sector", Value: Q2_6.toString() },
       ]
     }
 
@@ -649,7 +648,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.4 Select a Region for this plan?
+                  2.4 Select a region for this plan?
                 </label>
 
                 <OData
@@ -691,13 +690,29 @@ class Goal2Contrib extends React.Component {
             <br />
 
             <Row>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  2.5 Specify non-government organisation name (if applicable)?
+                </label>
+                <TextInput
+                  width="95%"
+                  value={Q2_5}
+                  callback={(value) => {
+                    value = _gf.fixEmptyValue(value, "")
+                    this.setState({ Q2_5: value })
+                  }}
+                />
+              </Col>
+            </Row>
+
+            <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.5 Select your Institution/Organisation?
+                  2.6 Select a sector for this plan?
                 </label>
 
                 <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                  baseUrl={vmsBaseURL + 'sectors'}>
 
                   {({ loading, error, data }) => {
 
@@ -721,33 +736,17 @@ class Goal2Contrib extends React.Component {
                       <TreeSelectInput
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q2_5}
-                        callback={(value) => { this.setState({ Q2_5: value.id }) }}
+                        value={Q2_6}
+                        callback={(value) => { this.setState({ Q2_6: value.id }) }}
                         allowClear={true}
-                        placeHolder={"Select Institution/Organisation...  (Leave empty for 'Other')"}
+                        placeHolder={"Select Sector...  (Leave empty for 'Any')"}
                       />
                     )
                   }}
                 </OData>
               </Col>
             </Row>
-            <br />
-
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  2.6 If your Institution/Organisation is not in the list above, please type it here?
-                </label>
-                <TextInput
-                  width="95%"
-                  value={Q2_6}
-                  callback={(value) => {
-                    value = _gf.fixEmptyValue(value, "")
-                    this.setState({ Q2_6: value })
-                  }}
-                />
-              </Col>
-            </Row>
+            <br />            
 
             <Row>
               <Col md="4">

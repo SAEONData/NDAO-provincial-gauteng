@@ -48,7 +48,7 @@ namespace CCIS_API.Database.Contexts
 
             builder
                 .Action("GetFilterInstitutions")
-                .ReturnsCollection<Institution>()
+                .ReturnsCollection<string>()
                 .Parameter<Filters>("filters");
 
 

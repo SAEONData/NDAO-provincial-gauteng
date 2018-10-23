@@ -21,7 +21,7 @@ class YearFilter extends React.Component {
         <Row>
           <Col md="12">
             <Slider
-              min={currentYear - 6}
+              min={currentYear - 5}
               max={currentYear}
               value={value}
               style={{ marginLeft: "7px", marginRight: "7px" }}

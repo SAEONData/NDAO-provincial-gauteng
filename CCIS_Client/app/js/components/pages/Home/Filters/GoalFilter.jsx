@@ -35,7 +35,7 @@ class SectorFilter extends React.Component {
     return (
       <>
         <SelectInput
-          placeHolder="Any Goal"
+          placeHolder="Goal  (Any)"
           value={value}
           data={data}
           callback={(value) => {

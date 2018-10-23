@@ -18,7 +18,7 @@ const rowSpacing = 7 //Adjust for global row spacing
 
 const segDivStyle = (data) => {
   return {
-    width: ((100 / (data.length + 3)) + "%"),
+    width: ((72 / (data.length)) + "%"),
     height: rowHeight + "px",
     // border: "1px dashed gainsboro",
     float: "left",
@@ -60,7 +60,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_pre`}
-          style={segDivStyle(data)}
+          style={{...segDivStyle(data), width: "10%"}}
         />
       )
 
@@ -87,7 +87,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post0`}
-          style={segDivStyle(data)}
+          style={{...segDivStyle(data), width: "8%"}}
         />
       )
 
@@ -95,7 +95,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post2`}
-          style={segDivStyle(data)}
+          style={{...segDivStyle(data), width: "8%"}}
         />
       )
     }
@@ -114,9 +114,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_pre`}
-          style={{
-            ...segDivStyle(data)
-          }}
+          style={{...segDivStyle(data), width: "10%"}}
         >
           <img
             src={gear}
@@ -154,9 +152,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_post1`}
-          style={{
-            ...segDivStyle(data)
-          }}
+          style={{...segDivStyle(data), width: "8%"}}
         >
           <img
             src={traffic_light}
@@ -178,9 +174,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_post2`}
-          style={{
-            ...segDivStyle(data)
-          }}
+          style={{...segDivStyle(data), width: "8%"}}
         >
           <img
             src={attachment ? paper_clip_blue : paper_clip_grey}

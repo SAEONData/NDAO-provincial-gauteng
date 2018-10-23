@@ -1,7 +1,6 @@
 
 
 export const goal1 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "A" },
@@ -12,7 +11,6 @@ export const goal1 = [
 ]
 
 export const goal2 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "A" },
   { key: "2015", value: "A" },
@@ -23,7 +21,6 @@ export const goal2 = [
 ]
 
 export const goal3 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "A" },
   { key: "2014", value: "A" },
   { key: "2015", value: "A" },
@@ -34,7 +31,6 @@ export const goal3 = [
 ]
 
 export const goal4 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "R" },
@@ -45,7 +41,6 @@ export const goal4 = [
 ]
 
 export const goal5 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "A" },
@@ -56,7 +51,6 @@ export const goal5 = [
 ]
 
 export const goal6 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "A" },
@@ -67,7 +61,6 @@ export const goal6 = [
 ]
 
 export const goal7 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "A" },
   { key: "2015", value: "A" },
@@ -78,7 +71,6 @@ export const goal7 = [
 ]
 
 export const goal8 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "R" },
@@ -89,7 +81,6 @@ export const goal8 = [
 ]
 
 export const goal9 = [
-  { key: "2012", value: "R" },
   { key: "2013", value: "R" },
   { key: "2014", value: "R" },
   { key: "2015", value: "R" },

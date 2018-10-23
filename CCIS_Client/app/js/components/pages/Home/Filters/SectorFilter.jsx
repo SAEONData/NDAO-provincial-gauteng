@@ -20,13 +20,13 @@ class SectorFilter extends React.Component {
     return (
       <>
         <OData
-          baseUrl={vmsBaseURL + `Sectors/Flat`}>
+          baseUrl={vmsBaseURL + `Sectors`}>
           {({ loading, error, data }) => {
 
-            let sectors = []
+            let processedData = []
 
             if (loading) {
-              sectors = [{ id: 1, text: "Loading...", additionalData: [] }]
+              processedData = [{ id: "Loading...", value: "Loading..." }]
             }
 
             if (error) {
@@ -35,27 +35,20 @@ class SectorFilter extends React.Component {
 
             if (data) {
               if (data.items && data.items.length > 0) {
-                sectors = data.items
-              }
-            }
-
-            //Get current value
-            if (sectors && sectors.length > 0) {
-              let f = sectors.filter(x => x.id == value)
-              if (f && f.length > 0 && f[0].value) {
-                value = f[0].value
+                processedData = data.items
               }
             }
 
             return (
               <TreeSelectInput
-                data={_gf.TransformDataToTree(sectors)}
+                data={processedData}
+                transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                 allowClear={true}
                 value={value}
                 callback={(value) => {
                   callback(value.id)
                 }}
-                placeHolder={"Any Sector"}
+                placeHolder={"Sector  (Any)"}
               />
             )
 
