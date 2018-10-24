@@ -56,7 +56,6 @@ namespace CCIS_API.Controllers
                 byte[] fileBytes = Convert.FromBase64String(fileData.Base64Data);
 
                 //Prep for upload
-                //string fileDataBase64 = fileData.Base64Data.Replace($"data:{fileData.MimeType};base64,", "");
                 var fileMetadata = new Google.Apis.Drive.v3.Data.File()
                 {
                     Name = fileData.FileName,
@@ -72,7 +71,7 @@ namespace CCIS_API.Controllers
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         request = _service.Files.Update(fileMetadata, fileId, stream, fileData.MimeType);
-                        request.Fields = "id,name,webViewLink,version";
+                        request.Fields = "id,name,webContentLink,version";
                         request.Upload();
                     }
 
@@ -81,7 +80,7 @@ namespace CCIS_API.Controllers
 
                     //Set result
                     result.Id = file.Id;
-                    result.ViewLink = file.WebViewLink;
+                    result.ViewLink = file.WebContentLink;
                     result.Version = file.Version;
                 }
                 else
@@ -91,7 +90,7 @@ namespace CCIS_API.Controllers
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         request = _service.Files.Create(fileMetadata, stream, fileData.MimeType);
-                        request.Fields = "id,name,webViewLink,version";
+                        request.Fields = "id,name,webContentLink,version";
                         request.Upload();
                     }
 
@@ -106,7 +105,7 @@ namespace CCIS_API.Controllers
 
                     //Set result
                     result.Id = file.Id;
-                    result.ViewLink = file.WebViewLink;
+                    result.ViewLink = file.WebContentLink;
                     result.Version = file.Version;
                 }
             }

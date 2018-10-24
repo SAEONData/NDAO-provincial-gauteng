@@ -202,7 +202,7 @@ class Goal5Contrib extends React.Component {
         { Key: "EvidenceLink", Value: Q5_2 },
         { Key: "TotalBudget", Value: Q5_3_A.toString() },
         { Key: "BudgetDuration", Value: Q5_3_B.toString() },
-        { Key: "FundingAgency", Value: Q5_3_C },
+        { Key: "FundingAgency", Value: Q5_3_C.toString() },
         { Key: "PartneringDepartments", Value: Q5_3_D },
         { Key: "Region", Value: Q5_4.toString() },
         { Key: "Institution", Value: Q5_5 },

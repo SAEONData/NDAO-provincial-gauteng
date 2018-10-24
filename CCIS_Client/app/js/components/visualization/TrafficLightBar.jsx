@@ -60,7 +60,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_pre`}
-          style={{...segDivStyle(data), width: "10%"}}
+          style={{ ...segDivStyle(data), width: "10%" }}
         />
       )
 
@@ -87,7 +87,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post0`}
-          style={{...segDivStyle(data), width: "8%"}}
+          style={{ ...segDivStyle(data), width: "8%" }}
         />
       )
 
@@ -95,7 +95,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post2`}
-          style={{...segDivStyle(data), width: "8%"}}
+          style={{ ...segDivStyle(data), width: "8%" }}
         />
       )
     }
@@ -104,7 +104,7 @@ class TrafficLightBar extends React.Component {
   }
 
   //SEGMENT|PARTS//
-  segments(goal, data, description, attachment, explanation) {
+  segments(goal, data, description, explanation) {
 
     let segments = []
 
@@ -114,7 +114,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_pre`}
-          style={{...segDivStyle(data), width: "10%"}}
+          style={{ ...segDivStyle(data), width: "10%" }}
         >
           <img
             src={gear}
@@ -152,7 +152,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_post1`}
-          style={{...segDivStyle(data), width: "8%"}}
+          style={{ ...segDivStyle(data), width: "8%" }}
         >
           <img
             src={traffic_light}
@@ -170,26 +170,29 @@ class TrafficLightBar extends React.Component {
         </div>
       )
 
+      let hasAttachments = data.filter(x => x.attachment !== "").length > 0
+
       //SUFFIX-2//
       segments.push(
         <div
           key={`goal${goal}_post2`}
-          style={{...segDivStyle(data), width: "8%"}}
+          style={{ ...segDivStyle(data), width: "8%" }}
         >
           <img
-            src={attachment ? paper_clip_blue : paper_clip_grey}
+            src={hasAttachments ? paper_clip_blue : paper_clip_grey}
             style={{
               maxHeight: (rowHeight + "px"),
               maxWidth: "70%",
               marginTop: "-19%",
               marginBottom: "-19%",
-              cursor: attachment ? "pointer" : "default"
+              cursor: hasAttachments ? "pointer" : "default"
             }}
             onClick={() => {
-              if (attachment) this.showInfo("Download attachment",
-                <a href={attachment}>
-                  <span onClick={() => { this.setState({ infoModal: false }) }}>{attachment}</span>
-                </a>)
+              if (hasAttachments) {
+                this.showInfo("Download attachments",
+                  <span onClick={() => { this.setState({ infoModal: false }) }}>{this.listAttachments(data, goal)}</span>
+                )
+              }
             }}
           />
         </div>
@@ -212,16 +215,32 @@ class TrafficLightBar extends React.Component {
     }
   }
 
+  listAttachments(data, goal){
+
+
+    let linkList = []
+
+    data.forEach(item => {
+      if(item.attachment !== ""){
+        linkList.push(
+          <p key={`${goal}_${item.key}`}><a href={item.attachment}>{item.key}</a></p>
+        )
+      }
+    })
+
+    return linkList
+  }
+
   render() {
 
-    let { data, showHeaders, goal, attachment, description, explanation } = this.props
+    let { data, showHeaders, goal, description, explanation } = this.props
     let { infoModal, infoHeader, infoContent } = this.state
 
     return (
 
       <div>
         {showHeaders && this.headers(goal, data)}
-        {this.segments(goal, data, description, attachment, explanation)}
+        {this.segments(goal, data, description, explanation)}
 
         <Modal isOpen={infoModal} toggle={() => { this.setState({ infoModal: false }) }} centered >
           <ModalHeader toggle={() => { this.setState({ infoModal: false }) }}>

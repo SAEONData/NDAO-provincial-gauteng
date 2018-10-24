@@ -150,21 +150,11 @@ class FileUpload extends React.Component {
     // 1. Limit the number of uploaded files
     // Only to show two recent uploaded files, and old ones will be replaced by the new
     let fileList = info.fileList;
-    let oldFile = fileList[0]
-
-    if (oldFile && fileList.length > 1) {
-      //Remove old file from server
-      this.removeFile(oldFile)
-    }
-
     fileList = fileList.slice(-1);
     this.setState({ fileList })
 
     //Get status
     const status = info.file.status;
-    // if (status !== 'uploading') {
-    //   console.log(info.file, info.fileList);
-    // }
     if (status === 'done') {
       message.success(`${info.file.name} file uploaded successfully.`);
     }

@@ -15,7 +15,7 @@ import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
 import { apiBaseURL } from '../../../config/serviceURLs.cfg'
-import TreeSelectInput from '../../input/TreeSelectInput.jsx';
+import InstitutionFilter from './Filters/InstitutionFilter.jsx';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -25,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateNav: payload => {
       dispatch({ type: "NAV", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
 }
@@ -34,99 +37,140 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
+    let filterRegion = 0
+    let filterSector = 0
+    let filterGoal = 0
+    let filterYear = (new Date()).getFullYear()
+    let filterInstitution = ""
+
     this.state = {
       infoSection: false,
-      filterRegion: 0,
-      filterSector: 0,
-      filterGoal: 0,
-      filterYear: (new Date()).getFullYear(),
-      filterInstitution: "",
-      filterInstitutionOptions: []
+      filterRegion,
+      filterSector,
+      filterGoal,
+      filterYear,
+      filterInstitution,
+      filterInstitutionOptions: [],
+      trafficLightGoalData: [],
+      prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution }
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
-    this.handleInstitutionChange = this.handleInstitutionChange.bind(this)
   }
 
   componentDidMount() {
     this.props.updateNav(location.hash)
 
     //Apply default filtering
-    let { filterRegion, filterSector, filterGoal, filterYear } = this.state
-    this.handleFilterChange({
-      filterRegion, filterSector, filterGoal, filterYear
-    }, true)
+    this.handleFilterChange(true)
   }
 
-  async handleFilterChange(filters, autoSelect) {
+  componentDidUpdate() {
+    //Apply filtering
+    this.handleFilterChange(false)
+  }
 
-    let { filterRegion, filterSector, filterGoal, filterYear } = this.state
-    let updateNeeded = false
+  handleFilterChange(autoSelect = false) {
 
-    if (filters.filterRegion !== filterRegion) {
-      updateNeeded = true
+    let { filterRegion, filterSector, filterGoal, filterYear, filterInstitution, prevFilters } = this.state
+    let getInstitutions = false
+    let getTrafficLightData = false
+
+    if (prevFilters.filterRegion !== filterRegion) {
+      getInstitutions = true
+      getTrafficLightData = true
     }
-    if (filters.filterSector !== filterSector) {
-      updateNeeded = true
+    if (prevFilters.filterSector !== filterSector) {
+      getInstitutions = true
+      getTrafficLightData = true
     }
-    if (filters.filterGoal !== filterGoal) {
-      updateNeeded = true
+    if (prevFilters.filterGoal !== filterGoal) {
+      //will be used for map
     }
-    if (filters.filterYear !== filterYear) {
-      updateNeeded = true
+    if (prevFilters.filterYear !== filterYear) {
+      getTrafficLightData = true
+    }
+    if (prevFilters.filterInstitution !== filterInstitution) {
+      getTrafficLightData = true
     }
 
-    if (updateNeeded === true || autoSelect === true) {
+    if (getInstitutions === true || getTrafficLightData === true || autoSelect === true) {
 
       //update state
-      this.setState({ ...filters }, async () => {
+      this.setState({ prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution } },
 
-        let { filterRegion, filterSector, filterGoal, filterYear, filterInstitution } = this.state
+        () => {
+          let { filterRegion, filterSector, filterInstitution } = this.state
 
-        //fetch goals
-        try {
-          let res = await fetch(apiBaseURL + "GetFilterInstitutions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              Region: filterRegion, 
-              Sector: filterSector, 
-              Goal: filterGoal, 
-              Year: filterYear
-            })
-          })
-
-          if(res.ok){
-            res = await res.json() //parse response
-
-            if (res.value) {
-              this.setState({ 
-                filterInstitutionOptions: res.value,
-                filterInstitution: res.value.filter(x => x === filterInstitution).length > 0 ? filterInstitution : ""
-              })
-            }
+          //Fetch Institutions
+          if (getInstitutions === true || autoSelect === true) {
+            this.getInstitutions(filterRegion, filterSector, filterInstitution)
           }
-        }
-        catch (ex) {
-          console.error(ex)
-        }
-      })
+
+          //Fetch TrafficLight data
+          if (getTrafficLightData === true || autoSelect === true) {
+            this.getTrafficLightData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution)
+          }
+        })
     }
   }
 
-  handleInstitutionChange(value){
+  async getInstitutions(filterRegion, filterSector, filterInstitution) {
 
-    // Fetch goals data
+    let { setLoading } = this.props
+    setLoading(true)
 
+    try {
+      let res = await fetch(apiBaseURL +
+        `GetFilteredInstitutions(region=${filterRegion},sector=${filterSector})`)
 
-    this.setState({ filterInstitution: value.text })
+      if (res.ok) {
+        res = await res.json() //parse response
+
+        if (res.value) {
+          this.setState({
+            filterInstitutionOptions: res.value,
+            filterInstitution: res.value.filter(x => x === filterInstitution).length > 0 ? filterInstitution : ""
+          })
+        }
+      }
+    }
+    catch (ex) {
+      console.error(ex)
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+
+  async getTrafficLightData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution) {
+
+    let { setLoading } = this.props
+    setLoading(true)
+
+    try {
+      let res = await fetch(apiBaseURL +
+        `GetTrafficLightData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')`)
+
+      if (res.ok) {
+        res = await res.json() //parse response
+
+        if (res) {
+          this.setState({ trafficLightGoalData: res })
+        }
+      }
+    }
+    catch (ex) {
+      console.error(ex)
+    }
+    finally{
+      setLoading(false)
+    }
   }
 
   render() {
 
-    let { infoSection, filterYear, filterRegion, filterSector, filterGoal } = this.state
+    let { infoSection, filterYear, filterRegion, filterSector, filterGoal, trafficLightGoalData } = this.state
 
     return (
       <>
@@ -189,19 +233,37 @@ class Home extends React.Component {
           <Col md="3" style={{ marginBottom: "3px" }}>
             <RegionFilter
               value={filterRegion}
-              callback={(value) => { this.handleFilterChange({ filterRegion: value }) }}
+              callback={(value) => { this.setState({ filterRegion: value }) }}
             />
           </Col>
           <Col md="3" style={{ marginBottom: "3px" }}>
             <SectorFilter
               value={filterSector}
-              callback={(value) => { this.handleFilterChange({ filterSector: value }) }}
+              callback={(value) => { this.setState({ filterSector: value }) }}
             />
           </Col>
+          <Col md="6">
+            <InstitutionFilter
+              data={this.state.filterInstitutionOptions}
+              value={this.state.filterInstitution}
+              callback={(value) => { 
+                this.setState({ filterInstitution: value.text }) 
+              }}
+            />
+          </Col>
+        </Row>
+
+        <Row style={{ marginTop: "7px" }}>
           <Col md="3" style={{ marginBottom: "3px" }}>
             <GoalFilter
               value={filterGoal}
-              callback={(value) => { this.handleFilterChange({ filterGoal: value }) }}
+              callback={(value) => { this.setState({ filterGoal: value }) }}
+            />
+          </Col>
+          <Col md="6">
+            <YearFilter
+              value={filterYear}
+              callback={(value) => { this.setState({ filterYear: value }) }}
             />
           </Col>
           <Col md="3">
@@ -217,7 +279,7 @@ class Home extends React.Component {
               }}
               color=""
               onClick={() => {
-                this.handleFilterChange({
+                this.setState({
                   filterYear: (new Date()).getFullYear(),
                   filterRegion: 0,
                   filterSector: 0,
@@ -230,33 +292,10 @@ class Home extends React.Component {
           </Col>
         </Row>
 
-        <YearFilter
-          value={filterYear}
-          callback={(value) => { this.handleFilterChange({ filterYear: value }) }}
-        />
-
-        <hr style={{ marginTop: "15px" }} />
-
-        <Row style={{ textAlign: "center" }}>
-          <Col md="3" />
-          <Col md="6">
-            
-            <TreeSelectInput
-                data={this.state.filterInstitutionOptions}
-                transform={(item) => { return { id: item, text: item } }}
-                value={this.state.filterInstitution}
-                allowClear={true}
-                callback={(value) => {
-                  this.handleInstitutionChange(value)
-                }}
-                placeHolder={"Organisation/Institution  (Government)"}
-              />
-
-          </Col>          
-        </Row>
+        <hr style={{ marginTop: "13px" }} />
 
         <br />
-        <TrafficLights />
+        <TrafficLights goalData={trafficLightGoalData} />
         <br />
 
         <Row>

@@ -33,23 +33,41 @@ namespace CCIS_API.Database.Contexts
                 .Page() // Allow for the $top and $skip Commands
                 .Select();// Allow for the $select Command; 
 
+
+            //#####################//
+            // ACTIONS & FUNCTIONS //
+            //#####################//
+
+            //UploadFile//
             builder
                 .Action("UploadFile")
                 .Returns<GoogleFile>()
                 .Parameter<UploadFile>("fileData");
 
+            //RemoveFile//
             builder
                 .Action("RemoveFile")
                 .Returns<bool>()
                 .Parameter<UploadFile>("fileData");
 
+            //RemoveAllFiles//
             builder
                 .Action("RemoveAllFiles");
 
-            builder
-                .Action("GetFilterInstitutions")
-                .ReturnsCollection<string>()
-                .Parameter<Filters>("filters");
+            //GetFilteredInstitutions//
+            var function = builder.Function("GetFilteredInstitutions").ReturnsCollection<string>();
+            function.Parameter<int>("region");
+            function.Parameter<int>("sector");
+
+            //GetTrafficLightData//
+            function = builder.Function("GetTrafficLightData").ReturnsCollection<string>();
+            function.Parameter<int>("region");
+            function.Parameter<int>("sector");
+            function.Parameter<int>("goal");
+            function.Parameter<int>("year");
+            function.Parameter<string>("institution");
+
+            //#####################//
 
 
             return builder.GetEdmModel();

@@ -235,7 +235,8 @@ class AME extends React.Component {
                   baseUrl={apiBaseURL + 'Goals'}
                   query={{
                     filter: { CreateUser: { eq: { type: 'guid', value: user.profile.UserId } }, Type: selectedGoal },
-                    select: ['Id', 'CreateDate', 'UpdateDate']
+                    select: ['Id', 'CreateDate', 'UpdateDate'],
+                    orderBy: "CreateDate desc"                    
                   }}>
                   {({ loading, error, data }) => {
 
