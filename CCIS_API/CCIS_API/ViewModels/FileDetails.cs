@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace CCIS_API.ViewModels
 {
-    public class GoogleFile
+    public class FileDetails
     {
         public string Id { get; set; }
-        public string ViewLink { get; set; }
+        public string Link { get; set; }
         public long? Version { get; set; }
 
-        public GoogleFile()
+        public FileDetails()
         {
             Id = "";
-            ViewLink = "";
+            Link = "";
             Version = 0;
         }
     }

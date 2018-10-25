@@ -395,7 +395,7 @@ class Goal5Contrib extends React.Component {
                   key={"fu_" + goalId}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
-                  callback={(fileInfo) => { this.setState({ Q5_2: fileInfo.ViewLink }) }}
+                  callback={(fileInfo) => { this.setState({ Q5_2: fileInfo.Link }) }}
                   goalId={goalId}
                 />
               </Col>

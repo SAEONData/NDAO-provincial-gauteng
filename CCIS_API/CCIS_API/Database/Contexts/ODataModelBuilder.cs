@@ -41,7 +41,7 @@ namespace CCIS_API.Database.Contexts
             //UploadFile//
             builder
                 .Action("UploadFile")
-                .Returns<GoogleFile>()
+                .Returns<FileDetails>()
                 .Parameter<UploadFile>("fileData");
 
             //RemoveFile//

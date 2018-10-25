@@ -360,7 +360,7 @@ class Goal9Contrib extends React.Component {
                   key={"fu_" + goalId}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
-                  callback={(fileInfo) => { this.setState({ Q9_2: fileInfo.ViewLink }) }}
+                  callback={(fileInfo) => { this.setState({ Q9_2: fileInfo.Link }) }}
                   goalId={goalId}
                 />
               </Col>

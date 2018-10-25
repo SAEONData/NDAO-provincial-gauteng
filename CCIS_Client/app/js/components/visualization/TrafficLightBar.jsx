@@ -222,8 +222,11 @@ class TrafficLightBar extends React.Component {
 
     data.forEach(item => {
       if(item.attachment !== ""){
+
+        let fileName = item.attachment.substring(item.attachment.lastIndexOf("/")+1, item.attachment.length)
+
         linkList.push(
-          <p key={`${goal}_${item.key}`}><a href={item.attachment}>{item.key}</a></p>
+          <p key={`${goal}_${item.key}`}><a href={item.attachment} target="_blank" download={fileName}>{item.key}</a></p>
         )
       }
     })

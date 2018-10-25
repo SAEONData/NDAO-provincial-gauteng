@@ -1,6 +1,7 @@
 ﻿using CCIS_API.Database.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,6 +66,17 @@ namespace CCIS_API.Extensions
             goal.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             return true;
+        }
+
+        public static void LogInternalError(Exception ex)
+        {
+            if (!Directory.Exists("logs"))
+            {
+                Directory.CreateDirectory("logs");
+            }
+
+            string uid = Guid.NewGuid().ToString();
+            File.WriteAllText($"logs\\internalError_{uid}.txt", ex.ToString());
         }
     }
 }

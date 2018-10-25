@@ -1,35 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CCIS_API.Database.Contexts;
+﻿using CCIS_API.Database.Contexts;
+using CCIS_API.Extensions;
+using CCIS_API.Interfaces;
 using CCIS_API.ViewModels;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
-using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Routing;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace CCIS_API.Controllers
+namespace CCIS_API.Classes
 {
-    [Produces("application/json")]
-    [EnableCors("CORSPolicy")]
-    public class GoogleDriveController : ODataController
+    public class GoogleFileManager : IFileManager
     {
-        private SQLDBContext _context { get; }
         private IConfiguration _config { get; set; }
         private DriveService _service { get; set; }
 
-        public GoogleDriveController(SQLDBContext context, IConfiguration config)
+        public GoogleFileManager(IConfiguration config)
         {
-            _context = context;
             _config = config;
 
             //Authenticate
@@ -38,18 +30,14 @@ namespace CCIS_API.Controllers
             _service = AuthenticateServiceAccount(serviceAccountEmail, keyFilePath);
         }
 
-        [HttpPost]
-        [ODataRoute("UploadFile")]
-        [EnableCors("CORSPolicy")]
-        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
-        public GoogleFile UploadFile([FromBody] UploadFile fileData)
+        public FileDetails UploadFile(UploadFile fileData)
         {
             //Authenticate
             string keyFilePath = _config.GetSection("GAPI")["KeyFileName"];
             string serviceAccountEmail = _config.GetSection("GAPI")["ServiceAccountEmail"];
             _service = AuthenticateServiceAccount(serviceAccountEmail, keyFilePath);
 
-            GoogleFile result = new GoogleFile();
+            FileDetails result = new FileDetails();
 
             try
             {
@@ -58,12 +46,12 @@ namespace CCIS_API.Controllers
                 //Prep for upload
                 var fileMetadata = new Google.Apis.Drive.v3.Data.File()
                 {
-                    Name = fileData.FileName,
+                    Name = fileData.UID,
                     MimeType = fileData.MimeType
                 };
 
                 //Check if file exists
-                var fileId = SearchByName(fileData.FileName);
+                var fileId = SearchByName(fileData.UID);
                 if (fileId != "")
                 {
                     //Update file
@@ -80,7 +68,7 @@ namespace CCIS_API.Controllers
 
                     //Set result
                     result.Id = file.Id;
-                    result.ViewLink = file.WebContentLink;
+                    result.Link = file.WebContentLink;
                     result.Version = file.Version;
                 }
                 else
@@ -105,24 +93,20 @@ namespace CCIS_API.Controllers
 
                     //Set result
                     result.Id = file.Id;
-                    result.ViewLink = file.WebContentLink;
+                    result.Link = file.WebContentLink;
                     result.Version = file.Version;
                 }
             }
             catch (Exception ex)
             {
-                LogInternalError(ex);
+                HelperExtensions.LogInternalError(ex);
                 throw ex;
             }
 
             return result;
         }
 
-        [HttpPost]
-        [ODataRoute("RemoveFile")]
-        [EnableCors("CORSPolicy")]
-        [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
-        public bool RemoveFile([FromBody] UploadFile fileData)
+        public bool RemoveFile(UploadFile fileData)
         {
             //Authenticate
             string keyFilePath = _config.GetSection("GAPI")["KeyFileName"];
@@ -134,7 +118,7 @@ namespace CCIS_API.Controllers
             try
             {
                 //Get the file-Id
-                var fileId = SearchByName(fileData.FileName);
+                var fileId = SearchByName(fileData.UID);
 
                 //Remove the file
                 if (fileId != "")
@@ -146,16 +130,13 @@ namespace CCIS_API.Controllers
             }
             catch (Exception ex)
             {
-                LogInternalError(ex);
+                HelperExtensions.LogInternalError(ex);
                 throw ex;
             }
 
             return result;
         }
 
-        [HttpGet]
-        [ODataRoute("RemoveAllFiles")]
-        [EnableCors("CORSPolicy")]
         public void RemoveAllFiles()
         {
             //Authenticate
@@ -173,6 +154,7 @@ namespace CCIS_API.Controllers
                 _service.Files.Delete(file.Id).Execute();
             }
         }
+
 
         //Helper Functions
         private DriveService AuthenticateServiceAccount(string serviceAccountEmail, string keyFilePath)
@@ -205,7 +187,7 @@ namespace CCIS_API.Controllers
             }
             catch (Exception ex)
             {
-                LogInternalError(ex);
+                HelperExtensions.LogInternalError(ex);
                 throw ex;
             }
         }
@@ -231,22 +213,11 @@ namespace CCIS_API.Controllers
             }
             catch (Exception ex)
             {
-                LogInternalError(ex);
+                HelperExtensions.LogInternalError(ex);
                 throw ex;
             }
 
             return result;
-        }
-
-        private void LogInternalError(Exception ex)
-        {
-            if (!Directory.Exists("logs"))
-            {
-                Directory.CreateDirectory("logs");
-            }
-
-            string uid = Guid.NewGuid().ToString();
-            System.IO.File.WriteAllText($"logs\\internalError_{uid}.txt", ex.ToString());
         }
     }
 }

@@ -117,7 +117,8 @@ class FileUpload extends React.Component {
           "Authorization": "Bearer " + (user === null ? "" : user.access_token)
         },
         body: JSON.stringify({
-          FileName: this.props.goalId,
+          UID: this.props.goalId.toString(),
+          FileName: file.name,
           Base64Data: file.data,
           MimeType: file.type
         })

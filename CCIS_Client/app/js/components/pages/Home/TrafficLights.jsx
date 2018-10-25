@@ -62,7 +62,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type == 1).map(g => ({ key: g.year, value: g.status, attachment: g.link  }))}
+                data={goalData.filter(g => g.type == 1).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link  }))}
               />
 
               <TrafficLightBar
@@ -99,7 +99,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 2).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 2).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -142,7 +142,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 3).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 3).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -175,7 +175,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 4).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 4).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -206,7 +206,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 5).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 5).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -232,7 +232,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 6).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 6).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -264,7 +264,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 7).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 7).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -296,7 +296,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 8).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 8).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
               <TrafficLightBar
@@ -324,7 +324,7 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 9).map(g => ({ key: g.year, value: g.status, attachment: g.link }))}
+                data={goalData.filter(g => g.type === 9).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
               />
 
             </Col>
