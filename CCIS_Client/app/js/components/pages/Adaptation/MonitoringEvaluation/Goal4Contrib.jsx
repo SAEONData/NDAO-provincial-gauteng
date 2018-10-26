@@ -47,7 +47,7 @@ const defaultState = {
   Q4_2_A: 1, //TotalBudget
   Q4_2_B: 1, //BudgetDuration
   Q4_2_C: 0, //FundingAgency
-  Q4_2_D: "", //PartneringDepartments
+  Q4_2_D: 0, //PartneringDepartments
   Q4_3: 0, //Region
   Q4_4: "", //Institution
   Q4_5: 0 //Sector
@@ -151,7 +151,7 @@ class Goal4Contrib extends React.Component {
           Q4_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q4_2_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
           Q4_2_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
-          Q4_2_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q4_2_D: parseInt(data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value),
           Q4_3: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
           Q4_4: data.Questions.filter(x => x.Key === "Institution")[0].Value,
           Q4_5: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value),
@@ -198,8 +198,8 @@ class Goal4Contrib extends React.Component {
         { Key: "CapacityBuilding", Value: Q4_1.toString() },
         { Key: "TotalBudget", Value: Q4_2_A.toString() },
         { Key: "BudgetDuration", Value: Q4_2_B.toString() },
-        { Key: "FundingAgency", Value: Q4_2_C },
-        { Key: "PartneringDepartments", Value: Q4_2_D },
+        { Key: "FundingAgency", Value: Q4_2_C.toString() },
+        { Key: "PartneringDepartments", Value: Q4_2_D.toString() },
         { Key: "Region", Value: Q4_3.toString() },
         { Key: "Institution", Value: Q4_4 },
         { Key: "Sector", Value: Q4_5.toString() }

@@ -162,7 +162,7 @@ class Goal3Contrib extends React.Component {
           Q3_3_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q3_3_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
           Q3_3_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
-          Q3_3_D: data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value,
+          Q3_3_D: parseInt(data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value),
           Q3_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
           Q3_5: data.Questions.filter(x => x.Key === "Institution")[0].Value,
           Q3_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
@@ -210,8 +210,8 @@ class Goal3Contrib extends React.Component {
         { Key: "MonitoringForcasting", Value: Q3_2.toString() },
         { Key: "TotalBudget", Value: Q3_3_A.toString() },
         { Key: "BudgetDuration", Value: Q3_3_B.toString() },
-        { Key: "FundingAgency", Value: Q3_3_C },
-        { Key: "PartneringDepartments", Value: Q3_3_D },
+        { Key: "FundingAgency", Value: Q3_3_C.toString() },
+        { Key: "PartneringDepartments", Value: Q3_3_D.toString() },
         { Key: "Region", Value: Q3_4.toString() },
         { Key: "Institution", Value: Q3_5 },
         { Key: "Sector", Value: Q3_6.toString() }

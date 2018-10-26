@@ -32,12 +32,12 @@ class TreeSelectInput extends React.Component {
     if (typeof data !== 'undefined') {
       return data.map((item) => {
 
-        if(typeof transform !== 'undefined'){
+        if (typeof transform !== 'undefined') {
           item = transform(item)
         }
 
         let valCol = "text"
-        if(!item.text) valCol = "value"
+        if (!item.text) valCol = "value"
 
         if (item.children) {
           return (
@@ -53,22 +53,22 @@ class TreeSelectInput extends React.Component {
 
   //Performs a recursive search by Id and
   //returns the corresponding value/text
-  getValueById(data, id){
+  getValueById(data, id) {
 
     let { transform } = this.props
-    
-    if(data && data.length > 0){
 
-      for(let item of data){
+    if (data && data.length > 0) {
+
+      for (let item of data) {
 
         let tItem = transform(item)
-      
-        if(tItem.id == id){
+
+        if (tItem.id == id) {
           return tItem.text
         }
-        else if(tItem.children && tItem.children.length > 0){
+        else if (tItem.children && tItem.children.length > 0) {
           let tmpVal = this.getValueById(tItem.children, id)
-          if(tmpVal !== id){
+          if (tmpVal !== id) {
             return tmpVal
           }
         }
@@ -83,28 +83,42 @@ class TreeSelectInput extends React.Component {
 
     this.setState({ value: value })
 
-    let { callback } = this.props
+    let { callback, multiple } = this.props
+
     if (typeof callback !== 'undefined') {
-      if (typeof extra.triggerNode !== 'undefined') {
-        callback({ id: extra.triggerNode.props.eventKey, text: value })
+
+      if (!multiple) {
+        if (typeof extra.triggerNode !== 'undefined') {
+          callback({ id: extra.triggerNode.props.eventKey, text: value })
+        }
+        else {
+          callback({ id: 0, text: "" })
+        }
       }
       else {
-        callback({ id: 0, text: "" })
+        callback(value)
       }
+
     }
   }
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value } = this.props
-    
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value, multiple } = this.props
+
+    //Attempt to get the actual value
     if (typeof value === 'undefined' || value === "" || value === null || value === 0) {
       value = undefined
     }
     else {
       value = this.getValueById(data, value)
     }
-    
+
+    //Ensure value is not a number
+    if(!isNaN(value)){
+      value = value.toString()
+    }
+
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
@@ -130,10 +144,11 @@ class TreeSelectInput extends React.Component {
         }
 
         <TreeSelect
+          multiple={multiple}
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
-          style={{ width: "100%", ...style  }}
+          style={{ width: "100%", ...style }}
           value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto', paddingRight: "20px" }}
           placeholder={placeHolder}
