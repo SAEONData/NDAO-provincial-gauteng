@@ -268,10 +268,14 @@ class Goal1Contrib extends React.Component {
         }
       },
       filter: {
-        LinkedDAOGoalId: {
-          eq: {
-            type: 'guid',
-            value: goalId
+        ProjectDAOs: {
+          any: {
+            DAOId: {
+              eq: {
+                type: 'guid',
+                value: goalId
+              }
+            },
           }
         }
       }
@@ -288,6 +292,7 @@ class Goal1Contrib extends React.Component {
       }
       else {
         res = await res.json()
+
         if (res.value && res.value.length > 0) {
           goalStatusNew += 1
         }
