@@ -1,6 +1,7 @@
 ﻿using CCIS_API.Database.Models;
 using CCIS_API.ViewModels;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,14 @@ namespace CCIS_API.Database.Contexts
             function.Parameter<int>("goal");
             function.Parameter<int>("year");
             function.Parameter<string>("institution");
+
+            //Goals as GeoJson
+            builder.Namespace = "Extensions";
+            builder.
+                EntityType<Goal>().
+                Collection.
+                Function("GeoJson").
+                Returns<JsonResult>();
 
             //#####################//
 

@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace CCIS_API.Controllers
@@ -94,6 +95,37 @@ namespace CCIS_API.Controllers
 
                 return Updated(exiting);
             }
+        }
+
+        [HttpGet]
+        [EnableQuery]
+        public JsonResult GeoJson()
+        {
+            var goalData = _context.Goals
+                .Select(g => new {
+                    type = "Feature",
+                    properties = new
+                    {
+                        id = g.Id, //Goal Id
+                        region = ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Region").Value), //Region Id
+                        sector = ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Sector").Value), //Sector Id
+                        institution = g.Questions.FirstOrDefault(q => q.Key == "Institution").Value, //Institution Name
+                        type = g.Type, //Goal Type
+                        year = DateTime.Parse(g.CreateDate).Year //Goal Year (from CreateDate)
+                    }
+                })
+                .ToList();
+
+            return new JsonResult(goalData);
+        }
+
+        /// <summary>
+        /// Converts string value to int, returns 0 for invalid strings
+        /// </summary>
+        private int ParseIntCustom(string s)
+        {
+            int.TryParse(s, out int res);
+            return res;
         }
     }
 
