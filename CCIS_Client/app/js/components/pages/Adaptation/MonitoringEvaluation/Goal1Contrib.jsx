@@ -167,12 +167,59 @@ class Goal1Contrib extends React.Component {
     let { setLoading } = this.props
     setLoading(true)
 
-    let metaUID = await this.generateMetaData()
-    if (metaUID !== null) {
-      await this.saveGoal(metaUID)
+    let validated = this.validate()
+    if (validated) {
+      let metaUID = await this.generateMetaData()
+      if (metaUID !== null) {
+        await this.saveGoal(metaUID)
+      }
     }
 
     setLoading(false)
+  }
+
+  validate() {
+
+    let { 
+      Q1_1, metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement 
+    } = this.state
+
+    if(_gf.isEmptyValue(Q1_1)){
+      this.showMessage("Required", "Document attachment required - please attach a document?")
+      return false
+    }
+
+    if(metaAuthors.length === 0){
+      this.showMessage("Required", "Document author(s) required - please add at least one author?")
+      return false
+    }
+
+    if(_gf.isEmptyValue(metaDocTitle)){
+      this.showMessage("Required", "Document title required - please provide a title for your document?")
+      return false
+    }
+
+    if(metaKeywords.length === 0){
+      this.showMessage("Required", "Document keywords required - please add at least one keyword?")
+      return false
+    }
+
+    if(_gf.isEmptyValue(metaDocFormat)){
+      this.showMessage("Required", "Document format required - please select the type of document attached?")
+      return false
+    }
+
+    if(_gf.isEmptyValue(metaDocDescr)){
+      this.showMessage("Required", "Document description required - please provide a short abstract description of your document?")
+      return false
+    }
+
+    if(metaAgreement === false){
+      this.showMessage("Required", "Licence agreement required - please accept the licence agreement?")
+      return false
+    }
+
+    return true
   }
 
   async saveGoal(metaUID) {
@@ -585,7 +632,8 @@ class Goal1Contrib extends React.Component {
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.1 Attach your document (see above description):*
+                  1.1 Attach your document (see above description):
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -624,6 +672,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Who wrote the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <br />
                 <Button
@@ -647,6 +696,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   What is the title of the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -662,6 +712,7 @@ class Goal1Contrib extends React.Component {
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
                   Please select which keywords apply to the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TreeSelectInput
                   multiple
@@ -681,6 +732,7 @@ class Goal1Contrib extends React.Component {
               <Col md="6">
                 <label style={{ fontWeight: "bold" }}>
                   Please select the type of object you are uploading:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TreeSelectInput
                   data={metaDocFormatsList}
@@ -697,6 +749,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Please include an abstract or description for the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextAreaInput
                   width="95%"
@@ -719,6 +772,7 @@ class Goal1Contrib extends React.Component {
                   <br />
                   This allows the work to be shared in the public domain with no restrictions on its use,
                   provided it is cited correctly.
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <div style={{
                   // marginLeft: "-15px",
@@ -973,6 +1027,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Name:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -987,6 +1042,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Email:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -1001,6 +1057,7 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Institution:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -1014,6 +1071,7 @@ class Goal1Contrib extends React.Component {
           </ModalBody>
           <ModalFooter>
             <Button
+              disabled={_gf.isEmptyValue(tmpMetaAuthorName) || _gf.isEmptyValue(tmpMetaAuthorEmail) || _gf.isEmptyValue(tmpMetaAuthorInstitution)}
               size="sm"
               style={{ width: "100px", backgroundColor: DEAGreen }}
               color="" onClick={() => this.setState({

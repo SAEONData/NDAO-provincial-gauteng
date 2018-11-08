@@ -202,15 +202,66 @@ class Goal8Contrib extends React.Component {
 
   async submit() {
 
+    let { Q8_2 } = this.state
     let { setLoading } = this.props
+
     setLoading(true)
 
-    let metaUID = await this.generateMetaData()
-    if (metaUID !== null) {
-      await this.saveGoal(metaUID)
+    let validated = this.validate()
+    if (validated) {
+
+      let metaUID = ""
+      if (!_gf.isEmptyValue(Q8_2)) {
+        metaUID = await this.generateMetaData()
+      }
+
+      if (metaUID !== null) {
+        await this.saveGoal(metaUID)
+      }
     }
 
     setLoading(false)
+  }
+
+  validate() {
+
+    let { Q8_2, metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement } = this.state
+
+    if (!_gf.isEmptyValue(Q8_2)) {
+
+      if (metaAuthors.length === 0) {
+        this.showMessage("Required", "Document author(s) required - please add at least one author?")
+        return false
+      }
+
+      if (_gf.isEmptyValue(metaDocTitle)) {
+        this.showMessage("Required", "Document title required - please provide a title for your document?")
+        return false
+      }
+
+      if (metaKeywords.length === 0) {
+        this.showMessage("Required", "Document keywords required - please add at least one keyword?")
+        return false
+      }
+
+      if (_gf.isEmptyValue(metaDocFormat)) {
+        this.showMessage("Required", "Document format required - please select the type of document attached?")
+        return false
+      }
+
+      if (_gf.isEmptyValue(metaDocDescr)) {
+        this.showMessage("Required", "Document description required - please provide a short abstract description of your document?")
+        return false
+      }
+
+      if (metaAgreement === false) {
+        this.showMessage("Required", "Licence agreement required - please accept the licence agreement?")
+        return false
+      }
+
+    }
+
+    return true
   }
 
   async saveGoal(metaUID) {
@@ -242,7 +293,7 @@ class Goal8Contrib extends React.Component {
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
         { Key: "RegionName", Value: metaRegion.toString() },
-        { Key: "MetaDataUID", Value: metaUID } 
+        { Key: "MetaDataUID", Value: metaUID }
       ]
     }
 
@@ -582,8 +633,8 @@ class Goal8Contrib extends React.Component {
                   key={"fu_" + goalId}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
-                  callback={(fileInfo) => { 
-                    this.setState({ 
+                  callback={(fileInfo) => {
+                    this.setState({
                       Q8_2: fileInfo.Link,
                       attachmentDetails: {
                         size: fileInfo.Size,
@@ -591,131 +642,143 @@ class Goal8Contrib extends React.Component {
                         format: fileInfo.Format,
                         version: fileInfo.Version
                       }
-                    }) 
+                    })
                   }}
                   goalId={goalId}
                 />
               </Col>
             </Row>
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  Who wrote the document?
-                </label>
-                <br />
-                <Button
-                  color=""
-                  style={{ backgroundColor: DEAGreen, margin: "0px 0px 10px 0px" }}
-                  onClick={() => { this.setState({ metaAddAuthorModal: true }) }}
-                  size="sm"
-                >
-                  Add author details
+            {
+              !_gf.isEmptyValue(Q8_2) &&
+              <div>
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      Who wrote the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <br />
+                    <Button
+                      color=""
+                      style={{ backgroundColor: DEAGreen, margin: "0px 0px 10px 0px" }}
+                      onClick={() => { this.setState({ metaAddAuthorModal: true }) }}
+                      size="sm"
+                    >
+                      Add author details
                 </Button>
 
-                {/* List authors */}
-                {_sf.listAuthors(metaAuthors,
-                  updatedAuthors => this.setState({ metaAuthors: updatedAuthors }))}
+                    {/* List authors */}
+                    {_sf.listAuthors(metaAuthors,
+                      updatedAuthors => this.setState({ metaAuthors: updatedAuthors }))}
 
-              </Col>
-            </Row>
-            <br />
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  What is the title of the document?
-                </label>
-                <TextInput
-                  width="95%"
-                  value={metaDocTitle}
-                  callback={(value) => {
-                    this.setState({ metaDocTitle: value })
-                  }}
-                />
-              </Col>
-            </Row>
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      What is the title of the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TextInput
+                      width="95%"
+                      value={metaDocTitle}
+                      callback={(value) => {
+                        this.setState({ metaDocTitle: value })
+                      }}
+                    />
+                  </Col>
+                </Row>
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Please select which keywords apply to the document:
-                </label>
-                <TreeSelectInput
-                  multiple
-                  data={metaKeywordsList}
-                  transform={(item) => ({ id: item, text: item })}
-                  value={metaKeywords}
-                  placeHolder={"Unspecified"}
-                  callback={(value) => {
-                    this.setState({ metaKeywords: value })
-                  }}
-                />
-              </Col>
-            </Row>
-            <br />
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Please select which keywords apply to the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TreeSelectInput
+                      multiple
+                      data={metaKeywordsList}
+                      transform={(item) => ({ id: item, text: item })}
+                      value={metaKeywords}
+                      placeHolder={"Unspecified"}
+                      callback={(value) => {
+                        this.setState({ metaKeywords: value })
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="6">
-                <label style={{ fontWeight: "bold" }}>
-                  Please select the type of object you are uploading:
-                </label>
-                <TreeSelectInput
-                  data={metaDocFormatsList}
-                  transform={(item) => ({ id: item, text: item })}
-                  value={metaDocFormat}
-                  placeHolder={"Unspecified"}
-                  callback={(value) => { this.setState({ metaDocFormat: value.text }) }}
-                />
-              </Col>
-            </Row>
-            <br />
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="6">
+                    <label style={{ fontWeight: "bold" }}>
+                      Please select the type of object you are uploading:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TreeSelectInput
+                      data={metaDocFormatsList}
+                      transform={(item) => ({ id: item, text: item })}
+                      value={metaDocFormat}
+                      placeHolder={"Unspecified"}
+                      callback={(value) => { this.setState({ metaDocFormat: value.text }) }}
+                    />
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  Please include an abstract or description for the document:
-                </label>
-                <TextAreaInput
-                  width="95%"
-                  value={metaDocDescr}
-                  callback={(value) => {
-                    this.setState({ metaDocDescr: value })
-                  }}
-                  readOnly={true}
-                />
-              </Col>
-            </Row>
-            <br />
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      Please include an abstract or description for the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TextAreaInput
+                      width="95%"
+                      value={metaDocDescr}
+                      callback={(value) => {
+                        this.setState({ metaDocDescr: value })
+                      }}
+                      readOnly={true}
+                    />
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  The document you are uploading will be shared under a
-                  &nbsp;
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      The document you are uploading will be shared under a
+                      &nbsp;
                   <a href="https://creativecommons.org/licenses/by/4.0/" target="blank"><u>Creative Commons CC-BY license</u></a>.
                   <br />
-                  This allows the work to be shared in the public domain with no restrictions on its use.
-                </label>
-                <div style={{
-                  // marginLeft: "-15px",
-                  // marginTop: "-15px",
-                  border: "1px solid silver",
-                  width: "270px",
-                  backgroundColor: "#F0F0F0"
-                }}
-                >
-                  <Input
-                    id="metaAgreement"
-                    label="I accept this agreement"
-                    type="checkbox"
-                    checked={metaAgreement}
-                    onClick={() => { this.setState({ metaAgreement: !metaAgreement }) }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br />
+                      This allows the work to be shared in the public domain with no restrictions on its use,
+                      provided it is cited correctly.
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <div style={{
+                      // marginLeft: "-15px",
+                      // marginTop: "-15px",
+                      border: "1px solid silver",
+                      width: "270px",
+                      backgroundColor: "#F0F0F0"
+                    }}
+                    >
+                      <Input
+                        id="metaAgreement"
+                        label="I accept this agreement"
+                        type="checkbox"
+                        checked={metaAgreement}
+                        onClick={() => { this.setState({ metaAgreement: !metaAgreement }) }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
+              </div>
+            }
 
             <Row>
               <Col md="8">
@@ -886,6 +949,7 @@ class Goal8Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Name:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -900,6 +964,7 @@ class Goal8Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Email:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -914,6 +979,7 @@ class Goal8Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Institution:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TextInput
                   width="95%"
@@ -927,6 +993,7 @@ class Goal8Contrib extends React.Component {
           </ModalBody>
           <ModalFooter>
             <Button
+              disabled={_gf.isEmptyValue(tmpMetaAuthorName) || _gf.isEmptyValue(tmpMetaAuthorEmail) || _gf.isEmptyValue(tmpMetaAuthorInstitution)}
               size="sm"
               style={{ width: "100px", backgroundColor: DEAGreen }}
               color="" onClick={() => this.setState({
