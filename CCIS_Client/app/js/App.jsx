@@ -101,7 +101,7 @@ class App extends React.Component {
     let { navbar } = this.state
 
     return (
-      <div className="container">
+      <div style={{ padding: "0px 25px 0px 25px", margin: "auto" }}>
         <Router>
           <div>
 

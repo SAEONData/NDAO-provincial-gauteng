@@ -6,13 +6,15 @@ import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } f
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.cfg'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../config/serviceURLs.cfg'
 import FileUpload from '../../../input/FileUpload.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
+import moment from 'moment'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
+import { metaDataCredentials } from '../../../../../js/secrets.cfg'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -27,6 +29,7 @@ import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
+const basic = require('basic-authorization-header');
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -65,14 +68,16 @@ const defaultState = {
   metaAddAuthorModal: false,
   tmpMetaAuthorName: "",
   tmpMetaAuthorEmail: "",
-  tmpMetaAuthorJobTitle: "",
   tmpMetaAuthorInstitution: "",
   metaAuthors: [],
   metaDocTitle: "",
   metaKeywords: [],
   metaDocFormat: "",
   metaDocDescr: "",
-  metaAgreement: false
+  metaAgreement: false,
+  metaUID: "",
+  metaRegion: "",
+  attachmentDetails: { size: 0, name: "", format: "", version: 0 } //JSON
 }
 
 class Goal2Contrib extends React.Component {
@@ -200,7 +205,10 @@ class Goal2Contrib extends React.Component {
           metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
           metaDocFormat: data.Questions.filter(x => x.Key === "DocumentFormat")[0].Value,
           metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
-          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true'
+          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
+          metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
+          metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value)
         })
       }
       this.props.setLoading(false)
@@ -228,13 +236,25 @@ class Goal2Contrib extends React.Component {
 
   async submit() {
 
+    let { setLoading } = this.props
+    setLoading(true)
+
+    let metaUID = await this.generateMetaData()
+    if (metaUID !== null) {
+      await this.saveGoal(metaUID)
+    }
+
+    setLoading(false)
+  }
+
+  async saveGoal(metaUID) {
+
     let {
       goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6,
-      metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
+      metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement,
+      attachmentDetails, metaRegion
     } = this.state
-    let { setLoading, user } = this.props
-
-    setLoading(true)
+    let { user } = this.props
 
     //Construct post body
     let goal = {
@@ -259,7 +279,10 @@ class Goal2Contrib extends React.Component {
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
         { Key: "DocumentFormat", Value: metaDocFormat },
         { Key: "DocumentDescription", Value: metaDocDescr },
-        { Key: "DocumentAgreement", Value: metaAgreement.toString() }
+        { Key: "DocumentAgreement", Value: metaAgreement.toString() },
+        { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
+        { Key: "RegionName", Value: metaRegion.toString() },
+        { Key: "MetaDataUID", Value: metaUID } 
       ]
     }
 
@@ -280,15 +303,169 @@ class Goal2Contrib extends React.Component {
         throw new Error(res.error.message)
       }
 
-      setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
       this.reset()
     }
     catch (ex) {
-      setLoading(false)
       console.error(ex)
       this.showMessage("An error occurred", ex.message)
+    }
+  }
+
+  async generateMetaData() {
+
+    let {
+      goalId, Q2_1_A, metaAuthors, metaDocTitle, metaKeywords,
+      metaDocFormat, metaDocDescr, attachmentDetails, metaUID, metaRegion
+    } = this.state
+
+    //Get Creators
+    let creators = []
+    metaAuthors.map(auth => {
+      let authSplit = auth.split(", ")
+      if (authSplit.length === 3) {
+        creators.push({
+          creatorName: authSplit[0].trim(),
+          affiliation: `Organisation: ${authSplit[2].trim()}; e-Mail Address: ${authSplit[1].trim()}`
+        })
+      }
+    })
+
+    //Get Subjects
+    let subjects = []
+    metaKeywords.map(keywrd => {
+      subjects.push({
+        subject: keywrd,
+        subjectScheme: "",
+        schemeURI: ""
+      })
+    })
+
+    //Get ResourceType>>resourceType
+    let resourceType = ""
+    let resTypeIndex = attachmentDetails.name.lastIndexOf(".")
+    if (resTypeIndex > -1) {
+      resourceType = attachmentDetails.name.substring(resTypeIndex + 1, attachmentDetails.name.length)
+    }
+
+    //Get related identifiers
+    let relatedIdentifiers = []
+    if (!_gf.isEmptyValue(metaUID)) {
+      relatedIdentifiers = [
+        {
+          relatedIdentifier: metaUID, //UID of previous meta-data record
+          relatedIdentifierType: "URL", //UID is in URL form
+          relationType: "IsPreviousVersionOf"
+        }
+      ]
+    }
+
+    //contruct post body
+    let jsonData = {
+      xsiSchema: "http://datacite.org/schema/kernel-3",
+      publisher: 'Department of Environmental Affairs',
+      publicationYear: new Date().getFullYear().toString(),
+      language: 'eng',
+      titles: [
+        {
+          titleType: "",
+          title: metaDocTitle //Document Title
+        }
+      ],
+      description: [
+        {
+          //Document abstract
+          descriptionType: 'Abstract',
+          description: metaDocDescr
+        }
+      ],
+      resourceType: {
+        resourceTypeGeneral: metaDocFormat, //Selected ducument format, eg. Text
+        resourceType: resourceType.toUpperCase() //file extension, eg. PDF
+      },
+      formats: [
+        {
+          format: attachmentDetails.format //extracted file/media format, eg. application/pdf
+        }
+      ],
+      subjects: subjects, //Keywords
+      geoLocations: [
+        { geoLocationPlace: metaRegion } //Region
+      ],
+      relatedIdentifiers: relatedIdentifiers,
+      alternateIdentifiers: [
+        {
+          alternateIdentifier: goalId,
+          alternateIdentifierType: "UID"
+        }
+      ],
+      creators: creators, //Authors
+      dates: [
+        {
+          date: moment().format("YYYY-MM-DD"), //Document submit/upload date
+          dateType: "Submitted",
+          dateInformation: "Document submit/upload date"
+        }
+      ],
+      rights: [ //Acknowledged licence
+        {
+          rights: "Attribution 4.0 International (CC BY 4.0)",
+          rightsURI: "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      sizes: [{ size: `${attachmentDetails.size} B` }], //File size in bytes 
+      version: attachmentDetails.version.toString(), //File verion number
+      additionalFields: {
+        onlineResources: [
+          {
+            func: "download",
+            desc: attachmentDetails.name,
+            href: Q2_1_A,
+            format: resourceType.toUpperCase()
+          }
+        ]
+      },
+      bounds: [] //required
+    }
+
+    console.log("jsonData", jsonData)
+
+    try {
+      let res = await fetch(metadataServiceURL, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': basic(metaDataCredentials.username, metaDataCredentials.password)
+        },
+        body: new URLSearchParams({
+          metadataType: 'DataCite',
+          jsonData: JSON.stringify(jsonData)
+        }).toString()
+
+      })
+
+      //Get status
+      let status = res.ok
+
+      //Get response body
+      res = await res.json()
+
+      if (!status) {
+        throw new Error(res.error.message)
+      }
+      else if (res.status !== "success") {
+        throw new Error(`\nLog:\n${res.log.join("\n")}`)
+      }
+
+      //Process result
+      return res.url
+    }
+    catch (ex) {
+      console.error("Unable to create meta-data record.\n", ex)
+      this.showMessage("Meta-data creation failed", "Unable to create meta-data record. (See log for details)")
+
+      return null
     }
   }
 
@@ -304,7 +481,7 @@ class Goal2Contrib extends React.Component {
 
     let {
       editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6, goalStatus, goalId,
-      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail, tmpMetaAuthorJobTitle,
+      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
     } = this.state
 
@@ -459,7 +636,17 @@ class Goal2Contrib extends React.Component {
                   key={"fu_" + goalId}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
-                  callback={(fileInfo) => { this.setState({ Q2_1_A: fileInfo.Link }) }}
+                  callback={(fileInfo) => {
+                    this.setState({
+                      Q2_1_A: fileInfo.Link,
+                      attachmentDetails: {
+                        size: fileInfo.Size,
+                        name: fileInfo.FileName,
+                        format: fileInfo.Format,
+                        version: fileInfo.Version
+                      }
+                    })
+                  }}
                   goalId={goalId}
                 />
               </Col>
@@ -829,7 +1016,7 @@ class Goal2Contrib extends React.Component {
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q2_4}
-                        callback={(value) => { this.setState({ Q2_4: value.id }) }}
+                        callback={(value) => { this.setState({ Q2_4: value.id, metaRegion: value.text }) }}
                         allowClear={true}
                         placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
@@ -1000,20 +1187,6 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  Job title:
-                </label>
-                <TextInput
-                  width="95%"
-                  value={tmpMetaAuthorJobTitle}
-                  callback={(value) => {
-                    this.setState({ tmpMetaAuthorJobTitle: value })
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
                   Institution:
                 </label>
                 <TextInput
@@ -1032,10 +1205,9 @@ class Goal2Contrib extends React.Component {
               style={{ width: "100px", backgroundColor: DEAGreen }}
               color="" onClick={() => this.setState({
                 metaAddAuthorModal: false,
-                metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorJobTitle},  ${tmpMetaAuthorInstitution}`],
+                metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorInstitution}`],
                 tmpMetaAuthorName: "",
                 tmpMetaAuthorEmail: "",
-                tmpMetaAuthorJobTitle: "",
                 tmpMetaAuthorInstitution: ""
               })}
             >
@@ -1048,7 +1220,6 @@ class Goal2Contrib extends React.Component {
                 metaAddAuthorModal: false,
                 tmpMetaAuthorName: "",
                 tmpMetaAuthorEmail: "",
-                tmpMetaAuthorJobTitle: "",
                 tmpMetaAuthorInstitution: ""
               })} >
               Cancel

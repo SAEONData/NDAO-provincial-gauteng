@@ -67,7 +67,8 @@ namespace CCIS_API.Classes
                 return new FileDetails()
                 {
                     Id = fileData.UID,
-                    Link = $"{fileData.ApiBaseUrl}/Uploads/{destFileInfo.Name}"
+                    Link = $"{fileData.ApiBaseUrl}/Uploads/{destFileInfo.Name}",
+                    Version = (destFileInfo.Directory.GetFiles().Count(f => f.FullName.Contains(fileData.UID)) + 1)
                 };
             }
             catch (Exception ex)

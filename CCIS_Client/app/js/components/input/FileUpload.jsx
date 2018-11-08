@@ -94,7 +94,11 @@ class FileUpload extends React.Component {
     //Issue callback with result  
     let { callback } = this.props
     if (typeof callback !== 'undefined') {
-      callback("")
+      callback({ 
+        Link: "", 
+        FileName: "",
+        Format: "",
+        Size: 0 })
     }
 
     this.setState({ removing: false })
@@ -126,7 +130,11 @@ class FileUpload extends React.Component {
 
       let resBody = await res.json()
       if (res.ok) {
-        result = resBody
+        result = resBody //link
+        result.FileName= file.name
+        result.Format = file.type
+        result.Size = file.size
+
       }
       else {
         //Get response body

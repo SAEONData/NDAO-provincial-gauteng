@@ -10,19 +10,21 @@ import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
 import NCCRD from '../../Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
+import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
+import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
+import { metaDataCredentials } from '../../../../../js/secrets.cfg'
 
 //Images
 import gear from '../../../../../images/gear.png'
 import checklist from '../../../../../images/checklist.png'
-import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
-import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
+const basic = require('basic-authorization-header');
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -48,6 +50,7 @@ const defaultState = {
   goalStatus: "R",
   showNCCRD: false,
   goalId: _gf.GetUID(),
+  attachmentDetails: { size: 0, name: "", format: "", version: 0 }, //JSON
   Q1_1: "", //DocumentLink
   Q1_3: false, //HasAssessment
   Q1_4: moment().format("YYYY-MM-DD"), //DocLastUpdated
@@ -57,14 +60,15 @@ const defaultState = {
   metaAddAuthorModal: false,
   tmpMetaAuthorName: "",
   tmpMetaAuthorEmail: "",
-  tmpMetaAuthorJobTitle: "",
   tmpMetaAuthorInstitution: "",
   metaAuthors: [],
   metaDocTitle: "",
   metaKeywords: [],
   metaDocFormat: "",
   metaDocDescr: "",
-  metaAgreement: false
+  metaAgreement: false,
+  metaUID: "",
+  metaRegion: ""
 }
 
 class Goal1Contrib extends React.Component {
@@ -82,6 +86,10 @@ class Goal1Contrib extends React.Component {
   }
 
   showMessage(title, message) {
+
+    let { setLoading } = this.props
+    setLoading(true)
+
     this.setState({
       title,
       message,
@@ -135,7 +143,10 @@ class Goal1Contrib extends React.Component {
           metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
           metaDocFormat: data.Questions.filter(x => x.Key === "DocumentFormat")[0].Value,
           metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
-          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true'
+          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
+          metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
+          metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value)
         })
       }
 
@@ -153,13 +164,24 @@ class Goal1Contrib extends React.Component {
 
   async submit() {
 
+    let { setLoading } = this.props
+    setLoading(true)
+
+    let metaUID = await this.generateMetaData()
+    if (metaUID !== null) {
+      await this.saveGoal(metaUID)
+    }
+
+    setLoading(false)
+  }
+
+  async saveGoal(metaUID) {
+
     let {
       goalId, goalStatus, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocFormat, metaDocDescr, metaAgreement
+      metaDocFormat, metaDocDescr, metaAgreement, attachmentDetails, metaRegion
     } = this.state
-    let { setLoading, user } = this.props
-
-    setLoading(true)
+    let { user } = this.props
 
     //Construct post body
     let goal = {
@@ -169,9 +191,11 @@ class Goal1Contrib extends React.Component {
       Type: 1,
       Questions: [
         { Key: "DocumentLink", Value: Q1_1 },
+        { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
         { Key: "HasAssessment", Value: Q1_3.toString() },
         { Key: "DocLastUpdated", Value: Q1_4 },
         { Key: "Region", Value: Q1_5.toString() },
+        { Key: "RegionName", Value: metaRegion.toString() },
         { Key: "Institution", Value: Q1_6 },
         { Key: "Sector", Value: Q1_7.toString() },
         { Key: "DocumentAuthors", Value: metaAuthors.join("||") },
@@ -179,7 +203,8 @@ class Goal1Contrib extends React.Component {
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
         { Key: "DocumentFormat", Value: metaDocFormat },
         { Key: "DocumentDescription", Value: metaDocDescr },
-        { Key: "DocumentAgreement", Value: metaAgreement.toString() }
+        { Key: "DocumentAgreement", Value: metaAgreement.toString() },
+        { Key: "MetaDataUID", Value: metaUID }
       ]
     }
 
@@ -200,15 +225,174 @@ class Goal1Contrib extends React.Component {
         throw new Error(res.error.message)
       }
 
-      setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
       this.reset()
     }
     catch (ex) {
-      setLoading(false)
       console.error(ex)
       this.showMessage("An error occurred", ex.message)
+    }
+  }
+
+  async generateMetaData() {
+
+    let {
+      goalId, Q1_1, Q1_4, metaAuthors, metaDocTitle, metaKeywords,
+      metaDocFormat, metaDocDescr, attachmentDetails, metaUID, metaRegion
+    } = this.state
+
+    //Get Creators
+    let creators = []
+    metaAuthors.map(auth => {
+      let authSplit = auth.split(", ")
+      if (authSplit.length === 3) {
+        creators.push({
+          creatorName: authSplit[0].trim(),
+          affiliation: `Organisation: ${authSplit[2].trim()}; e-Mail Address: ${authSplit[1].trim()}`
+        })
+      }
+    })
+
+    //Get Subjects
+    let subjects = []
+    metaKeywords.map(keywrd => {
+      subjects.push({
+        subject: keywrd,
+        subjectScheme: "",
+        schemeURI: ""
+      })
+    })
+
+    //Get ResourceType>>resourceType
+    let resourceType = ""
+    let resTypeIndex = attachmentDetails.name.lastIndexOf(".")
+    if (resTypeIndex > -1) {
+      resourceType = attachmentDetails.name.substring(resTypeIndex + 1, attachmentDetails.name.length)
+    }
+
+    //Get related identifiers
+    let relatedIdentifiers = []
+    if (!_gf.isEmptyValue(metaUID)) {
+      relatedIdentifiers = [
+        {
+          relatedIdentifier: metaUID, //UID of previous meta-data record
+          relatedIdentifierType: "URL", //UID is in URL form
+          relationType: "IsPreviousVersionOf"
+        }
+      ]
+    }
+
+    //contruct post body
+    let jsonData = {
+      xsiSchema: "http://datacite.org/schema/kernel-3",
+      publisher: 'Department of Environmental Affairs',
+      publicationYear: new Date().getFullYear().toString(),
+      language: 'eng',
+      titles: [
+        {
+          titleType: "",
+          title: metaDocTitle //Document Title
+        }
+      ],
+      description: [
+        {
+          //Document abstract
+          descriptionType: 'Abstract',
+          description: metaDocDescr
+        }
+      ],
+      resourceType: {
+        resourceTypeGeneral: metaDocFormat, //Selected ducument format, eg. Text
+        resourceType: resourceType.toUpperCase() //file extension, eg. PDF
+      },
+      formats: [
+        {
+          format: attachmentDetails.format //extracted file/media format, eg. application/pdf
+        }
+      ],
+      subjects: subjects, //Keywords
+      geoLocations: [
+        { geoLocationPlace: metaRegion } //Region
+      ],
+      relatedIdentifiers: relatedIdentifiers,
+      alternateIdentifiers: [
+        {
+          alternateIdentifier: goalId,
+          alternateIdentifierType: "UID"
+        }
+      ],
+      creators: creators, //Authors
+      dates: [
+        {
+          date: moment().format("YYYY-MM-DD"), //Document submit/upload date
+          dateType: "Submitted",
+          dateInformation: "Document submit/upload date"
+        },
+        {
+          date: Q1_4, //Document last update date
+          dateType: "Updated",
+          dateInformation: "Document last update date"
+        }
+      ],
+      rights: [ //Acknowledged licence
+        {
+          rights: "Attribution 4.0 International (CC BY 4.0)",
+          rightsURI: "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      sizes: [{ size: `${attachmentDetails.size} B` }], //File size in bytes 
+      version: attachmentDetails.version.toString(), //File verion number
+      additionalFields: {
+        onlineResources: [
+          {
+            func: "download",
+            desc: attachmentDetails.name,
+            href: Q1_1,
+            format: resourceType.toUpperCase()
+          }
+        ]
+      },
+      bounds: [] //required
+    }
+
+    //console.log("jsonData", jsonData)
+
+    try {
+      let res = await fetch(metadataServiceURL, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': basic(metaDataCredentials.username, metaDataCredentials.password)
+        },
+        body: new URLSearchParams({
+          metadataType: 'DataCite',
+          jsonData: JSON.stringify(jsonData)
+        }).toString()
+
+      })
+
+      //Get status
+      let status = res.ok
+
+      //Get response body
+      res = await res.json()
+
+      if (!status) {
+        throw new Error(res.error.message)
+      }
+      else if (res.status !== "success") {
+        throw new Error(`\nLog:\n${res.log.join("\n")}`)
+      }
+
+      //Process result
+      return res.url
+    }
+    catch (ex) {
+      console.error("Unable to create meta-data record.\n", ex)
+      this.showMessage("Meta-data creation failed", "Unable to create meta-data record. (See log for details)")
+
+      return null
     }
   }
 
@@ -312,7 +496,7 @@ class Goal1Contrib extends React.Component {
 
     let {
       editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7,
-      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail, tmpMetaAuthorJobTitle,
+      metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
     } = this.state
 
@@ -420,7 +604,17 @@ class Goal1Contrib extends React.Component {
                   key={"fu_" + goalId}
                   style={{ marginTop: "-15px", marginBottom: "20px" }}
                   width="100%"
-                  callback={(fileInfo) => { this.setState({ Q1_1: fileInfo.Link }) }}
+                  callback={(fileInfo) => {
+                    this.setState({
+                      Q1_1: fileInfo.Link,
+                      attachmentDetails: {
+                        size: fileInfo.Size,
+                        name: fileInfo.FileName,
+                        format: fileInfo.Format,
+                        version: fileInfo.Version
+                      }
+                    })
+                  }}
                   goalId={goalId}
                 />
               </Col>
@@ -523,7 +717,8 @@ class Goal1Contrib extends React.Component {
                   &nbsp;
                   <a href="https://creativecommons.org/licenses/by/4.0/" target="blank"><u>Creative Commons CC-BY license</u></a>.
                   <br />
-                  This allows the work to be shared in the public domain with no restrictions on its use.
+                  This allows the work to be shared in the public domain with no restrictions on its use,
+                  provided it is cited correctly.
                 </label>
                 <div style={{
                   // marginLeft: "-15px",
@@ -636,7 +831,7 @@ class Goal1Contrib extends React.Component {
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}
-                        callback={(value) => { this.setState({ Q1_5: value.id }) }}
+                        callback={(value) => { this.setState({ Q1_5: value.id, metaRegion: value.text }) }}
                         allowClear={true}
                         placeHolder={"Select Region...  (Leave empty for 'National')"}
                       />
@@ -805,20 +1000,6 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  Job title:
-                </label>
-                <TextInput
-                  width="95%"
-                  value={tmpMetaAuthorJobTitle}
-                  callback={(value) => {
-                    this.setState({ tmpMetaAuthorJobTitle: value })
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
                   Institution:
                 </label>
                 <TextInput
@@ -837,10 +1018,9 @@ class Goal1Contrib extends React.Component {
               style={{ width: "100px", backgroundColor: DEAGreen }}
               color="" onClick={() => this.setState({
                 metaAddAuthorModal: false,
-                metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorJobTitle},  ${tmpMetaAuthorInstitution}`],
+                metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorInstitution}`],
                 tmpMetaAuthorName: "",
                 tmpMetaAuthorEmail: "",
-                tmpMetaAuthorJobTitle: "",
                 tmpMetaAuthorInstitution: ""
               })}
             >
@@ -853,7 +1033,6 @@ class Goal1Contrib extends React.Component {
                 metaAddAuthorModal: false,
                 tmpMetaAuthorName: "",
                 tmpMetaAuthorEmail: "",
-                tmpMetaAuthorJobTitle: "",
                 tmpMetaAuthorInstitution: ""
               })} >
               Cancel
