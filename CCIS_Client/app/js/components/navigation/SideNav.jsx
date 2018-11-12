@@ -6,8 +6,6 @@ import {
   SideNav as MSBSideNav, Fa, SideNavItem, SideNavCat, SideNavNav, SideNavLink, Container, Row, Button,
   Modal, ModalBody, ModalHeader, ModalFooter
 } from 'mdbreact'
-import { DEAGreen } from '../../config/colours.cfg'
-import TreeInput from '../input/TreeInput.jsx'
 
 import '../../../css/mdbreact-sidenav.css'
 import loader from '../../../images/loader.gif'
@@ -79,6 +77,7 @@ class SideNav extends React.Component {
             key={"cat_" + x.id}
             name={x.text + " "}
             icon="chevron-right"
+            style={{ fontSize: "15px" }}
           >
             {this.renderLinks(x.children, level + 1)}
           </SideNavCat>
@@ -91,10 +90,10 @@ class SideNav extends React.Component {
               key={"lnk_" + x.id}
               onClick={() => {
                 this.showContent(x.link, x.text)
-              }}
+              }}              
             >
               <Fa style={{ marginRight: "10px" }} icon="link" />
-              {x.text}
+              <span style={{ fontSize: "15px" }}>{x.text}</span>
             </SideNavItem>
           )
         }
@@ -102,9 +101,10 @@ class SideNav extends React.Component {
           links.push(
             <SideNavItem
               key={"lnk_" + x.id}
+              style={{ fontSize: "16px" }}
             >
               <Fa style={{ marginRight: "10px" }} icon="unlink" />
-              {x.text}
+              <span style={{ fontSize: "15px" }}>{x.text}</span>
             </SideNavItem>
           )
         }
@@ -125,7 +125,7 @@ class SideNav extends React.Component {
 
   render() {
 
-    let { isOpen, title, data } = this.props
+    let { isOpen, data } = this.props
     let { width, height, showContent, contentLink, contentTitle } = this.state
 
     const sideNavWidth = 325

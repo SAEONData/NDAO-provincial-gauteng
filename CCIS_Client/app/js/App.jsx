@@ -25,7 +25,7 @@ import userManager from './components/Authentication/userManager'
 
 //Data
 const Oidc = require("oidc-client")
-const NavData = require('../data/sideNavData')
+import { data as NavData } from '../data/sideNavData'
 const _gf = require('./globalFunctions')
 
 const mapStateToProps = (state, props) => {
@@ -55,19 +55,19 @@ class App extends React.Component {
     }
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
 
-    try{
+    try {
       await userManager.signinSilent()
     }
-    catch(ex){
+    catch (ex) {
       console.warn("Sign-in-silent failed!", ex)
     }
   }
 
-  ignoreURL(){
+  ignoreURL() {
 
     let ignore = false
 
@@ -78,7 +78,7 @@ class App extends React.Component {
     ]
 
     ignoreURLs.forEach(x => {
-      if(location.hash.includes(x) && !ignore){
+      if (location.hash.includes(x) && !ignore) {
         ignore = true
       }
     })
@@ -86,11 +86,11 @@ class App extends React.Component {
     return ignore
   }
 
-  saveCurrentURL(){
+  saveCurrentURL() {
 
-    if(location.hash !== this.state.currentURL && !this.ignoreURL()){
+    if (location.hash !== this.state.currentURL && !this.ignoreURL()) {
       console.log("NAV", location.hash)
-      this.setState({ currentURL: location.hash})
+      this.setState({ currentURL: location.hash })
       _gf.SaveCurrentUrl()
     }
   }
@@ -108,18 +108,28 @@ class App extends React.Component {
             {navbar && <Header />}
             {navbar && <Navbar />}
 
-            <SideNav data={NavData.data} isOpen={showSideNav} />
+            {
+              NavData.enabled &&
+              <SideNav data={NavData} isOpen={showSideNav} />
+            }
 
-            <Switch>
-              <Route path="/" component={Home} exact />
-              <Route path="/login" component={Login} exact />
-              <Route path="/logout" component={Logout} exact />
-              <Route path="/callback" component={CallbackPage} />
-              <Route path="/ame" component={AME} />
-              <Redirect to="/" />
-            </Switch>
+            <div style={{ height: "15px", backgroundColor: "whitesmoke" }} />
 
-            <br />
+            <div style={{ backgroundColor: "whitesmoke" }}>
+              <div style={{ margin: "0px 15px 0px 15px" }}>
+                <Switch>
+                  <Route path="/" component={Home} exact />
+                  <Route path="/login" component={Login} exact />
+                  <Route path="/logout" component={Logout} exact />
+                  <Route path="/callback" component={CallbackPage} />
+                  <Route path="/ame" component={AME} />
+                  <Redirect to="/" />
+                </Switch>
+              </div>
+            </div>
+
+            <div style={{ height: "15px", backgroundColor: "whitesmoke" }} />
+
             <Footer />
 
             <LoadingPanel enabled={loading} />

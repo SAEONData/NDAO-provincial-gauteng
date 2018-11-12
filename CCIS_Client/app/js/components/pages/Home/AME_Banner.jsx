@@ -11,8 +11,17 @@ class AME_Banner extends React.Component {
   render() {
 
     return (
-      <>
-        <Row style={{ marginTop: "10px", color: "white", backgroundColor: DEAGreenDark, textAlign: "center", padding: "10px" }}>
+      <div style={{ margin: "0px" }}>
+        <Row style={{
+          color: "white",
+          backgroundColor: DEAGreenDark,
+          textAlign: "center",
+          margin: "-6px -10px 0px -10px",
+          borderTopRightRadius: "10px",
+          borderTopLeftRadius: "10px"
+        }}
+        >
+
           <Col md="12">
             <h1>
               Monitoring and Evaluation of Climate Change Adaptation
@@ -29,7 +38,7 @@ class AME_Banner extends React.Component {
             </a>
           </Col>
         </Row>
-      </>
+      </div>
     )
   }
 }

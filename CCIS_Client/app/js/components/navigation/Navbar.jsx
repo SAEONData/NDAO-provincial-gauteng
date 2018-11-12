@@ -11,6 +11,7 @@ import LRT from '../pages/Tools/LRT.jsx';
 import NCCRD from '../pages/Tools/NCCRD.jsx';
 import NWIS from '../pages/Tools/NWIS.jsx';
 import SARVA from '../pages/Tools/SARVA.jsx';
+import { data as NavData } from '../../../data/sideNavData'
 
 const _gf = require('../../globalFunctions')
 
@@ -76,17 +77,35 @@ class Navbar extends React.Component {
 
     return (
       <>
-        <MDBNavbar size="sm" light expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
+        <MDBNavbar
+          size="sm"
+          color="white"
+          light
+          expand="md"
+          style={{
+            boxShadow: "0px 15px 10px -15px gainsboro",
+            borderTop: "1px solid #E8E8E8",
+          }}
+        >
+
           {!this.state.isWideEnough && <NavbarToggler style={{ backgroundColor: DEAGreen }} onClick={this.onClick} />}
           <Collapse isOpen={this.state.collapse} navbar>
 
             {/* LEFT */}
             <NavbarNav left>
 
+              {/* <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
+                style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
+                <Fa icon="bars" />
+              </Button> */}
+
+              {
+              NavData.enabled &&
               <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
                 style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
                 <Fa icon="bars" />
               </Button>
+            }
 
               {/* Home */}
               <NavItem style={{ borderBottom: (locationHash === "#/" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>

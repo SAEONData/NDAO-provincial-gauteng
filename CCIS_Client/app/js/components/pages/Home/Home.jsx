@@ -173,7 +173,7 @@ class Home extends React.Component {
     let { infoSection, filterYear, filterRegion, filterSector, filterGoal, trafficLightGoalData } = this.state
 
     return (
-      <>
+      <div style={{ padding: "5px 10px 5px 10px", backgroundColor: "white", borderRadius: "10px", border: "1px solid gainsboro" }}>
         <AME_Banner />
         <br />
         <br />
@@ -315,7 +315,7 @@ class Home extends React.Component {
             </Button>
           </Col>
         </Row>
-      </>
+      </div>
     )
   }
 }
