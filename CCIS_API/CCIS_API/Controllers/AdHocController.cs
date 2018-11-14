@@ -44,63 +44,63 @@ namespace CCIS_API.Controllers
                 .OrderBy(x => x);
         }
 
-        [HttpGet]
-        [ODataRoute("GetTrafficLightData(region={region},sector={sector},goal={goal},year={year},institution={institution})")]
-        [EnableCors("CORSPolicy")]
-        public IQueryable<GoalStatus> GetTrafficLightData([FromODataUri] int region, [FromODataUri] int sector, [FromODataUri] int goal, 
-            [FromODataUri] int year, [FromODataUri] string institution)
-        {
-            var goals = new List<GoalStatus>();
-            year += 1; //inculde 1 future year for effect
+        //[HttpGet]
+        //[ODataRoute("GetTrafficLightData(region={region},sector={sector},goal={goal},year={year},institution={institution})")]
+        //[EnableCors("CORSPolicy")]
+        //public IQueryable<GoalStatus> GetTrafficLightData([FromODataUri] int region, [FromODataUri] int sector, [FromODataUri] int goal, 
+        //    [FromODataUri] int year, [FromODataUri] string institution)
+        //{
+        //    var goals = new List<GoalStatus>();
+        //    year += 1; //inculde 1 future year for effect
 
-            for (int goalType = 1; goalType <= 9; goalType++) //for each goal: 1-9
-            {
-                for(int goalYear = (year-5); goalYear <= year; goalYear++) //for each year in range: (year-5) - year
-                {
-                    var filteredGoals = GetFilteredGoalsIDs(region, sector, goalType, goalYear, institution);
+        //    for (int goalType = 1; goalType <= 9; goalType++) //for each goal: 1-9
+        //    {
+        //        for(int goalYear = (year-5); goalYear <= year; goalYear++) //for each year in range: (year-5) - year
+        //        {
+        //            var filteredGoals = GetFilteredGoalsIDs(region, sector, goalType, goalYear, institution);
 
-                    var tmpGoals = _context.Goals
-                        .Where(g => filteredGoals.Contains(g.Id))
-                        .Select(g => g)
-                        .OrderByDescending(g => g.CreateDate);
+        //            var tmpGoals = _context.Goals
+        //                .Where(g => filteredGoals.Contains(g.Id))
+        //                .Select(g => g)
+        //                .OrderByDescending(g => g.CreateDate);
 
-                    if (tmpGoals.Count() > 0)
-                    {
-                        var item = tmpGoals.ToList()[0];
-                        var keys = new string[] { "DocumentLink", "EvidenceLink" };
+        //            if (tmpGoals.Count() > 0)
+        //            {
+        //                var item = tmpGoals.ToList()[0];
+        //                var keys = new string[] { "DocumentLink", "EvidenceLink" };
 
-                        var linkItem = _context.Questions.FirstOrDefault(q => q.Goal.Id == item.Id && keys.Contains(q.Key));
+        //                var linkItem = _context.Questions.FirstOrDefault(q => q.Goal.Id == item.Id && keys.Contains(q.Key));
 
-                        goals.Add(new GoalStatus()
-                        {
-                            Id = item.Id,
-                            Type = goalType,
-                            Year = goalYear,
-                            Status = item.Status,
-                            Link = linkItem!= null ? linkItem.Value : ""
-                        });
-                    }
-                    else
-                    {
-                        goals.Add(new GoalStatus()
-                        {
-                            Id = Guid.Empty,
-                            Type = goalType,
-                            Year = goalYear,
-                            Status = "",
-                            Link = ""
-                        });
-                    }
-                }
-            }
+        //                goals.Add(new GoalStatus()
+        //                {
+        //                    Id = item.Id,
+        //                    Type = goalType,
+        //                    Year = goalYear,
+        //                    Status = item.Status,
+        //                    Link = linkItem!= null ? linkItem.Value : ""
+        //                });
+        //            }
+        //            else
+        //            {
+        //                goals.Add(new GoalStatus()
+        //                {
+        //                    Id = Guid.Empty,
+        //                    Type = goalType,
+        //                    Year = goalYear,
+        //                    Status = "",
+        //                    Link = ""
+        //                });
+        //            }
+        //        }
+        //    }
 
-            return goals
-                .OrderBy(x => x.Type)
-                .ThenBy(x => x.Year)
-                .AsQueryable();
-        }
+        //    return goals
+        //        .OrderBy(x => x.Type)
+        //        .ThenBy(x => x.Year)
+        //        .AsQueryable();
+        //}
 
-        private List<Guid> GetFilteredGoalsIDs([FromODataUri] int region = 0, [FromODataUri] int sector = 0, [FromODataUri] int goal = 0, 
+        public List<Guid> GetFilteredGoalsIDs([FromODataUri] int region = 0, [FromODataUri] int sector = 0, [FromODataUri] int goal = 0, 
             [FromODataUri] int year = 0, [FromODataUri] string institution = "")
         {
             var result = new List<Guid>();
@@ -122,7 +122,7 @@ namespace CCIS_API.Controllers
                 //Get IDs for Goals in Region
                 regionGoals.AddRange(_context.Goals
                     .Where(g => 
-                        g.Questions.Any(q => q.Key == "Region" && q.Value == region.ToString()) &&
+                        g.Questions.Any(q => q.Key == "Region" && q.Value.ToString() == region.ToString()) &&
                         !g.Questions.Any(q => q.Key == "Institution" && !string.IsNullOrEmpty(q.Value) && institution != "ignore")
                     )
                     .Select(g => g.Id));

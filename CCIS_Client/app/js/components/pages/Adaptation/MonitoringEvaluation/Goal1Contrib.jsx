@@ -8,7 +8,7 @@ import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.cfg'
 import DateInput from '../../../input/DateInput.jsx'
-import NCCRD from '../../Tools/NCCRD.jsx'
+import NCCRD from '../../../Pages/Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../config/serviceURLs.cfg'
 import moment from 'moment'
@@ -994,7 +994,11 @@ class Goal1Contrib extends React.Component {
         <br />
 
         {showNCCRD &&
-          <NCCRD goalId={goalId} closeCallback={() => { this.setState({ showNCCRD: false }) }} />
+          // <NCCRD goalId={goalId} closeCallback={() => { this.setState({ showNCCRD: false }) }} />
+          <NCCRD
+            query={`?navbar=addOnly&daoid=${goalId}&popin=hidden`}
+            closeCallback={() => { this.setState({ showNCCRD: false }) }}
+          />
         }
 
         {/* Message modal */}

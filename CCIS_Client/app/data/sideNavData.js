@@ -2,7 +2,7 @@ import nrf_saeon from '../images/nrf_saeon.png'
 import sa_flag from '../images/sa_flag.jpg'
 
 export const data = {
-	enabled: true,
+	enabled: false,
 	title: "Document Links",
 	logoTop: { src: nrf_saeon, width: "65%" },
 	logoBottom: { src: sa_flag, width: "30%" },

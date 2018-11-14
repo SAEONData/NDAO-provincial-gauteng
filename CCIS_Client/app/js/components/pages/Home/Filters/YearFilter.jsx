@@ -18,13 +18,13 @@ class YearFilter extends React.Component {
 
     return (
       <>
-        <div style={{ border: "1px solid gainsboro", padding: "0px 10px 0px 10px", borderRadius: "5px" }}>
+        <div style={{ border: "1px solid gainsboro", padding: "0px 10px 0px 10px", borderRadius: "5px", backgroundColor: "white" }}>
 
           <table>
             <tbody>
               <tr>
                 <td>
-                  <span style={{ color: "silver", fontSize: "15px" }}>Year:</span>
+                  <span style={{ color: "silver", fontSize: "16px" }}>Year:</span>
               </td>
                 <td width="100%">
                   <Slider

@@ -119,6 +119,35 @@ namespace CCIS_API.Controllers
             return new JsonResult(goalData);
         }
 
+        [HttpGet]
+        [EnableQuery]
+        [ODataRoute("GetGoalData(region={region},sector={sector},goal={goal},year={year},institution={institution})")]
+        [EnableCors("CORSPolicy")]
+        public IQueryable<Goal> GetGoalData([FromODataUri] int region, [FromODataUri] int sector, [FromODataUri] int goal,
+            [FromODataUri] int year, [FromODataUri] string institution)
+        {
+            var goals = new List<Goal>();
+            
+            for (int goalType = 1; goalType <= 9; goalType++) //for each goal: 1-9
+            {
+                for (int goalYear = (year - 5); goalYear <= year; goalYear++) //for each year in range: (year-5) - year
+                {
+                    var adHocController = new AdHocController(_context);
+                    var filteredGoals = adHocController.GetFilteredGoalsIDs(region, sector, goalType, goalYear, institution);
+
+                    goals.AddRange(_context.Goals
+                        .Include(g => g.Questions)
+                        .Where(g => filteredGoals.Contains(g.Id))
+                        .ToList());
+                }
+            }
+
+            return goals
+                .OrderBy(x => x.Type)
+                .ThenBy(x => x.CreateDate)
+                .AsQueryable();
+        }
+
         /// <summary>
         /// Converts string value to int, returns 0 for invalid strings
         /// </summary>
