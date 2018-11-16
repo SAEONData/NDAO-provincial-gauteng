@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact'
-import { DEAGreenDark } from "../../../config/colours.cfg"
+import { DEAGreenDark } from "../../../Config/colours.cfg"
 
 class AME_Banner extends React.Component {
 

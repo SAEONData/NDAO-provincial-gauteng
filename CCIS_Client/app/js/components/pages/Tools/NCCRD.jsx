@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
-import { ccrdSiteBaseURL } from '../../../config/serviceURLs.cfg'
+import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
+import { ccrdSiteBaseURL } from '../../../Config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}

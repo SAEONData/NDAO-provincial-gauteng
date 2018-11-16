@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'mdbreact';
 
 //Images
-import AME1 from '../../../../images/AME1.png'
+import AME1 from '../../../../Images/Other/AME1.png'
 
 class AME_Info extends React.Component {
 

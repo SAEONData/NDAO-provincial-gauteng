@@ -2,15 +2,15 @@
 
 import React from 'react'
 import { Popover, PopoverBody, PopoverHeader, Modal, ModalHeader, ModalBody } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from '../../config/colours.cfg'
+import { DEAGreen, Red, Amber, Green } from '../../Config/colours.cfg'
 
 const _gf = require('../../globalFunctions')
 
 //Images
-import info from "../../../images/info_blue.png"
-import traffic_light from "../../../images/traffic_light_blue.png"
-import paper_clip_blue from "../../../images/paper_clip_blue.png"
-import paper_clip_grey from "../../../images/paper_clip_grey.png"
+import info from "../../../Images/Icons/info_blue.png"
+import traffic_light from "../../../Images/Icons/traffic_light_blue.png"
+import paper_clip_blue from "../../../Images/Icons/paper_clip_blue.png"
+import paper_clip_grey from "../../../Images/Icons/paper_clip_grey.png"
 
 class TrafficLightBar extends React.Component {
 

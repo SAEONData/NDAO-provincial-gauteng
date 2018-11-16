@@ -8,7 +8,7 @@ import {
 } from 'mdbreact'
 
 import '../../../css/mdbreact-sidenav.css'
-import loader from '../../../images/loader.gif'
+import loader from '../../../Images/Other/loader.gif'
 
 const mapStateToProps = (state, props) => {
   return {}

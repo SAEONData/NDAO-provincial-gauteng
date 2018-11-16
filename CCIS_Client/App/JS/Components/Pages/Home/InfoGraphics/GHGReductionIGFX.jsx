@@ -2,11 +2,11 @@ import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import buildQuery from 'odata-query'
-import { ccrdBaseURL } from '../../../../config/serviceURLs.cfg'
+import { ccrdBaseURL } from '../../../../Config/serviceURLs.cfg'
 import moment from 'moment'
 
 //images
-import ghg_reduction from '../../../../../images/ghg_reduction.jpg'
+import ghg_reduction from '../../../../../Images/Icons/ghg_reduction.jpg'
 
 const mapStateToProps = (state, props) => {
   return {}

@@ -1,4 +1,4 @@
-import DEA_Logo from '../images/environmental_affairs_logo_small.jpg'
+import DEA_Logo from '../Images/DEA/environmental_affairs_logo_small.jpg'
 
 export const footerContent = {
   sections: [

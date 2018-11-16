@@ -1,5 +1,5 @@
-import nrf_saeon from '../images/nrf_saeon.png'
-import sa_flag from '../images/sa_flag.jpg'
+import nrf_saeon from '../Images/NRF_SAEON/nrf_saeon.png'
+import sa_flag from '../Images/Other/sa_flag.jpg'
 
 export const data = {
 	enabled: false,

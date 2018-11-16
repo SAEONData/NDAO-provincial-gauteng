@@ -10,7 +10,7 @@ import Icon from 'antd/lib/icon'
 import message from 'antd/lib/message'
 
 import * as globalFunctions from '../../globalFunctions'
-import { apiBaseURL } from '../../config/serviceURLs.cfg'
+import { apiBaseURL } from '../../Config/serviceURLs.cfg'
 
 const Dragger = Upload.Dragger;
 

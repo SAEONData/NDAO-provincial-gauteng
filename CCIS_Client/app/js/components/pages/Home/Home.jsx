@@ -3,8 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from "../../../config/colours.cfg"
-import MapsCarouselView from '../../layout/MapsCarouselView.jsx';
+import { DEAGreen, Red, Amber, Green } from "../../../Config/colours.cfg"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
 import DAO_Info from './DAO_Info.jsx'
@@ -14,12 +13,12 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
-import { apiBaseURL } from '../../../config/serviceURLs.cfg'
+import { apiBaseURL } from '../../../Config/serviceURLs.cfg'
 import InstitutionFilter from './Filters/InstitutionFilter.jsx'
 import DashMapPreview from './DashMapPreview.jsx'
 import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'
 import NDMC_Preview from './NDMC_Preview/NDMC_Preview.jsx'
-import SARVA_Preview from './SARVA_Preview.jsx'
+import SARVA_Preview from './SARVA_Preview/SARVA_Preview.jsx'
 import FundingIGFX from './InfoGraphics/FundingIGFX.jsx'
 import PlansIGFX from './InfoGraphics/PlansIGFX.jsx'
 import GovernmentsIGFX from './InfoGraphics/GovernmentsIGFX.jsx'
@@ -340,8 +339,9 @@ class Home extends React.Component {
           <Row>
             <Col md="12">
               <DashMapPreview 
-                height={500} 
+                height={550} 
                 popCallback={() => { this.setState({ mapFullView: false}) }}
+                fullView
               />
             </Col>
           </Row>

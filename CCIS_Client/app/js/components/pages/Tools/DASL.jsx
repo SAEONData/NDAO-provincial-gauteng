@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
+import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
