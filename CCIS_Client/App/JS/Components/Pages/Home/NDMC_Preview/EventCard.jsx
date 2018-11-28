@@ -44,6 +44,8 @@ class EventCard extends React.Component {
             <Fa icon="calendar-o" style={{ marginRight: "10px" }}/>
             {startDate.toDateString()} - {endDate.toDateString()}
 
+            <br />
+
             <Fa icon="flag" style={{ marginRight: "10px", marginTop: "7px" }}/>
             {type}
 
