@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace CCIS_API.Controllers
 {
@@ -101,9 +104,17 @@ namespace CCIS_API.Controllers
         [EnableQuery]
         public JsonResult GeoJson()
         {
+            var vmsRegions = GetVMSData("regions/flat").Result;
+
             var goalData = _context.Goals
-                .Select(g => new {
+                .Select(g => new
+                {
                     type = "Feature",
+                    geometry = new
+                    {
+                        type = "Polygon",
+                        coordinates = GetCoordinates(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions)
+                    },
                     properties = new
                     {
                         id = g.Id, //Goal Id
@@ -127,7 +138,7 @@ namespace CCIS_API.Controllers
             [FromODataUri] int year, [FromODataUri] string institution)
         {
             var goals = new List<Goal>();
-            
+
             for (int goalType = 1; goalType <= 9; goalType++) //for each goal: 1-9
             {
                 for (int goalYear = (year - 5); goalYear <= year; goalYear++) //for each year in range: (year-5) - year
@@ -146,6 +157,59 @@ namespace CCIS_API.Controllers
                 .OrderBy(x => x.Type)
                 .ThenBy(x => x.CreateDate)
                 .AsQueryable();
+        }
+
+        private object[] GetCoordinates(Question Region, List<StandardVocabItem> vmsRegions)
+        {
+            var polygon = new List<object>();
+
+            var vmsRegion = vmsRegions.FirstOrDefault(v => v.Id.ToString() == Region.Value);
+            if (vmsRegion != null)
+            {
+                var simpleWKT = vmsRegion.AdditionalData.FirstOrDefault(ad => ad.Key == "SimpleWKT");
+                if (!string.IsNullOrEmpty(simpleWKT.Value))
+                {
+                    var parsedWKT = simpleWKT.Value.Replace("POLYGON((", "").Replace("))", "");
+
+                    foreach (var point in parsedWKT.Split(","))
+                    {
+                        var pointValues = point.Trim().Split(" ");
+                        if (pointValues.Length == 2)
+                        {
+                            if (double.TryParse(pointValues[0].Trim(), out double pointLat) &&
+                                double.TryParse(pointValues[1].Trim(), out double pointLon))
+                            {
+                                var polyPoint = new double[] { pointLat, pointLon };
+                                polygon.Add(polyPoint);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            return polygon.ToArray();
+        }
+
+        private async Task<List<StandardVocabItem>> GetVMSData(string relativeURL)
+        {
+            var result = new StandardVocabOutput();
+
+            //Setup http-client
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(_config.GetValue<string>("VmsApiBaseUrl"));
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //Get data from VMS API
+            var response = await client.GetAsync(relativeURL);
+            if (response != null)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<StandardVocabOutput>(jsonString);
+            }
+
+            return result.Items;
         }
 
         /// <summary>

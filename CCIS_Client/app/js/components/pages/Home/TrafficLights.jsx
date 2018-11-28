@@ -34,7 +34,11 @@ class TrafficLights extends React.Component {
         if(filtered.length > 0){
 
           let goal = filtered[0]
-          let link = goal.Questions.filter(q => q.Key === "DocumentLink" || q.Key === "EvidenceLink")[0].Value
+          let filteredQuestions = goal.Questions.filter(q => q.Key === "DocumentLink" || q.Key === "EvidenceLink")
+          let link = ""
+          if(filteredQuestions.length > 0){
+            link = filteredQuestions[0].Value
+          }
           
           //Add actual data
           newItem.Id = goal.Id
