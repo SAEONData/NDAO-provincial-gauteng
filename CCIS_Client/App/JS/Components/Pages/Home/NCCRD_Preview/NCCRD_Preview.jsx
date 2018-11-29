@@ -22,8 +22,35 @@ class NCCRD_Preview extends React.Component {
   constructor(props) {
     super(props);
 
+    this.onMessage = this.onMessage.bind(this)
+
     this.state = {
       showNCCRD: ""
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('message', this.onMessage.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("message", this.onMessage)
+  }
+
+  onMessage(event) {
+
+    //console.log("event", event)
+
+    // Check sender origin to be trusted
+    if (event.origin === "http://localhost:8085" || event.origin === "http://app01.saeon.ac.za/nccrdsite") {
+
+      var data = event.data;
+      console.log("event data", data)
+
+      if (data.action === "showDetails") {
+        this.setState({ showNCCRD: data.value })
+      }
+
     }
   }
 
@@ -31,93 +58,52 @@ class NCCRD_Preview extends React.Component {
 
     let { showNCCRD } = this.state
 
+    let NCCRD_Config = {
+      header: false,
+      navbar: false,
+      sidenav: false,
+      footer: false,
+      daoid: false,
+      readOnly: true,
+      backToList: false,
+      // filters: {
+      //   region: 0,
+      //   sector: 0,
+      //   status: 0,
+      //   title: "",
+      //   typology: 0,
+      //   polygon: ""
+      // },
+      listOptions: {
+        expandCollapse: false,
+        view: true,
+        favorites: false,
+        filters: false,
+        detailsInParent: true
+      }
+    }
+
     return (
-      <div style={{ backgroundColor: "white", border: "1px solid gainsboro", borderRadius: "10px" }}>
-
-        <h4 style={{ margin: "10px 5px 0px 19px", display: "inline-block" }}>
-          <b>Projects</b>
-        </h4>
-
-        <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
-
-        <OData
-          baseUrl={ccrdBaseURL + 'Projects'}
-          query={{
-            // filter: { CreateUser: { eq: { type: 'guid', value: user.profile.UserId } }, Type: selectedGoal },
-            select: ['ProjectId', 'ProjectTitle', 'ProjectDescription'],
-            orderBy: "ProjectTitle"
+      <>
+        <iframe
+          style={{
+            border: "none",
+            height: 437,
+            width: "100%"
           }}
-        >
-          {({ loading, error, data }) => {
-
-            if (loading === true) {
-              return (
-                <div style={{ height: "360px", marginBottom: "15px", marginLeft: "15px" }}>
-                  <p>Loading...</p>
-                </div>
-              )
-            }
-
-            if (error) {
-              console.error(error)
-              return (
-                <div style={{ height: "360px", marginBottom: "15px", marginLeft: "15px" }}>
-                  <p>
-                    Unable to load projects.
-                  <br />
-                    (See log for details)
-                </p>
-                </div>
-              )
-            }
-
-            if (data) {
-
-              if (data.value && data.value.length > 0) {
-
-                let projects = []
-                data.value.map(p => {
-                  projects.push(
-                    <ProjectCard
-                      key={p.ProjectId}
-                      pid={p.ProjectId}
-                      ptitle={p.ProjectTitle}
-                      pdes={p.ProjectDescription}
-                      viewCallback={(hash) => {
-                        console.log("here")
-                        this.setState({ showNCCRD: hash })
-                      }}
-                    />
-                  )
-                })
-                return (
-                  <div style={{ height: "360px", overflowY: "auto", marginBottom: "15px" }}>
-                    {projects}
-                  </div>
-                )
-              }
-              else {
-                return (
-                  <div style={{ height: "360px", marginBottom: "15px", marginLeft: "15px" }}>
-                    <p>No projects found.</p>
-                  </div>
-                )
-              }
-
-            }
-          }}
-        </OData>
+          src={`http://localhost:8085/#/projects?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
+        />
 
         {
           (showNCCRD !== "") &&
           <NCCRD
-            path={`/${showNCCRD}`}
-            query={`?navbar=hidden&daoid=hidden&readonly=true&popin=hidden`}
+            path={`projects/${showNCCRD}`}
+            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
             closeCallback={() => { this.setState({ showNCCRD: "" }) }}
           />
         }
 
-      </div>
+      </>
     )
   }
 }

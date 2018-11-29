@@ -29,12 +29,8 @@ class NCCRD extends React.Component {
 
   render() {
 
-    let { closeCallback, base, path, query } = this.props
-    let url = `${ccrdSiteBaseURL}projects`
-
-    if(base){
-      url = `${ccrdSiteBaseURL}projects`
-    }
+    let { closeCallback, path, query } = this.props
+    let url = ccrdSiteBaseURL
 
     if(path){
       url += path
@@ -43,9 +39,6 @@ class NCCRD extends React.Component {
     if(query){
       url += query
     }
-
-    //let url = `${ccrdSiteBaseURL}projects?navbar=hidden`
-    //`&daoid=${goalId}`
 
     return (
       <>
