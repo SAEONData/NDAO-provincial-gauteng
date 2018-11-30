@@ -3,6 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
+import { ndmcSiteBaseURL } from '../../../Config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -16,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class EWED extends React.Component {
+class NDMC extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,20 +29,29 @@ class EWED extends React.Component {
 
   render() {
 
-    let { closeCallback } = this.props
+    let { closeCallback, path, query } = this.props
+    let url = ndmcSiteBaseURL
+
+    if(path){
+      url += path
+    }
+
+    if(query){
+      url += query
+    }
 
     return (
       <>
         <br />
         <HostedContentFrame
-          title="Extreme Weather Events Database"
-          source="http://app01.saeon.ac.za/ndmcsite/#/events"
-          showSource={false}
+          title="National Hazardous Events Database"
+          source={url}
           closeCallback={closeCallback}
+          showSource={false}
          />
       </>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EWED)
+export default connect(mapStateToProps, mapDispatchToProps)(NDMC)

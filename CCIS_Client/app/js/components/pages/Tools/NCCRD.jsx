@@ -47,7 +47,7 @@ class NCCRD extends React.Component {
           title="Climate Change Responses"
           source={url}
           closeCallback={closeCallback}
-          showSource={true}
+          showSource={false}
          />
       </>
     )

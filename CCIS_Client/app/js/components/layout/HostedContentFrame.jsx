@@ -28,7 +28,7 @@ class HostedContentFrame extends React.Component {
     //this.setState({ showModal: false })
     //location.hash = "#"
 
-    if(typeof closeCallback !== 'undefined'){
+    if (typeof closeCallback !== 'undefined') {
       closeCallback()
     }
   }
@@ -44,29 +44,27 @@ class HostedContentFrame extends React.Component {
 
     return (
       <div>
-        {/* <Container> */}
-          <Modal /*fade={false}*/ isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" fullWidth style={{ width: "95%" }} >
-            <ModalHeader toggle={this.toggleModal}>{title}</ModalHeader>
-            <ModalBody>
-              <iframe
-                style={{
-                  width: width,
-                  height: height,
-                  margin: "0px",
-                  border: "1px solid gainsboro",
-                  backgroundImage: `url(${loader})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "50% 50%"
-                }}
-                src={source}
-              />
+        <Modal isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" style={{ width: "95%" }} >
+          <ModalHeader toggle={this.toggleModal}>{title}</ModalHeader>
+          <ModalBody>
+            <iframe
+              style={{
+                width: width,
+                height: height,
+                margin: "0px",
+                border: "1px solid gainsboro",
+                backgroundImage: `url(${loader})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "50% 50%"
+              }}
+              src={source}
+            />
 
-              <span hidden={!showSource} style={{ fontSize: "small", fontStyle: "italic" }}>
-                &nbsp;source: <a href={source} target="#"><u>{source}</u></a>
-              </span>
-            </ModalBody>
-          </Modal>
-        {/* </Container> */}
+            <span hidden={!showSource} style={{ fontSize: "small", fontStyle: "italic" }}>
+              &nbsp;source: <a href={source} target="#"><u>{source}</u></a>
+            </span>
+          </ModalBody>
+        </Modal>
       </div>
     )
   }

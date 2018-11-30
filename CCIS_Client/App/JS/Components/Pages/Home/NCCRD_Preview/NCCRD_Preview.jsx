@@ -3,7 +3,7 @@ import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import OData from 'react-odata'
 import ProjectCard from './ProjectCard.jsx'
-import { ccrdBaseURL } from '../../../../Config/serviceURLs.cfg'
+import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../Config/serviceURLs.cfg'
 import NCCRD from '../../Tools/NCCRD.jsx'
 
 //images
@@ -42,10 +42,9 @@ class NCCRD_Preview extends React.Component {
     //console.log("event", event)
 
     // Check sender origin to be trusted
-    if (event.origin === "http://localhost:8085" || event.origin === "http://app01.saeon.ac.za/nccrdsite") {
+    if (ccrdSiteBaseURL.includes(event.origin)) {
 
       var data = event.data;
-      console.log("event data", data)
 
       if (data.action === "showDetails") {
         this.setState({ showNCCRD: data.value })
@@ -66,14 +65,6 @@ class NCCRD_Preview extends React.Component {
       daoid: false,
       readOnly: true,
       backToList: false,
-      // filters: {
-      //   region: 0,
-      //   sector: 0,
-      //   status: 0,
-      //   title: "",
-      //   typology: 0,
-      //   polygon: ""
-      // },
       listOptions: {
         expandCollapse: false,
         view: true,
@@ -91,7 +82,7 @@ class NCCRD_Preview extends React.Component {
             height: 437,
             width: "100%"
           }}
-          src={`http://localhost:8085/#/projects?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
+          src={`${ccrdSiteBaseURL}projects?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
         />
 
         {
