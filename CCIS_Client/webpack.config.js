@@ -29,10 +29,10 @@ module.exports = {
       'history'
     ],
     config : [
-      './js/config/serviceURLs.cfg',
+      './js/Config/serviceURLs.cfg',
       './js/secrets.cfg',
-      './js/config/colours.cfg',
-      './js/config/ui_config.cfg'
+      './js/Config/colours.cfg',
+      './js/Config/ui_config.cfg'
     ]
   },
 
@@ -116,7 +116,7 @@ module.exports = {
     // new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
     // new CopyWebpackPlugin([
     //   {
-    //     from: 'js/config/*.cfg',
+    //     from: 'js/Config/*.cfg',
     //     to: '[name].[ext]',
     //     toType: 'template'
     //   }

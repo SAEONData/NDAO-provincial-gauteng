@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact'
-import { DEAGreenDark } from "../../../config/colours.cfg"
+import { DEAGreenDark } from "../../../Config/colours.cfg"
 
 class AME_Banner extends React.Component {
 
@@ -11,17 +11,15 @@ class AME_Banner extends React.Component {
   render() {
 
     return (
-      <div style={{ margin: "0px" }}>
-        <Row style={{
-          color: "white",
-          backgroundColor: DEAGreenDark,
-          textAlign: "center",
-          margin: "-6px -10px 0px -10px",
-          borderTopRightRadius: "10px",
-          borderTopLeftRadius: "10px"
-        }}
-        >
-
+      <div style={{
+        color: "white",
+        backgroundColor: DEAGreenDark,
+        textAlign: "center",
+        margin: "-15px",
+        padding: "15px",
+        borderRadius: "10px"
+      }}>
+        <Row>
           <Col md="12">
             <h1>
               Monitoring and Evaluation of Climate Change Adaptation

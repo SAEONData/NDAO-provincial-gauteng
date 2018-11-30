@@ -1,5 +1,5 @@
 import React from 'react'
-import { DEAGreen } from "../../../config/colours.cfg"
+import { DEAGreen } from "../../../Config/colours.cfg"
 
 class LessInfoBtn extends React.Component {
 
@@ -17,21 +17,23 @@ class LessInfoBtn extends React.Component {
           style={{ marginBottom: "0px", color: DEAGreen, cursor: "pointer" }}
           onClick={() => {
 
-            if (scrollUp) {
-              window.scroll({
-                top: 465,
-                left: 0,
-                behavior: 'smooth'
-              })
-            }
+            // if (scrollUp) {
+            //   window.scroll({
+            //     top: 430,
+            //     left: 0,
+            //     behavior: 'smooth'
+            //   })
+            // }
 
-            setTimeout(() => {
-              callback(infoSection)
-            }, (scrollUp ? 600 : 0))
+            // setTimeout(() => {
+            //   callback(infoSection)
+            // }, (scrollUp ? 600 : 0))
+
+            callback(infoSection)
           }} >
           <b style={{ marginRight: "15px" }}>
             <u>
-              {infoSection === true ? "Less" : "More"} Information...
+              {infoSection === true ? "Hide" : "Show"} Information...
               </u>
           </b>
           <i className={!infoSection ? 'fa fa-angle-down rotate-icon' : 'fa fa-angle-up'}></i>

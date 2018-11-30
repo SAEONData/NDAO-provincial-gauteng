@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
-import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.cfg'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../config/serviceURLs.cfg'
+import { DEAGreen, Red, Amber, Green } from '../../../../Config/colours.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../Config/serviceURLs.cfg'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
@@ -20,8 +20,8 @@ import { metaDataCredentials } from '../../../../../js/secrets.cfg'
 import Slider from 'antd/lib/slider'
 import 'antd/lib/slider/style/css'
 
-import gear from '../../../../../images/gear.png'
-import checklist from '../../../../../images/checklist.png'
+import gear from '../../../../../Images/Icons/gear.png'
+import checklist from '../../../../../Images/Icons/checklist.png'
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')

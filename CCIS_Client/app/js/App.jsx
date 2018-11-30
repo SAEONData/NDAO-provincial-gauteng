@@ -20,7 +20,6 @@ import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 import SideNav from './components/navigation/SideNav.jsx'
-//import { processSilentRenew } from 'redux-oidc'
 import userManager from './components/Authentication/userManager'
 
 //Data
@@ -101,7 +100,7 @@ class App extends React.Component {
     let { navbar } = this.state
 
     return (
-      <div style={{ padding: "0px 25px 0px 25px", margin: "auto" }}>
+      <div style={{ margin: "0px 25px 0px 25px", backgroundColor: "white" }}>
         <Router>
           <div>
 
@@ -113,12 +112,12 @@ class App extends React.Component {
               <SideNav data={NavData} isOpen={showSideNav} />
             }
 
-            <div style={{ height: "15px", backgroundColor: "whitesmoke" }} />
+            <div style={{ height: "25px", backgroundColor: "whitesmoke" }} />
 
             <div style={{ backgroundColor: "whitesmoke" }}>
               <div style={{ margin: "0px 15px 0px 15px" }}>
                 <Switch>
-                  <Route path="/" component={Home} exact />
+                  <Route path="/" component={Home} exact />                
                   <Route path="/login" component={Login} exact />
                   <Route path="/logout" component={Logout} exact />
                   <Route path="/callback" component={CallbackPage} />

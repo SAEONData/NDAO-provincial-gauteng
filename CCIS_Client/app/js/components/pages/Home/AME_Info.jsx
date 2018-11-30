@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'mdbreact';
 
 //Images
-import AME1 from '../../../../images/AME1.png'
+import AME1 from '../../../../Images/Other/AME1.png'
 
 class AME_Info extends React.Component {
 
@@ -15,30 +15,18 @@ class AME_Info extends React.Component {
     return (
       <>
         <Row>
-          <Col md="12">
-            <h3>
+          <Col md="6">
+            <h3 style={{ marginTop: "10px" }}>
               <b>
                 Climate Change Adaptation Monitoring and Evaluation
               </b>
             </h3>
-            <p>
-              The monitoring and evaluation (M&amp;E) of adaptation responses is composed of building blocks and key
-              elements of monitoring and evaluating climate resilience. The key elements have been unpacked further
-              into desired adaptation outcomes for monitoring and climate resilience to complement the building
-              blocks and key elements for monitoring and evaluating climate resilience.
+            <p style={{ marginTop: "15px" }}>
+              The monitoring and evaluation (M&amp;E) of adaptation responses is composed of building 
+              blocks and key elements which have been unpacked further into desired adaptation outcomes 
+              to identify specific aspects of climate resilience for direct monitoring and evaluation.
             </p>
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col md="12" style={{ textAlign: "center" }}>
-            <img src={AME1} style={{ width: "70%" }} />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col md="12">
-            <p>
+            <p style={{ marginTop: "15px" }}>
               The desired adaptation outcomes describe, in a general sense, a desired state that will enhance
               South Africa’s transition towards climate resilience and fall into two distinct groups. Six of
               the nine desired adaptation outcomes (G1-G6) describe the ‘inputs’ (e.g. processes, resources
@@ -46,6 +34,18 @@ class AME_Info extends React.Component {
               desired adaptation outcomes (G7-G9) describe the key ‘impacts’ of adaptation interventions and
               associated measures (e.g. reductions in vulnerability of human- and natural-systems).
             </p>
+          </Col>
+          <Col md="6">
+            <img
+              src={AME1}
+              style={{
+                width: "100%",
+                border: "1px solid gainsboro",
+                borderRadius: "5px",
+                padding: "5px",
+                backgroundColor: "white"
+              }}
+            />
           </Col>
         </Row>
       </>

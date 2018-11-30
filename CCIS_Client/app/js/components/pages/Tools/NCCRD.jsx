@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
-import { ccrdSiteBaseURL } from '../../../config/serviceURLs.cfg'
+import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
+import { ccrdSiteBaseURL } from '../../../Config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -29,11 +29,15 @@ class NCCRD extends React.Component {
 
   render() {
 
-    let { closeCallback, goalId } = this.props
+    let { closeCallback, path, query } = this.props
+    let url = ccrdSiteBaseURL
 
-    let url = `${ccrdSiteBaseURL}projects?navbar=hidden`
-    if(goalId){
-      url = url + `&daoid=${goalId}`
+    if(path){
+      url += path
+    }
+
+    if(query){
+      url += query
     }
 
     return (
@@ -43,7 +47,7 @@ class NCCRD extends React.Component {
           title="Climate Change Responses"
           source={url}
           closeCallback={closeCallback}
-          showSource={true}
+          showSource={false}
          />
       </>
     )

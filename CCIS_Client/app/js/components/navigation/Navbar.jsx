@@ -3,14 +3,14 @@
 import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Fa, Navbar as MDBNavbar, NavbarNav, NavbarToggler, NavItem, NavLink } from 'mdbreact';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DEAGreen } from "../../config/colours.cfg";
-import { ssoBaseURL } from '../../config/serviceURLs.cfg';
-import DASL from '../pages/Tools/DASL.jsx';
-import EWED from '../pages/Tools/EWED.jsx';
-import LRT from '../pages/Tools/LRT.jsx';
-import NCCRD from '../pages/Tools/NCCRD.jsx';
-import NWIS from '../pages/Tools/NWIS.jsx';
-import SARVA from '../pages/Tools/SARVA.jsx';
+import { DEAGreen } from "../../Config/colours.cfg";
+import { ssoBaseURL } from '../../Config/serviceURLs.cfg';
+import DASL from '../Pages/Tools/DASL.jsx';
+import NDMC from '../Pages/Tools/NDMC.jsx';
+import LRT from '../Pages/Tools/LRT.jsx';
+import NCCRD from '../Pages/Tools/NCCRD.jsx';
+import NWIS from '../Pages/Tools/NWIS.jsx';
+import SARVA from '../Pages/Tools/SARVA.jsx';
 import { data as NavData } from '../../../data/sideNavData'
 
 const _gf = require('../../globalFunctions')
@@ -44,7 +44,7 @@ class Navbar extends React.Component {
       showNCCRD: false,
       showNWIS: false,
       showSARVA: false,
-      showEWED: false
+      showNDMC: false
     }
 
     this.onClick = this.onClick.bind(this)
@@ -73,7 +73,7 @@ class Navbar extends React.Component {
   render() {
 
     let { locationHash, user, showSideNav, toggleSideNav } = this.props
-    let { showDASL, showLRT, showNCCRD, showNWIS, showSARVA, showEWED } = this.state
+    let { showDASL, showLRT, showNCCRD, showNWIS, showSARVA, showNDMC } = this.state
 
     return (
       <>
@@ -100,12 +100,12 @@ class Navbar extends React.Component {
               </Button> */}
 
               {
-              NavData.enabled &&
-              <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
-                style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
-                <Fa icon="bars" />
-              </Button>
-            }
+                NavData.enabled &&
+                <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
+                  style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
+                  <Fa icon="bars" />
+                </Button>
+              }
 
               {/* Home */}
               <NavItem style={{ borderBottom: (locationHash === "#/" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
@@ -172,7 +172,7 @@ class Navbar extends React.Component {
                     <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") /*this.setState({ showDASL: true })*/ }}>
                       Dam And Stream Levels
                     </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showEWED: true }) }}>
+                    <DropdownItem onClick={() => { this.setState({ showNDMC: true }) }}>
                       Extreme Weather Events Database
                     </DropdownItem>
                   </DropdownMenu>
@@ -227,10 +227,18 @@ class Navbar extends React.Component {
 
           {showDASL && <DASL closeCallback={() => { this.setState({ showDASL: false }) }} />}
           {showLRT && <LRT closeCallback={() => { this.setState({ showLRT: false }) }} />}
-          {showNCCRD && <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />}
+
+          {
+            showNCCRD &&
+            <NCCRD
+              query={`?navbar=hidden&daoid=hidden&readonly=true&popin=hidden`}
+              closeCallback={() => { this.setState({ showNCCRD: false }) }}
+            />
+          }
+
           {showNWIS && <NWIS closeCallback={() => { this.setState({ showNWIS: false }) }} />}
           {showSARVA && <SARVA closeCallback={() => { this.setState({ showSARVA: false }) }} />}
-          {showEWED && <EWED closeCallback={() => { this.setState({ showEWED: false }) }} />}
+          {showNDMC && <NDMC closeCallback={() => { this.setState({ showNDMC: false }) }} />}
 
         </MDBNavbar >
 

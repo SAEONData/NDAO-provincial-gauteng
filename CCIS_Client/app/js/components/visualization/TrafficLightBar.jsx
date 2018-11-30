@@ -2,41 +2,46 @@
 
 import React from 'react'
 import { Popover, PopoverBody, PopoverHeader, Modal, ModalHeader, ModalBody } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from '../../config/colours.cfg'
+import { DEAGreen, Red, Amber, Green } from '../../Config/colours.cfg'
 
 const _gf = require('../../globalFunctions')
 
 //Images
-import gear from "../../../images/gear.png"
-import traffic_light from "../../../images/traffic_light.jpg"
-import paper_clip_blue from "../../../images/paper_clip_blue.png"
-import paper_clip_grey from "../../../images/paper_clip_grey.png"
-
-
-const rowHeight = 35 //Adjust for global row height
-const rowSpacing = 7 //Adjust for global row spacing
-
-const segDivStyle = (data) => {
-  return {
-    width: ((72 / (data.length)) + "%"),
-    height: rowHeight + "px",
-    // border: "1px dashed gainsboro",
-    float: "left",
-    marginBottom: rowSpacing + "px",
-    textAlign: "center",
-    paddingTop: ((rowHeight - 26) / 2) + "px"
-  }
-}
+import info from "../../../Images/Icons/info_blue.png"
+import traffic_light from "../../../Images/Icons/traffic_light_blue.png"
+import paper_clip_blue from "../../../Images/Icons/paper_clip_blue.png"
+import paper_clip_grey from "../../../Images/Icons/paper_clip_grey.png"
 
 class TrafficLightBar extends React.Component {
 
   constructor(props) {
     super(props);
 
+    let rowHeight = this.props.height
+    let rowSpacing = 3
+
     this.state = {
+      rowHeight,
+      rowSpacing,
       infoModal: false,
       infoHeader: null,
-      infoContent: null
+      infoContent: null,
+
+    }
+
+    this.segDivStyle = (data) => {
+
+      let { rowHeight, rowSpacing } = this.state
+  
+      return {
+        width: ((72 / (data.length)) + "%"),
+        height: rowHeight + "px",
+        // border: "1px dashed gainsboro",
+        float: "left",
+        marginBottom: rowSpacing + "px",
+        textAlign: "center",
+        paddingTop: ((rowHeight - 26) / 2) + "px"
+      }
     }
 
     this.showInfo = this.showInfo.bind(this)
@@ -60,7 +65,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_pre`}
-          style={{ ...segDivStyle(data), width: "10%" }}
+          style={{ ...this.segDivStyle(data), width: "10%" }}
         />
       )
 
@@ -69,7 +74,7 @@ class TrafficLightBar extends React.Component {
         headers.push(
           <div
             key={`head${goal}_${item.key}`}
-            style={segDivStyle(data)}
+            style={this.segDivStyle(data)}
           >
             <p
               style={{
@@ -87,7 +92,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post0`}
-          style={{ ...segDivStyle(data), width: "8%" }}
+          style={{ ...this.segDivStyle(data), width: "8%" }}
         />
       )
 
@@ -95,7 +100,7 @@ class TrafficLightBar extends React.Component {
       headers.push(
         <div
           key={`head${goal}_post2`}
-          style={{ ...segDivStyle(data), width: "8%" }}
+          style={{ ...this.segDivStyle(data), width: "8%" }}
         />
       )
     }
@@ -106,6 +111,7 @@ class TrafficLightBar extends React.Component {
   //SEGMENT|PARTS//
   segments(goal, data, description, explanation) {
 
+    let { rowHeight } = this.state
     let segments = []
 
     if (data) {
@@ -114,12 +120,15 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_pre`}
-          style={{ ...segDivStyle(data), width: "10%" }}
+          style={{ 
+            ...this.segDivStyle(data), 
+            width: "10%"
+          }}
         >
           <img
-            src={gear}
+            src={info}
             style={{
-              maxHeight: (rowHeight + "px"),
+              maxHeight: ((rowHeight - 1) + "px"),
               maxWidth: "75%",
               marginTop: "-20%",
               marginBottom: "-20%",
@@ -129,7 +138,7 @@ class TrafficLightBar extends React.Component {
               if (description) this.showInfo("Goal details", description)
             }}
           />
-          <sub style={{ fontSize: "17px" }}>
+          <sub style={{ fontSize: "17px", marginLeft: "2px" }}>
             {goal}
           </sub>
         </div>
@@ -141,8 +150,12 @@ class TrafficLightBar extends React.Component {
           <div
             key={`goal${goal}_${item.key}`}
             style={{
-              ...segDivStyle(data),
-              backgroundColor: this.backgroundColor(item.value)
+              ...this.segDivStyle(data),
+              backgroundColor: this.backgroundColor(item.value),
+              marginBottom: "-2px",
+              marginTop: rowHeight < 35 ? "3px" : "0px",
+              borderTop: "1px solid #D8D8D8",
+              borderBottom: "1px solid #D8D8D8"
             }}
           />
         )
@@ -152,7 +165,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_post1`}
-          style={{ ...segDivStyle(data), width: "8%" }}
+          style={{ ...this.segDivStyle(data), width: "8%" }}
         >
           <img
             src={traffic_light}
@@ -176,7 +189,7 @@ class TrafficLightBar extends React.Component {
       segments.push(
         <div
           key={`goal${goal}_post2`}
-          style={{ ...segDivStyle(data), width: "8%" }}
+          style={{ ...this.segDivStyle(data), width: "8%" }}
         >
           <img
             src={hasAttachments ? paper_clip_blue : paper_clip_grey}
@@ -211,7 +224,7 @@ class TrafficLightBar extends React.Component {
       case "G":
         return Green
       default:
-        return "lightgrey"
+        return "#E8E8E8"
     }
   }
 
@@ -245,7 +258,7 @@ class TrafficLightBar extends React.Component {
         {showHeaders && this.headers(goal, data)}
         {this.segments(goal, data, description, explanation)}
 
-        <Modal isOpen={infoModal} toggle={() => { this.setState({ infoModal: false }) }} centered >
+        <Modal isOpen={infoModal} toggle={() => { this.setState({ infoModal: false }) }} fullHeight position="right" >
           <ModalHeader toggle={() => { this.setState({ infoModal: false }) }}>
             {infoHeader}
           </ModalHeader>

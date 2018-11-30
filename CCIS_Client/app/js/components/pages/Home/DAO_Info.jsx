@@ -1,10 +1,10 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact';
-import { DEAGreenDark, DEAOrangeDark } from "../../../config/colours.cfg"
+import { DEAGreenDark, DEAOrangeDark } from "../../../Config/colours.cfg"
 
 //Images
-import DEAGreenLightDark from '../../../../images/DEAGreenLightDark.png'
-import DEAOrangeLightDark from '../../../../images/DEAOrangeLightDark.png'
+import DEAGreenLightDark from '../../../../Images/Other/DEAGreenLightDark.png'
+import DEAOrangeLightDark from '../../../../Images/Other/DEAOrangeLightDark.png'
 
 class DAO_Info extends React.Component {
 

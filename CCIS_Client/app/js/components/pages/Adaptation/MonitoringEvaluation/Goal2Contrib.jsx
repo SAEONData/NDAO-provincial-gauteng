@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
-import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.cfg'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../config/serviceURLs.cfg'
+import { DEAGreen, Red, Amber, Green } from '../../../../Config/colours.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../Config/serviceURLs.cfg'
 import FileUpload from '../../../input/FileUpload.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
@@ -21,8 +21,8 @@ import Slider from 'antd/lib/slider'
 import 'antd/lib/slider/style/css'
 
 //Images
-import gear from '../../../../../images/gear.png'
-import checklist from '../../../../../images/checklist.png'
+import gear from '../../../../../Images/Icons/gear.png'
+import checklist from '../../../../../Images/Icons/checklist.png'
 
 //Content
 import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'

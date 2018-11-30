@@ -22,6 +22,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-error-overlay": "^4.0.1",
+    "react-favicon": "0.0.14",
     "react-fetch-component": "^6.1.0",
     "react-odata": "^10.1.0",
     "react-redux": "^5.0.7",

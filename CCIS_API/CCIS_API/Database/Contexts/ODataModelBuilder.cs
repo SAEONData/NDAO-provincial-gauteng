@@ -61,12 +61,12 @@ namespace CCIS_API.Database.Contexts
             function.Parameter<int>("sector");
 
             //GetTrafficLightData//
-            function = builder.Function("GetTrafficLightData").ReturnsCollection<string>();
-            function.Parameter<int>("region");
-            function.Parameter<int>("sector");
-            function.Parameter<int>("goal");
-            function.Parameter<int>("year");
-            function.Parameter<string>("institution");
+            //function = builder.Function("GetTrafficLightData").ReturnsCollection<GoalStatus>();
+            //function.Parameter<int>("region");
+            //function.Parameter<int>("sector");
+            //function.Parameter<int>("goal");
+            //function.Parameter<int>("year");
+            //function.Parameter<string>("institution");
 
             //Goals as GeoJson
             builder.Namespace = "Extensions";
@@ -76,6 +76,17 @@ namespace CCIS_API.Database.Contexts
                 Function("GeoJson").
                 Returns<JsonResult>();
 
+            //Goals Filtered
+            function = builder.EntityType<Goal>()
+                .Collection
+                .Function("GetGoalData")
+                .ReturnsCollectionViaEntitySetPath<Goal>("bindingParameter");
+
+            function.Parameter<int>("region");
+            function.Parameter<int>("sector");
+            function.Parameter<int>("goal");
+            function.Parameter<int>("year");
+            function.Parameter<string>("institution");
             //#####################//
 
 

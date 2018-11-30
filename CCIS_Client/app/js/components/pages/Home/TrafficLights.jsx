@@ -1,14 +1,14 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact';
 import TrafficLightBar from '../../visualization/TrafficLightBar.jsx';
-import { Red, Amber, Green } from "../../../config/colours.cfg"
+import { Red, Amber, Green } from "../../../Config/colours.cfg"
+import moment from 'moment'
 
-//Content
-import sampleFile from '../../../../content/sample.zip'
+//images
+import popout from '../../../../Images/Icons/popout.png'
+import popin from '../../../../Images/Icons/popin.png'
 
-//Data
-//const goalData = require('../../../../data/goalData')
-
+const _gf = require('../../../globalFunctions')
 
 class TrafficLights extends React.Component {
 
@@ -16,21 +16,76 @@ class TrafficLights extends React.Component {
     super(props);
   }
 
+  processData(goalData, filterYear) {
+
+    let data = []
+
+    filterYear += 1
+    for (let goalType = 1; goalType <= 9; goalType++) //for each goal: 1-9
+    {
+      for (let goalYear = (filterYear - 5); goalYear <= filterYear; goalYear++) //for each year in range: (year-5) - year
+      {
+        let newItem = {
+          Type: goalType,
+          Year: goalYear
+        }
+
+        let filtered = goalData.filter(g => g.Type === goalType && moment(g.CreateDate, 'YYYY/MM/DD').year() === goalYear)
+        if(filtered.length > 0){
+
+          let goal = filtered[0]
+          let filteredQuestions = goal.Questions.filter(q => q.Key === "DocumentLink" || q.Key === "EvidenceLink")
+          let link = ""
+          if(filteredQuestions.length > 0){
+            link = filteredQuestions[0].Value
+          }
+          
+          //Add actual data
+          newItem.Id = goal.Id
+          newItem.Status = goal.Status
+          newItem.Link = link
+        }
+        else{
+          //Manufacture empty data
+          newItem.Id = _gf.GetUID()
+          newItem.Status = ""
+          newItem.Link = ""
+        }
+
+        data.push(newItem) //Add to data
+      }
+    }
+
+    return data
+  }
+
   render() {
 
-    let { goalData } = this.props
-
-    if (typeof goalData === 'undefined') goalData = []
+    let { goalData, filterYear, height, popCallback, fullView } = this.props
+    let processedData = this.processData(goalData, filterYear)
 
     return (
-      <>
+      <div style={{ backgroundColor: "white", border: "1px solid gainsboro", padding: "20px 10px 20px 10px", borderRadius: "10px" }}>
 
-        {goalData.length > 0 &&
+        <img
+          src={ fullView ? popin : popout}
+          style={{
+            width: "25px",
+            cursor: "pointer",
+            position: "absolute",
+            right: "23px",
+            top: "8px",
+            zIndex: 2
+          }}
+          onClick={() => { popCallback() }}
+        />
+
+        {processedData.length > 0 &&
           <Row>
-            <Col md="1"></Col>
-            <Col md="10" style={{ border: "1px solid gainsboro", padding: "10px" }}>
+            <Col md="12">
 
               <TrafficLightBar
+                height={height / 9}
                 goal="1"
                 showHeaders={true}
                 description={
@@ -62,10 +117,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type == 1).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link  }))}
+                data={processedData.filter(g => g.Type == 1).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="2"
                 description={
                   <p>
@@ -99,10 +155,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 2).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 2).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="3"
                 description={
                   <p>
@@ -142,10 +199,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 3).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 3).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="4"
                 description={
                   <p>
@@ -175,10 +233,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 4).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 4).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="5"
                 description={
                   <p>
@@ -206,10 +265,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 5).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 5).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="6"
                 description={
                   <p>
@@ -232,10 +292,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 6).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 6).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="7"
                 description={
                   <p>
@@ -264,10 +325,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 7).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 7).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="8"
                 description={
                   <p>
@@ -296,10 +358,11 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 8).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 8).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
               <TrafficLightBar
+                height={height / 9}
                 goal="9"
                 description={
                   <p>
@@ -324,22 +387,21 @@ class TrafficLights extends React.Component {
                   </p>
                   </div>
                 }
-                data={goalData.filter(g => g.type === 9).map(g => ({ id: g.id, key: g.year, value: g.status, attachment: g.link }))}
+                data={processedData.filter(g => g.Type === 9).map(g => ({ id: g.Id, key: g.Year, value: g.Status, attachment: g.Link }))}
               />
 
             </Col>
-            <Col md="1"></Col>
           </Row>
         }
 
-        {goalData.length === 0 &&
+        {processedData.length === 0 &&
           <Row>
             <Col className="text-center" md="12">
               <h5>Loading data...</h5>
             </Col>
           </Row>
         }
-      </>
+      </div>
     )
   }
 }

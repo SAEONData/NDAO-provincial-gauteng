@@ -3,8 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from "../../../config/colours.cfg"
-import MapsCarouselView from '../../layout/MapsCarouselView.jsx';
+import { DEAGreen, Red, Amber, Green } from "../../../Config/colours.cfg"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
 import DAO_Info from './DAO_Info.jsx'
@@ -14,8 +13,18 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
-import { apiBaseURL } from '../../../config/serviceURLs.cfg'
-import InstitutionFilter from './Filters/InstitutionFilter.jsx';
+import { apiBaseURL } from '../../../Config/serviceURLs.cfg'
+import InstitutionFilter from './Filters/InstitutionFilter.jsx'
+import DashMapPreview from './DashMapPreview.jsx'
+import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'
+import NDMC_Preview from './NDMC_Preview/NDMC_Preview.jsx'
+import SARVA_Preview from './SARVA_Preview/SARVA_Preview.jsx'
+import FundingIGFX from './InfoGraphics/FundingIGFX.jsx'
+import PlansIGFX from './InfoGraphics/PlansIGFX.jsx'
+import GovernmentsIGFX from './InfoGraphics/GovernmentsIGFX.jsx'
+import GHGReductionIGFX from './InfoGraphics/GHGReductionIGFX.jsx'
+import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
+import GoalDetails from './GoalDetails.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -51,8 +60,10 @@ class Home extends React.Component {
       filterYear,
       filterInstitution,
       filterInstitutionOptions: [],
-      trafficLightGoalData: [],
-      prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution }
+      goalData: [],
+      prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution },
+      trafficLightFull: false,
+      mapFullView: false
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
@@ -107,9 +118,9 @@ class Home extends React.Component {
             this.getInstitutions(filterRegion, filterSector, filterInstitution)
           }
 
-          //Fetch TrafficLight data
+          //Fetch Goal data
           if (getTrafficLightData === true || autoSelect === true) {
-            this.getTrafficLightData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution)
+            this.getGoalData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution)
           }
         })
     }
@@ -138,183 +149,305 @@ class Home extends React.Component {
     catch (ex) {
       console.error(ex)
     }
-    finally{
+    finally {
       setLoading(false)
     }
   }
 
-  async getTrafficLightData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution) {
+  async getGoalData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution) {
 
     let { setLoading } = this.props
     setLoading(true)
 
     try {
-      let res = await fetch(apiBaseURL +
-        `GetTrafficLightData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')`)
+      let res = await fetch(apiBaseURL + "Goals/Extensions." + 
+        `GetGoalData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')` +
+        "?$expand=Questions")
 
       if (res.ok) {
         res = await res.json() //parse response
-
+        // console.log("RES", res)
         if (res) {
-          this.setState({ trafficLightGoalData: res })
+          this.setState({ goalData: res.value })
         }
       }
     }
     catch (ex) {
       console.error(ex)
     }
-    finally{
+    finally {
       setLoading(false)
     }
   }
 
   render() {
 
-    let { infoSection, filterYear, filterRegion, filterSector, filterGoal, trafficLightGoalData } = this.state
+    let { 
+      infoSection, filterYear, filterRegion, filterSector, filterGoal, goalData, trafficLightFull, mapFullView 
+    } = this.state
 
     return (
-      <div style={{ padding: "5px 10px 5px 10px", backgroundColor: "white", borderRadius: "10px", border: "1px solid gainsboro" }}>
+      <div style={{ padding: "15px", borderRadius: "10px" }}>
+
         <AME_Banner />
+
         <br />
         <br />
 
-        <LessInfoBtn
-          infoSection={infoSection}
-          callback={(ifoSec) => { this.setState({ infoSection: !ifoSec }) }}
-        />
-        <Collapse isOpen={infoSection}>
-          <br />
-          <AME_Info />
-          <br />
-          <DAO_Info />
-          <br />
+        <div style={{ marginBottom: "15px" }}>
           <LessInfoBtn
             infoSection={infoSection}
             callback={(ifoSec) => { this.setState({ infoSection: !ifoSec }) }}
-            scrollUp
           />
-        </Collapse>
-        <br />
-
-        <Row>
-          <Col md="12">
-            <h3>
-              <b style={{ marginRight: "15px" }}>Climate Change Adaptation Status Across South Africa</b>
-              {/* <Button 
-                style={{ 
-                  marginTop: "0px", 
-                  marginLeft: "0px", 
-                  height: "40px", 
-                  fontSize: "16px" 
-                }} 
-                size="sm" 
-                color="grey"
-              >
-                View Gauteng
-              </Button> */}
-            </h3>
-            <p style={{ marginBottom: "0px" }}>
-              A simple pragmatic approach has been developed to monitor and evaluate the progress being made
-              in achieving individual desired adaptation outcomes using traffic light colours as a scoring
-              system to summarise progress.
-            </p>
+          <Collapse isOpen={infoSection}>
             <br />
-            <p>
-              <b style={{ color: Red }}>RED</b> indicates that no or only preliminary work has begun towards a goal,
-              <br />
-              <b style={{ color: Amber }}>AMBER</b> indicates that significant progress is being made towards a goal, and
-              <br />
-              <b style={{ color: Green }}>GREEN</b> indicates that work on a goal is in an ideal state.
-            </p>
-          </Col>
-        </Row>
-        <hr />
-        <Row >
-          <Col md="3" style={{ marginBottom: "3px" }}>
-            <RegionFilter
-              value={filterRegion}
-              callback={(value) => { this.setState({ filterRegion: value }) }}
-            />
-          </Col>
-          <Col md="3" style={{ marginBottom: "3px" }}>
-            <SectorFilter
-              value={filterSector}
-              callback={(value) => { this.setState({ filterSector: value }) }}
-            />
-          </Col>
-          <Col md="6">
-            <InstitutionFilter
-              data={this.state.filterInstitutionOptions}
-              value={this.state.filterInstitution}
-              callback={(value) => { 
-                this.setState({ filterInstitution: value.text }) 
-              }}
-            />
-          </Col>
-        </Row>
-
-        <Row style={{ marginTop: "7px" }}>
-          <Col md="3" style={{ marginBottom: "3px" }}>
-            <GoalFilter
-              value={filterGoal}
-              callback={(value) => { this.setState({ filterGoal: value }) }}
-            />
-          </Col>
-          <Col md="6">
-            <YearFilter
-              value={filterYear}
-              callback={(value) => { this.setState({ filterYear: value }) }}
-            />
-          </Col>
-          <Col md="3">
-            <Button
-              size="sm"
-              style={{
-                height: "35px",
-                marginTop: "0px",
-                width: "100%",
-                fontSize: "13px",
-                marginLeft: "0px",
-                backgroundColor: DEAGreen
-              }}
-              color=""
-              onClick={() => {
-                this.setState({
-                  filterYear: (new Date()).getFullYear(),
-                  filterRegion: 0,
-                  filterSector: 0,
-                  filterGoal: 0
-                })
-              }}
-            >
-              Clear Filters
-            </Button>
-          </Col>
-        </Row>
-
-        <hr style={{ marginTop: "13px" }} />
+            <AME_Info />
+            {/* <br />
+            <DAO_Info /> */}
+            {/* <br /> */}
+            {/* <LessInfoBtn
+              infoSection={infoSection}
+              callback={(ifoSec) => { this.setState({ infoSection: !ifoSec }) }}
+              scrollUp
+            /> */}
+          </Collapse>
+        </div>
 
         <br />
-        <TrafficLights goalData={trafficLightGoalData} />
+
+        <div>
+          <Row>
+            <Col md="12">
+              <h3>
+                <b style={{ marginRight: "15px" }}>Climate Change Adaptation Status Across South Africa</b>
+                {/* <Button 
+                  style={{ 
+                    marginTop: "0px", 
+                    marginLeft: "0px", 
+                    height: "40px", 
+                    fontSize: "16px" 
+                  }} 
+                  size="sm" 
+                  color="gainsboro"
+                >
+                  View Gauteng
+                </Button> */}
+              </h3>
+              <p style={{ marginBottom: "0px" }}>
+                A simple pragmatic approach has been developed to monitor and evaluate the progress being made
+                in achieving individual desired adaptation outcomes using traffic light colours as a scoring
+                system to summarise progress.
+              </p>
+              <br />
+              <p style={{ marginBottom: "0px" }}>
+                <b style={{ color: Red }}>RED</b> indicates that no or only preliminary work has begun towards a goal,
+                <br />
+                <b style={{ color: Amber }}>AMBER</b> indicates that significant progress is being made towards a goal, and
+                <br />
+                <b style={{ color: Green }}>GREEN</b> indicates that work on a goal is in an ideal state.
+              </p>
+            </Col>
+          </Row>
+        </div>
+
         <br />
+
+        <div style={{ borderTop: "1px solid gainsboro", borderBottom: "1px solid gainsboro", paddingTop: "15px", paddingBottom: "10px" }}>
+          <Row >
+            <Col md="3" style={{ marginBottom: "3px" }}>
+              <RegionFilter
+                value={filterRegion}
+                callback={(value) => { this.setState({ filterRegion: value }) }}
+              />
+            </Col>
+            <Col md="3" style={{ marginBottom: "3px" }}>
+              <SectorFilter
+                value={filterSector}
+                callback={(value) => { this.setState({ filterSector: value }) }}
+              />
+            </Col>
+            <Col md="6">
+              <InstitutionFilter
+                data={this.state.filterInstitutionOptions}
+                value={this.state.filterInstitution}
+                callback={(value) => {
+                  this.setState({ filterInstitution: value.text })
+                }}
+              />
+            </Col>
+          </Row>
+
+          <Row style={{ marginTop: "7px" }}>
+            <Col md="3" style={{ marginBottom: "3px" }}>
+              <GoalFilter
+                value={filterGoal}
+                callback={(value) => { this.setState({ filterGoal: value }) }}
+              />
+            </Col>
+            <Col md="6">
+              <YearFilter
+                value={filterYear}
+                callback={(value) => { this.setState({ filterYear: value }) }}
+              />
+            </Col>
+            <Col md="3">
+              <Button
+                size="sm"
+                style={{
+                  height: "35px",
+                  marginTop: "0px",
+                  width: "100%",
+                  fontSize: "13px",
+                  marginLeft: "0px",
+                  backgroundColor: DEAGreen
+                }}
+                color=""
+                onClick={() => {
+                  this.setState({
+                    filterYear: (new Date()).getFullYear(),
+                    filterRegion: 0,
+                    filterSector: 0,
+                    filterGoal: 0
+                  })
+                }}
+              >
+                Clear Filters
+              </Button>
+            </Col>
+          </Row>
+        </div>
+
+        <br />
+
+        { 
+          (trafficLightFull === true) &&
+          <Row>
+            <Col md="12">
+              <TrafficLights 
+                goalData={goalData} 
+                filterYear={filterYear} 
+                height={350} 
+                popCallback={() => { this.setState({ trafficLightFull: false}) }}
+                fullView
+              />
+            </Col>
+          </Row>
+        }
+
+        { 
+          (mapFullView === true) &&
+          <Row>
+            <Col md="12">
+              <DashMapPreview 
+                height={550} 
+                popCallback={() => { this.setState({ mapFullView: false}) }}
+                fullView
+              />
+            </Col>
+          </Row>
+        }
+
+        {
+          (trafficLightFull === false && mapFullView === false) &&
+          <Row>
+            <Col md="6">
+
+              <Row>
+                <Col md="12">
+                  {/* selected goal details ??? */}
+                  <GoalDetails goal={filterGoal} />
+                </Col>
+              </Row>
+
+              <br />
+
+              <Row>
+                <Col md="12">
+                  {/* traffic lights */}
+                  <TrafficLights 
+                    goalData={goalData} 
+                    filterYear={filterYear} 
+                    height={200} 
+                    popCallback={() => { this.setState({ trafficLightFull: true}) }}
+                  />
+                </Col>
+              </Row>
+
+            </Col>
+
+            <Col md="6">
+
+              <Row>
+                <Col md="12">
+                  {/* map */}
+                  {/* <MapsCarouselView /> */}
+                  <DashMapPreview 
+                    height={400} 
+                    popCallback={() => { this.setState({ mapFullView: true}) }}
+                  />
+                </Col>
+              </Row>
+
+              <Row style={{ textAlign: "right" }}>
+                <Col md="12">
+                  <Button
+                    onClick={() => { location.hash = "#/ame/contribute" }}
+                    style={{ margin: "35px 5px 0px 0px" }}
+                    color="warning">Submit your contribution
+              </Button>
+                </Col>
+              </Row>
+
+            </Col>
+
+          </Row>
+        }
+
+        <div style={{
+          marginTop: "25px",
+          marginBottom: "25px",
+          paddingTop: "15px",
+          paddingBottom: "15px",
+          borderTop: "1px solid gainsboro",
+          borderBottom: "1px solid gainsboro"
+        }}>
+          <Row>
+
+            <Col>
+              <FundingIGFX data={goalData} year={filterYear} goal={filterGoal} />
+            </Col>
+            <Col>
+              <PlansIGFX data={goalData} year={filterYear} goal={filterGoal} />
+            </Col>
+            <Col>
+              <GovernmentsIGFX data={goalData} year={filterYear} goal={filterGoal} />
+            </Col>
+            <Col>
+              <GHGReductionIGFX data={goalData} year={filterYear} goal={filterGoal} />
+            </Col>
+            <Col>
+              <SectorsIGFX data={goalData} year={filterYear} goal={filterGoal} />
+            </Col>
+          </Row>
+        </div>
 
         <Row>
-          <Col md="1"></Col>
-          <Col md="10">
-            <MapsCarouselView />
-          </Col>
-        </Row>
-        <br />
 
-        <Row style={{ textAlign: "right" }}>
-          <Col md="12">
-            <Button
-              onClick={() => { location.hash = "#/ame/contribute" }}
-              style={{ marginLeft: "0px" }}
-              color="grey">Submit your contribution
-            </Button>
+          <Col md="4">
+            <SARVA_Preview />
           </Col>
+
+          <Col md="5">
+            <NCCRD_Preview />
+          </Col>
+
+          <Col md="3">
+            <NDMC_Preview />
+          </Col>
+
         </Row>
+
+
       </div>
     )
   }
