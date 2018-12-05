@@ -581,7 +581,7 @@ class Goal8Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  8.1 Change in non-climate pressures and threats to human and natural systems?
+                  8.1 Has your organisation done anything to specifically reduce non-climate pressures and threats to human and natural systems?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -602,7 +602,7 @@ class Goal8Contrib extends React.Component {
                   <Input
                     onClick={() => { this.setState({ Q8_1: 3 }) }}
                     checked={Q8_1 === 3 ? true : false}
-                    label="Natural systems impacted by non-climate pressures and threats rehabilitated or improving."
+                    label="Human or natural systems impacted by non-climate pressures and threats rehabilitated or improving."
                     type="radio"
                     id="radSys3"
                   />
@@ -783,7 +783,7 @@ class Goal8Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  8.3 Select a Region for this plan?
+                  8.3 Select a Region for this plan:
                 </label>
 
                 <OData
@@ -827,7 +827,7 @@ class Goal8Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  8.4 Specify non-government organisation name (if applicable)?
+                  8.4 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -843,7 +843,7 @@ class Goal8Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  8.5 Select a sector for this plan?
+                  8.5 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -887,7 +887,7 @@ class Goal8Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>

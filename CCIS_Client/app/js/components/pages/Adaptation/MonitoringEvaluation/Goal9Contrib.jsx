@@ -570,8 +570,9 @@ class Goal9Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  9.1 Are any climate smart agricultural practices, conservation agriculture practices,
-                  or water conservation and demand practices being implemented?
+                  9.1 Is your organisation applying, facilitating or promoting any climate smart agricultural 
+                  practices, conservation agriculture practices, water conservation and demand practices, or 
+                  energy conservation practices?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -772,7 +773,7 @@ class Goal9Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  9.3 Select a Region for this plan?
+                  9.3 Select a Region for this plan:
                 </label>
 
                 <OData
@@ -815,7 +816,7 @@ class Goal9Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  9.4 Specify non-government organisation name (if applicable)?
+                  9.4 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -831,7 +832,7 @@ class Goal9Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  9.5 Select a sector for this plan?
+                  9.5 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -875,7 +876,7 @@ class Goal9Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>

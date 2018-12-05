@@ -389,7 +389,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  3.1 Dissemination and utilisation of climate change information?
+                  3.1 Does your organisation participate in dissemination and/or utilisation of climate change information?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -421,7 +421,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  3.2 Monitoring and forecasting facilities/networks?
+                  3.2 Does your organisation have access to data from or maintain monitoring and forecasting facilities/networks?
                 </label>
                 <div style={{ marginLeft: "-22px", marginTop: "-10px" }}>
                   <Input
@@ -453,7 +453,7 @@ class Goal3Contrib extends React.Component {
             <Row style={{ marginBottom: "2px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  3.3 Budget for facilities/networks:
+                  3.3 Does your climate change unit have dedicated funding (y/n)?
                 </label>
               </Col>
             </Row>
@@ -466,7 +466,7 @@ class Goal3Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q3_3_A: 1 }) }}>1k - 10k</a>
+                      <a onClick={() => { this.setState({ Q3_3_A: 1 }) }}>0k - 10k</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "left" }}>
                       <a onClick={() => { this.setState({ Q3_3_A: 2 }) }}>10k - 100k</a>
@@ -504,7 +504,7 @@ class Goal3Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q3_3_B: 1 }) }}>1 - 5</a>
+                      <a onClick={() => { this.setState({ Q3_3_B: 1 }) }}>0 - 5</a>
                     </Col>
                     <Col md="4" style={{ textAlign: "center" }}>
                       <a onClick={() => { this.setState({ Q3_3_B: 2 }) }}>5 - 10</a>
@@ -619,7 +619,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  3.4 Select a Region for this plan?
+                  3.4 Select a Region for this plan:
                 </label>
 
                 <OData
@@ -663,7 +663,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  3.5 Specify non-government organisation name (if applicable)?
+                  3.5 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -679,7 +679,7 @@ class Goal3Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  3.6 Select a sector for this plan?
+                  3.6 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -723,7 +723,7 @@ class Goal3Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>

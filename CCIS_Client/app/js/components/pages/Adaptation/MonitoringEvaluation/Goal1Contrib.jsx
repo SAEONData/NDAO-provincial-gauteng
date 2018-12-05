@@ -711,7 +711,7 @@ class Goal1Contrib extends React.Component {
             <Row style={{ marginLeft: "0px" }}>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  Please select which keywords apply to the document:
+                  Please select all keywords that apply to the document:
                   <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
                 <TreeSelectInput
@@ -856,7 +856,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.5 Select a region for this plan?
+                  1.5 Select a region for this plan:
                 </label>
 
                 <OData
@@ -900,7 +900,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.6 Specify non-government organisation name (if applicable)?
+                  1.6 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -916,7 +916,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.7 Select a sector for this plan?
+                  1.7 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -960,7 +960,7 @@ class Goal1Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit}>
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>

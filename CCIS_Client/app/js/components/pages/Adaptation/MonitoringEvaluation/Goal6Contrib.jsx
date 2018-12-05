@@ -772,7 +772,7 @@ class Goal6Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  6.3 Select a Region for this plan?
+                  6.3 Select a Region for this plan:
                 </label>
 
                 <OData
@@ -816,7 +816,7 @@ class Goal6Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  6.4 Specify non-government organisation name (if applicable)?
+                  6.4 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -832,7 +832,7 @@ class Goal6Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  6.5 Select a sector for this plan?
+                  6.5 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -876,7 +876,7 @@ class Goal6Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>

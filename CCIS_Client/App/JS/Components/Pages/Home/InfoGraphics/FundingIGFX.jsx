@@ -56,7 +56,7 @@ class FundingIGFX extends React.Component {
       let mode = this.mode(rangeValues)
       switch(mode) {
         case "1":
-          return "1k - 10k"
+          return "0k - 10k"
 
         case "2":
           return "10k - 100k"

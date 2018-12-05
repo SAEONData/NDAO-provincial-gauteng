@@ -806,7 +806,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  5.3 Budget for adaptation technologies:
+                  5.3 Does your climate change unit have dedicated funding (y/n)?
                 </label>
               </Col>
             </Row>
@@ -819,7 +819,7 @@ class Goal5Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 1 }) }}>1k - 10k</a>
+                      <a onClick={() => { this.setState({ Q5_3_A: 1 }) }}>0k - 10k</a>
                     </Col>
                     <Col md="2" style={{ textAlign: "left" }}>
                       <a onClick={() => { this.setState({ Q5_3_A: 2 }) }}>10k - 100k</a>
@@ -857,7 +857,7 @@ class Goal5Contrib extends React.Component {
                 <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                   <Row style={{ marginBottom: "-10px" }}>
                     <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q5_3_B: 1 }) }}>1 - 5</a>
+                      <a onClick={() => { this.setState({ Q5_3_B: 1 }) }}>0 - 5</a>
                     </Col>
                     <Col md="4" style={{ textAlign: "center" }}>
                       <a onClick={() => { this.setState({ Q5_3_B: 2 }) }}>5 - 10</a>
@@ -973,7 +973,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  5.4 Select a Region for this plan?
+                  5.4 Select a Region for this plan:
                 </label>
 
                 <OData
@@ -1017,7 +1017,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  5.5 Specify non-government organisation name (if applicable)?
+                  5.5 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -1033,7 +1033,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  5.6 Select a sector for this plan?
+                  5.6 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -1077,7 +1077,7 @@ class Goal5Contrib extends React.Component {
               <Col md="4">
                 <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
                   onClick={this.submit} >
-                  <b>{editing === true ? "Update" : "Add"}</b>
+                  <b>{editing === true ? "Update" : "Save"}</b>
                 </Button>
               </Col>
             </Row>
