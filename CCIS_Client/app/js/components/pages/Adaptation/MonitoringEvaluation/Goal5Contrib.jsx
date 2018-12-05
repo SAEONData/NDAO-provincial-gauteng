@@ -6,7 +6,7 @@ import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } f
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import { DEAGreen, Red, Amber, Green } from '../../../../Config/colours.cfg'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../Config/serviceURLs.cfg'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../JS/Config/serviceURLs.cfg'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
@@ -456,7 +456,7 @@ class Goal5Contrib extends React.Component {
       bounds: [] //required
     }
 
-    console.log("jsonData", jsonData)
+    //console.log("jsonData", jsonData)
 
     try {
       let res = await fetch(metadataServiceURL, {

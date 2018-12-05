@@ -105,6 +105,7 @@ namespace CCIS_API.Controllers
         public JsonResult GeoJson()
         {
             var vmsRegions = GetVMSData("regions/flat").Result;
+            var vmsSectors = GetVMSData("sectors/flat").Result;
 
             var goalData = _context.Goals
                 .Select(g => new
@@ -113,18 +114,21 @@ namespace CCIS_API.Controllers
                     geometry = new
                     {
                         type = "Polygon",
-                        coordinates = GetCoordinates(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions)
+                        coordinates = new object[] { GetCoordinates(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions) }
                     },
                     properties = new
                     {
                         id = g.Id, //Goal Id
-                        region = ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Region").Value), //Region Id
-                        sector = ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Sector").Value), //Sector Id
+                        title = $"Goal-{g.Type}",
+                        regions = GetGeoProps(ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Region").Value), vmsRegions), //Regions
+                        sectors = GetGeoProps(ParseIntCustom(g.Questions.FirstOrDefault(q => q.Key == "Sector").Value), vmsSectors), //Sectors
                         institution = g.Questions.FirstOrDefault(q => q.Key == "Institution").Value, //Institution Name
                         type = g.Type, //Goal Type
-                        year = DateTime.Parse(g.CreateDate).Year //Goal Year (from CreateDate)
+                        year = DateTime.Parse(g.CreateDate).Year, //Goal Year (from CreateDate)
+                        status = g.Status
                     }
                 })
+                .Where(x => x.geometry.coordinates.Count() > 0 && (x.geometry.coordinates[0] as object[]).Count() > 0) //Exclude no coordinates
                 .ToList();
 
             return new JsonResult(goalData);
@@ -219,6 +223,53 @@ namespace CCIS_API.Controllers
         {
             int.TryParse(s, out int res);
             return res;
+        }
+
+        private List<int> GetParents(int filterID, List<StandardVocabItem> data)
+        {
+            var parentId = "";
+
+            //Get ParentId
+            var vmsItem = data.FirstOrDefault(x => x.Id == filterID.ToString());
+            if (vmsItem != null)
+            {
+                var addItem = vmsItem.AdditionalData.FirstOrDefault(x => x.Key == "ParentId");
+                if (!string.IsNullOrEmpty(addItem.Value))
+                {
+                    parentId = addItem.Value;
+                }
+            }
+
+            var parents = data
+                .Where(x =>
+                    x.Id == parentId
+                )
+                .Select(x => int.Parse(x.Id))
+                .ToList();
+
+            var addParents = new List<int>();
+            foreach (var p in parents)
+            {
+                //Add to temp list so as to not modify 'parents' during iteration
+                addParents.AddRange(GetParents(p, data));
+            }
+            //Transfer to actual list
+            parents.AddRange(addParents);
+
+            return parents;
+        }
+
+        private List<List<int>> GetGeoProps(int regionId, List<StandardVocabItem> vmsItems)
+        {
+            var geoItems = new List<List<int>>();
+
+            var itemGroup = new List<int>();
+            itemGroup.Add(regionId);
+            itemGroup.AddRange(GetParents(regionId, vmsItems));
+
+            geoItems.Add(itemGroup);
+
+            return geoItems;
         }
     }
 

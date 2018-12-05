@@ -10,7 +10,7 @@ import SelectInput from '../../../input/SelectInput.jsx'
 import OData from 'react-odata';
 import { DEAGreen } from '../../../../Config/colours.cfg'
 import About from './About.jsx'
-import { apiBaseURL } from '../../../../Config/serviceURLs.cfg'
+import { apiBaseURL } from '../../../../../JS/Config/serviceURLs.cfg'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
 import Goal2Contrib from './Goal2Contrib.jsx'
@@ -100,7 +100,13 @@ class AME extends React.Component {
 
     return (
       <>
-        <Container>
+        <div style={{
+          backgroundColor: "white",
+          border: "1px solid gainsboro",
+          borderRadius: "10px",
+          padding: "0px 30px 25px 15px"
+        }}>
+
           <br />
           <h3><b>Climate Change Adaptation Monitoring and Evaluation</b></h3>
           <br />
@@ -219,7 +225,7 @@ class AME extends React.Component {
               <b><i><a href="#/login">Login</a> to make contributions</i></b>
             </div>
           }
-        </Container>
+        </div>
 
         {/* Select goal modal */}
         <Container>

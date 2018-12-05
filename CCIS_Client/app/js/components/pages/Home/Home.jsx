@@ -13,9 +13,9 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
-import { apiBaseURL } from '../../../Config/serviceURLs.cfg'
+import { apiBaseURL, vmsBaseURL } from '../../../../JS/Config/serviceURLs.cfg'
 import InstitutionFilter from './Filters/InstitutionFilter.jsx'
-import DashMapPreview from './DashMapPreview.jsx'
+import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
 import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'
 import NDMC_Preview from './NDMC_Preview/NDMC_Preview.jsx'
 import SARVA_Preview from './SARVA_Preview/SARVA_Preview.jsx'
@@ -47,14 +47,16 @@ class Home extends React.Component {
     super(props);
 
     let filterRegion = 0
+    let filterRegionParent = 0
     let filterSector = 0
-    let filterGoal = 0
+    let filterGoal = 1
     let filterYear = (new Date()).getFullYear()
     let filterInstitution = ""
 
     this.state = {
       infoSection: false,
       filterRegion,
+      filterRegionParent,
       filterSector,
       filterGoal,
       filterYear,
@@ -122,6 +124,9 @@ class Home extends React.Component {
           if (getTrafficLightData === true || autoSelect === true) {
             this.getGoalData(filterRegion, filterSector, filterGoal, filterYear, filterInstitution)
           }
+
+          //Fetch Regions data
+          this.getRegions(filterRegion)
         })
     }
   }
@@ -160,7 +165,7 @@ class Home extends React.Component {
     setLoading(true)
 
     try {
-      let res = await fetch(apiBaseURL + "Goals/Extensions." + 
+      let res = await fetch(apiBaseURL + "Goals/Extensions." +
         `GetGoalData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')` +
         "?$expand=Questions")
 
@@ -180,10 +185,46 @@ class Home extends React.Component {
     }
   }
 
+  async getRegions(filterRegion) {
+
+    let { setLoading } = this.props
+    setLoading(true)
+
+    try {
+      let res = await fetch(vmsBaseURL + 'Regions/Flat')
+
+      if (res.ok) {
+        res = await res.json() //parse response
+
+        if (res.items) {
+
+          let searchRegions = res.items.filter(r => r.id == filterRegion)
+          if (searchRegions.length > 0) {
+
+            let searchPK = searchRegions[0].additionalData.filter(a => a.key === "ParentId")
+            if (searchPK.length > 0 && !isNaN(searchPK[0].value)) {
+
+              this.setState({
+                filterRegionParent: parseInt(searchPK[0].value)
+              })
+            }
+          }
+        }
+      }
+    }
+    catch (ex) {
+      console.error(ex)
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
   render() {
 
-    let { 
-      infoSection, filterYear, filterRegion, filterSector, filterGoal, goalData, trafficLightFull, mapFullView 
+    let {
+      infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution, 
+      goalData, trafficLightFull, mapFullView
     } = this.state
 
     return (
@@ -319,29 +360,40 @@ class Home extends React.Component {
 
         <br />
 
-        { 
+        {
           (trafficLightFull === true) &&
           <Row>
             <Col md="12">
-              <TrafficLights 
-                goalData={goalData} 
-                filterYear={filterYear} 
-                height={350} 
-                popCallback={() => { this.setState({ trafficLightFull: false}) }}
+              <TrafficLights
+                goalData={goalData}
+                filterYear={filterYear}
+                height={350}
+                popCallback={() => { this.setState({ trafficLightFull: false }) }}
                 fullView
               />
             </Col>
           </Row>
         }
 
-        { 
+        {
           (mapFullView === true) &&
           <Row>
             <Col md="12">
-              <DashMapPreview 
-                height={550} 
-                popCallback={() => { this.setState({ mapFullView: false}) }}
+              <MapViewCore
+                height={550}
+                popCallback={() => { this.setState({ mapFullView: false }) }}
                 fullView
+                filters={{
+                  region: filterRegion,
+                  parentRegion: filterRegionParent,
+                  sector: filterSector,
+                  institution: filterInstitution,
+                  goal: filterGoal,
+                  year: filterYear
+                }}
+              // data={{
+              //   regions: regions
+              // }}
               />
             </Col>
           </Row>
@@ -364,11 +416,11 @@ class Home extends React.Component {
               <Row>
                 <Col md="12">
                   {/* traffic lights */}
-                  <TrafficLights 
-                    goalData={goalData} 
-                    filterYear={filterYear} 
-                    height={200} 
-                    popCallback={() => { this.setState({ trafficLightFull: true}) }}
+                  <TrafficLights
+                    goalData={goalData}
+                    filterYear={filterYear}
+                    height={200}
+                    popCallback={() => { this.setState({ trafficLightFull: true }) }}
                   />
                 </Col>
               </Row>
@@ -379,11 +431,20 @@ class Home extends React.Component {
 
               <Row>
                 <Col md="12">
-                  {/* map */}
-                  {/* <MapsCarouselView /> */}
-                  <DashMapPreview 
-                    height={400} 
-                    popCallback={() => { this.setState({ mapFullView: true}) }}
+                  <MapViewCore
+                    height={400}
+                    popCallback={() => { this.setState({ mapFullView: true }) }}
+                    filters={{
+                      region: filterRegion,
+                      parentRegion: filterRegionParent,
+                      sector: filterSector,
+                      institution: filterInstitution,
+                      goal: filterGoal,
+                      year: filterYear
+                    }}
+                  // data={{
+                  //   regions: regions
+                  // }}
                   />
                 </Col>
               </Row>

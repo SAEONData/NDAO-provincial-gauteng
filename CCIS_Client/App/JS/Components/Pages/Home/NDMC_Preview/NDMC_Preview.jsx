@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import popout from '../../../../../Images/Icons/popout.png'
 import OData from 'react-odata'
 import EventCard from './EventCard.jsx'
-import { ndmcBaseURL, ndmcSiteBaseURL } from '../../../../Config/serviceURLs.cfg'
+import { ndmcBaseURL, ndmcSiteBaseURL } from '../../../../../JS/Config/serviceURLs.cfg'
 import NDMC from '../../Tools/NDMC.jsx'
 
 const mapStateToProps = (state, props) => {

@@ -41,6 +41,7 @@ class SectorFilter extends React.Component {
           callback={(value) => {
             callback(value.id)
           }}
+          allowClear={false}
         />
       </>
     )

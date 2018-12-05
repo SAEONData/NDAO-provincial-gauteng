@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
-import { ccrdSiteBaseURL } from '../../../Config/serviceURLs.cfg'
+import { ccrdSiteBaseURL } from '../../../../JS/Config/serviceURLs.cfg'
 
 const mapStateToProps = (state, props) => {
   return {}
