@@ -41,14 +41,14 @@ class SectorsIGFX extends React.Component {
     }
   }
 
-  processData(data, year, goal) {
+  processData(data, year) {
 
     let sectorCount = this.state.sectorCount
     let implSectorCount = 0
 
     //Get count of "implemented" sectors (unique list)
     let implSectors = []
-    let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year && (g.Type === goal || goal === 0 ))
+    let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year)
     filteredData.forEach(g => {
       let filtered = g.Questions.filter(q => q.Key === "Sector")
       if(filtered.length > 0 && !implSectors.includes(filtered[0].Value)){
@@ -67,8 +67,8 @@ class SectorsIGFX extends React.Component {
 
   render() {
 
-    let { data, year, goal } = this.props
-    let value = this.processData(data, year, goal)
+    let { data, year } = this.props
+    let value = this.processData(data, year)
 
     return (
       <div style={{ 

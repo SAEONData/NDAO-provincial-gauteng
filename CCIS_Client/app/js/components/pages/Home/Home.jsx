@@ -63,6 +63,7 @@ class Home extends React.Component {
       filterInstitution,
       filterInstitutionOptions: [],
       goalData: [],
+      goalDataUnfiltered: [],
       prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution },
       trafficLightFull: false,
       mapFullView: false
@@ -73,6 +74,9 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.props.updateNav(location.hash)
+
+    //Get Goal data for info-graphics
+    this.getGoalDataUnfiltered()
 
     //Apply default filtering
     this.handleFilterChange(true)
@@ -126,7 +130,7 @@ class Home extends React.Component {
           }
 
           //Fetch Regions data
-          this.getRegions(filterRegion)
+          this.getFilterRegionParent(filterRegion)
         })
     }
   }
@@ -185,11 +189,36 @@ class Home extends React.Component {
     }
   }
 
-  async getRegions(filterRegion) {
+  async getGoalDataUnfiltered() {
 
     let { setLoading } = this.props
     setLoading(true)
 
+    try {
+      let res = await fetch(apiBaseURL + "Goals?$expand=Questions")
+
+      if (res.ok) {
+        res = await res.json() //parse response
+        // console.log("RES", res)
+        if (res) {
+          this.setState({ goalDataUnfiltered: res.value })
+        }
+      }
+    }
+    catch (ex) {
+      console.error(ex)
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  async getFilterRegionParent(filterRegion) {
+
+    let { setLoading } = this.props
+    setLoading(true)
+
+    let parentSet = false
     try {
       let res = await fetch(vmsBaseURL + 'Regions/Flat')
 
@@ -204,6 +233,7 @@ class Home extends React.Component {
             let searchPK = searchRegions[0].additionalData.filter(a => a.key === "ParentId")
             if (searchPK.length > 0 && !isNaN(searchPK[0].value)) {
 
+              parentSet = true
               this.setState({
                 filterRegionParent: parseInt(searchPK[0].value)
               })
@@ -216,6 +246,13 @@ class Home extends React.Component {
       console.error(ex)
     }
     finally {
+
+      if(parentSet === false){
+        this.setState({
+          filterRegionParent: parseInt(filterRegion)
+        })
+      }
+
       setLoading(false)
     }
   }
@@ -224,7 +261,7 @@ class Home extends React.Component {
 
     let {
       infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution, 
-      goalData, trafficLightFull, mapFullView
+      goalData, goalDataUnfiltered, trafficLightFull, mapFullView
     } = this.state
 
     return (
@@ -348,7 +385,7 @@ class Home extends React.Component {
                     filterYear: (new Date()).getFullYear(),
                     filterRegion: 0,
                     filterSector: 0,
-                    filterGoal: 0
+                    filterGoal: 1
                   })
                 }}
               >
@@ -391,9 +428,6 @@ class Home extends React.Component {
                   goal: filterGoal,
                   year: filterYear
                 }}
-              // data={{
-              //   regions: regions
-              // }}
               />
             </Col>
           </Row>
@@ -442,9 +476,6 @@ class Home extends React.Component {
                       goal: filterGoal,
                       year: filterYear
                     }}
-                  // data={{
-                  //   regions: regions
-                  // }}
                   />
                 </Col>
               </Row>
@@ -475,19 +506,19 @@ class Home extends React.Component {
           <Row>
 
             <Col>
-              <FundingIGFX data={goalData} year={filterYear} goal={filterGoal} />
+              <FundingIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
             <Col>
-              <PlansIGFX data={goalData} year={filterYear} goal={filterGoal} />
+              <PlansIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
             <Col>
-              <GovernmentsIGFX data={goalData} year={filterYear} goal={filterGoal} />
+              <GovernmentsIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
             <Col>
-              <GHGReductionIGFX data={goalData} year={filterYear} goal={filterGoal} />
+              <GHGReductionIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
             <Col>
-              <SectorsIGFX data={goalData} year={filterYear} goal={filterGoal} />
+              <SectorsIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
           </Row>
         </div>

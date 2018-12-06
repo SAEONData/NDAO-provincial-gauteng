@@ -37,17 +37,16 @@ class NDMC_Preview extends React.Component {
 
   onMessage(event) {
 
-    //console.log("event", event)
-
     // Check sender origin to be trusted
     if (ndmcSiteBaseURL.includes(event.origin)) {
 
       var data = event.data;
 
-      if (data.action === "showDetails") {
-        this.setState({ showNDMC: data.value })
+      if (data.context === "NDMC") {
+        if (data.action === "showDetails") {
+          this.setState({ showNDMC: data.value })
+        }
       }
-
     }
   }
 

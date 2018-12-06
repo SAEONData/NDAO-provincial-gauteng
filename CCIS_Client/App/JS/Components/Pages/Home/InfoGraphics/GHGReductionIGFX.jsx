@@ -36,7 +36,7 @@ class GHGReductionIGFX extends React.Component {
 
   async getData(){
 
-    let { data, year, goal } = this.props
+    let { data, year } = this.props
 
     //Get GHG emissions
     const query = buildQuery({
@@ -77,7 +77,7 @@ class GHGReductionIGFX extends React.Component {
       if (res.value) {
 
         //Extract filtered GoalIDs
-        let filteredIDs = data.filter(g => g.Type === goal || goal === 0).map(g => g.Id)
+        let filteredIDs = data.map(g => g.Id)
 
         //Filter Project data on DOA
         let filteredProjects = res.value.filter(p => p.ProjectDAOs.filter(d => filteredIDs.includes(d.DAOId)).length > 0)

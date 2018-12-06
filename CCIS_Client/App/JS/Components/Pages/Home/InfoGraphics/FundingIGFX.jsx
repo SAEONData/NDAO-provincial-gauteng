@@ -39,13 +39,13 @@ class FundingIGFX extends React.Component {
     return maxEl;
   }
 
-  processData(data, year, goal) {
+  processData(data, year) {
 
     let rangeValues = []
 
     if (data) {
 
-      let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year && (g.Type === goal || goal === 0 ))
+      let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year)
       filteredData.forEach(x => {
         let filtered = x.Questions.filter(q => q.Key === "TotalBudget")
         if (filtered.length > 0) {
@@ -80,8 +80,8 @@ class FundingIGFX extends React.Component {
 
   render() {
 
-    let { data, year, goal } = this.props
-    let value = this.processData(data, year, goal)
+    let { data, year } = this.props
+    let value = this.processData(data, year)
 
     return (
       <div style={{

@@ -547,6 +547,23 @@ class Goal1Contrib extends React.Component {
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
     } = this.state
 
+    let NCCRD_Config = {
+      header: false,
+      navbar: true,
+      sidenav: false,
+      footer: false,
+      daoid: goalId,
+      readOnly: false,
+      backToList: true,
+      listOptions: {
+        expandCollapse: false,
+        view: true,
+        favorites: false,
+        filters: false,
+        detailsInParent: false
+      }
+    }
+
     return (
       <>
         <Row style={{ marginLeft: "0px" }}>
@@ -995,9 +1012,14 @@ class Goal1Contrib extends React.Component {
 
         {showNCCRD &&
           // <NCCRD goalId={goalId} closeCallback={() => { this.setState({ showNCCRD: false }) }} />
+          // <NCCRD
+          //   query={`?navbar=addOnly&daoid=${goalId}&popin=hidden`}
+          //   closeCallback={() => { this.setState({ showNCCRD: false }) }}
+          // />
           <NCCRD
-            query={`?navbar=addOnly&daoid=${goalId}&popin=hidden`}
-            closeCallback={() => { this.setState({ showNCCRD: false }) }}
+            path={'projects'}
+            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
+            closeCallback={() => { this.setState({ showNCCRD: "" }) }}
           />
         }
 

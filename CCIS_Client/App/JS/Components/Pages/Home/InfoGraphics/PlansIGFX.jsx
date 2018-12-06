@@ -20,10 +20,10 @@ class PlansIGFX extends React.Component {
     super(props);
   }
 
-  processData(data, year, goal){
+  processData(data, year){
  
     if(data && data.length > 0){    
-      let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year && (g.Type === goal || goal === 0 ))
+      let filteredData = data.filter(g => moment(g.CreateDate, 'YYYY/MM/DD').year() === year)
       if(filteredData.length > 0){
         return filteredData.length
       }
@@ -34,8 +34,8 @@ class PlansIGFX extends React.Component {
 
   render() {
 
-    let { data, year, goal } = this.props
-    let value = this.processData(data, year, goal)
+    let { data, year } = this.props
+    let value = this.processData(data, year)
 
     return (
       <div style={{ 

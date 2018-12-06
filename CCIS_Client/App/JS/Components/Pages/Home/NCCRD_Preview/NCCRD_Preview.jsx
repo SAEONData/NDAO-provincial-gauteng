@@ -39,17 +39,16 @@ class NCCRD_Preview extends React.Component {
 
   onMessage(event) {
 
-    //console.log("event", event)
-
     // Check sender origin to be trusted
     if (ccrdSiteBaseURL.includes(event.origin)) {
 
       var data = event.data;
 
-      if (data.action === "showDetails") {
-        this.setState({ showNCCRD: data.value })
+      if (data.context === "NCCRD") {
+        if (data.action === "showDetails") {
+          this.setState({ showNCCRD: data.value })
+        }
       }
-
     }
   }
 

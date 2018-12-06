@@ -58,19 +58,17 @@ class MapViewCore extends React.Component {
     let sourceFilters = this.props.filters
     let mapConfig = MapConfig
 
-    console.log("filters", sourceFilters)
-
     //Add filters
     if (sourceFilters.region > 0 || sourceFilters.sector > 0 || sourceFilters.goal > 0 ||
       sourceFilters.year > 0 || sourceFilters.institution !== "") {
 
       let filters = []
 
-      if (parseInt(sourceFilters.region) > 0) {
+      if (parseInt(sourceFilters.parentRegion) > 0) {
         filters.push(
           {
             field: "properties.regions",
-            value: parseInt(sourceFilters.region)
+            value: parseInt(sourceFilters.parentRegion)
           }
         )
       }
