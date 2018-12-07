@@ -3,14 +3,17 @@
 import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Fa, Navbar as MDBNavbar, NavbarNav, NavbarToggler, NavItem, NavLink } from 'mdbreact';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DEAGreen } from "../../config/colours.cfg";
-import { ssoBaseURL } from '../../config/ssoBaseURL.cfg';
-import DASL from '../pages/Tools/DASL.jsx';
-import EWED from '../pages/Tools/EWED.jsx';
-import LRT from '../pages/Tools/LRT.jsx';
-import NCCRD from '../pages/Tools/NCCRD.jsx';
-import NWIS from '../pages/Tools/NWIS.jsx';
-import SARVA from '../pages/Tools/SARVA.jsx';
+import { DEAGreen } from "../../Config/colours.cfg";
+import { ssoBaseURL } from '../../../JS/Config/serviceURLs.cfg';
+import DASL from '../Pages/Tools/DASL.jsx';
+import NDMC from '../Pages/Tools/NDMC.jsx';
+import LRT from '../Pages/Tools/LRT.jsx';
+import NCCRD from '../Pages/Tools/NCCRD.jsx';
+import NWIS from '../Pages/Tools/NWIS.jsx';
+import SARVA from '../Pages/Tools/SARVA.jsx';
+import { data as NavData } from '../../../data/sideNavData'
+
+const _gf = require('../../globalFunctions')
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -41,15 +44,19 @@ class Navbar extends React.Component {
       showNCCRD: false,
       showNWIS: false,
       showSARVA: false,
-      showEWED: false
+      showNDMC: false
     }
 
     this.onClick = this.onClick.bind(this)
     this.listsDropToggle = this.listsDropToggle.bind(this)
-    this.LoginLogout = this.LoginLogout.bind(this)
-    this.GetUser = this.GetUser.bind(this)
-    this.Register = this.Register.bind(this)
   }
+
+  // componentDidUpdate(){
+  //   let { user } = this.props
+  //   if(user){
+  //     console.log("USER", user)
+  //   }
+  // }
 
   onClick() {
     this.setState({
@@ -63,55 +70,42 @@ class Navbar extends React.Component {
     });
   }
 
-  LoginLogout() {
-
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a className="nav-link" href="#/login">Login</a>
-    }
-    else {
-      return <a className="nav-link" href="#/logout">Logout</a>
-    }
-  }
-
-  Register() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">Register</a>
-    }
-  }
-
-  GetUser() {
-    let { user } = this.props
-
-    if (!user || user.expired) {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link"></span>
-    }
-    else {
-      return <span style={{ color: "#d0d6e2" }} className="nav-link">{"Hello, " + user.profile.email}</span>
-    }
-  }
-
   render() {
 
     let { locationHash, user, showSideNav, toggleSideNav } = this.props
-    let { showDASL, showLRT, showNCCRD, showNWIS, showSARVA, showEWED } = this.state
+    let { showDASL, showLRT, showNCCRD, showNWIS, showSARVA, showNDMC } = this.state
 
     return (
       <>
-        <MDBNavbar size="sm" light expand="md" style={{ boxShadow: "none", borderTop: "1px solid gainsboro" }} >
+        <MDBNavbar
+          size="sm"
+          color="white"
+          light
+          expand="md"
+          style={{
+            boxShadow: "0px 15px 10px -15px gainsboro",
+            borderTop: "1px solid #E8E8E8",
+          }}
+        >
+
           {!this.state.isWideEnough && <NavbarToggler style={{ backgroundColor: DEAGreen }} onClick={this.onClick} />}
           <Collapse isOpen={this.state.collapse} navbar>
 
             {/* LEFT */}
             <NavbarNav left>
 
-              <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
+              {/* <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
                 style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
                 <Fa icon="bars" />
-              </Button>
+              </Button> */}
+
+              {
+                NavData.enabled &&
+                <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
+                  style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
+                  <Fa icon="bars" />
+                </Button>
+              }
 
               {/* Home */}
               <NavItem style={{ borderBottom: (locationHash === "#/" ? "4px solid dimgrey" : "0px solid white"), marginRight: "15px" }}>
@@ -178,7 +172,7 @@ class Navbar extends React.Component {
                     <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") /*this.setState({ showDASL: true })*/ }}>
                       Dam And Stream Levels
                     </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showEWED: true }) }}>
+                    <DropdownItem onClick={() => { this.setState({ showNDMC: true }) }}>
                       Extreme Weather Events Database
                     </DropdownItem>
                   </DropdownMenu>
@@ -196,7 +190,7 @@ class Navbar extends React.Component {
               {(user && !user.expired) &&
                 <NavItem style={{ marginRight: "15px" }}>
                   <NavLink to="#" disabled>
-                    <b style={{ color: "#2BBBAD" }}>
+                    <b style={{ color: DEAGreen }}>
                       {"Hello, " + user.profile.email}
                     </b>
                   </NavLink>
@@ -211,18 +205,18 @@ class Navbar extends React.Component {
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
                 {(!user || user.expired) &&
-                  <NavLink to="login" disabled style={{ color: "grey" }}><b>Login</b></NavLink>
+                  <NavLink to="/login"><b>Login</b></NavLink>
                 }
                 {(user && !user.expired) &&
-                  <NavLink to="logout" disabled style={{ color: "grey" }}><b>Logout</b></NavLink>
+                  <NavLink to="/logout"><b>Logout</b></NavLink>
                 }
               </NavItem>
 
               {/* Register */}
               {(!user || user.expired) &&
                 <NavItem>
-                  <a disabled key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
-                    <b style={{ color: "grey" }}>Register</b>
+                  <a key="lnkRegister" className="nav-link" href={ssoBaseURL + "Account/Register"} target="_blank">
+                    <b>Register</b>
                   </a>
                 </NavItem>
               }
@@ -233,10 +227,18 @@ class Navbar extends React.Component {
 
           {showDASL && <DASL closeCallback={() => { this.setState({ showDASL: false }) }} />}
           {showLRT && <LRT closeCallback={() => { this.setState({ showLRT: false }) }} />}
-          {showNCCRD && <NCCRD closeCallback={() => { this.setState({ showNCCRD: false }) }} />}
+
+          {
+            showNCCRD &&
+            <NCCRD
+              query={`?navbar=hidden&daoid=hidden&readonly=true&popin=hidden`}
+              closeCallback={() => { this.setState({ showNCCRD: false }) }}
+            />
+          }
+
           {showNWIS && <NWIS closeCallback={() => { this.setState({ showNWIS: false }) }} />}
           {showSARVA && <SARVA closeCallback={() => { this.setState({ showSARVA: false }) }} />}
-          {showEWED && <EWED closeCallback={() => { this.setState({ showEWED: false }) }} />}
+          {showNDMC && <NDMC closeCallback={() => { this.setState({ showNDMC: false }) }} />}
 
         </MDBNavbar >
 

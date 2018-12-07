@@ -22,31 +22,6 @@ class SelectInput extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = { value: undefined }
-  }
-
-  componentDidMount() {
-
-    this.setInternalValue()
-  }
-
-  componentDidUpdate() {
-
-    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
-      this.setInternalValue()
-    }
-  }
-
-  setInternalValue() {
-    //Init state
-    let { value } = this.props
-
-    if (globalFunctions.isEmptyValue(value)) {
-      value = ""
-    }
-
-    this.setState({ value: value })
   }
 
   renderSelectNodes(data) {
@@ -83,8 +58,7 @@ class SelectInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder, allowClear } = this.props
-    let { value } = this.state
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, dropdownStyle, value } = this.props
 
     if (typeof value === 'undefined' || value === "" || value === null) {
       value = undefined
@@ -95,6 +69,8 @@ class SelectInput extends React.Component {
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
     allowClear = globalFunctions.fixEmptyValue(allowClear, true)
+    style = globalFunctions.fixEmptyValue(style, {})
+    dropdownStyle = globalFunctions.fixEmptyValue(dropdownStyle, {})
 
     return (
       <>
@@ -118,9 +94,9 @@ class SelectInput extends React.Component {
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
-          style={{ width: "100%" }}
+          style={{ width: "100%", ...style }}
           value={value}
-          dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
+          dropdownStyle={{ maxHeight: "250px", overflow: 'auto', ...dropdownStyle }}
           placeholder={placeHolder}
           allowClear={allowClear}
           onChange={this.onChange.bind(this)}

@@ -16,39 +16,11 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: "" }
-  }
-
-  componentDidMount() {
-
-    this.setInternalValue()
-  }
-
-  componentDidUpdate() {
-
-    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
-      this.setInternalValue()
-    }
-  }
-
-  setInternalValue() {
-
-    let { value } = this.props
-
-    if (globalFunctions.isEmptyValue(value)) {
-      value = ""
-    }
-
-    this.setState({ value: value })
   }
 
   onChange(event) {
 
-    //Update internal state
-    this.setState({ value: event.target.value })
-
     let { callback } = this.props
-
     if (typeof callback !== 'undefined') {
       callback(event.target.value)
     }
@@ -56,8 +28,7 @@ class TextInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, allowEdit, hint, type, width, height } = this.props
-    let { value } = this.state
+    let { label, tooltip, allowEdit, hint, type, width, height, value, readOnly } = this.props
 
     label = globalFunctions.fixEmptyValue(label, "")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
@@ -87,7 +58,7 @@ class TextInput extends React.Component {
         <Input disabled={!allowEdit} size="sm"
           style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: width, height: height, fontSize: "15px", border: "1px solid lightgrey", borderRadius: "5px", padding: "5px" }}
           onChange={this.onChange.bind(this)} hint={hint} type={type}
-          value={value} />
+          value={value} readOnly={readOnly} />
       </>
     )
   }

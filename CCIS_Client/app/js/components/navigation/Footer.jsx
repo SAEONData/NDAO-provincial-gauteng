@@ -1,8 +1,9 @@
 import React from 'react'
-import { Col, Row, Container, Footer as MDBFooter, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact'
+import { Col, Row, Modal, ModalBody, ModalHeader } from 'mdbreact';
+import { DEAGreen, DEAGreenDark } from '../../Config/colours.cfg'
 
-//Images
-import nrf_seaon from '../../../images/nrf_saeon.png'
+import { footerContent } from '../../../data/footerConfig'
+import loader from '../../../Images/Other/loader.gif'
 
 class Footer extends React.Component {
 
@@ -10,77 +11,157 @@ class Footer extends React.Component {
     super(props);
 
     this.toggleModal = this.toggleModal.bind(this)
+    this.renderLinks = this.renderLinks.bind(this)
+    this.handleResize = this.handleResize.bind(this)
 
-    this.state = { showModal: false }
+    this.state = {
+      showModal: false,
+      modalHeader: "",
+      modalSrc: "",
+      isNarrowDisplay: false
+    }
   }
 
-  toggleModal() {
-    this.setState({ showModal: !this.state.showModal })
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize)
+  }
+
+  handleResize() {
+    this.setState({
+      isNarrowDisplay: (window.innerWidth < 900)
+    })
+  }
+
+  toggleModal(state, header = "", src = "") {
+    this.setState({
+      showModal: state,
+      modalHeader: header,
+      modalSrc: src
+    })
+  }
+
+  renderSections(data) {
+
+    let sections = []
+
+    for (let i = 0; i < 4; i++) {
+      let section = data.sections[i]
+      sections.push(
+        <Col key={`section_${i + 1}`} md="3">
+          <h4 style={{ marginBottom: "15px" }}><b>{section.text}</b></h4>
+          {this.renderLinks(section)}
+        </Col>
+      )
+    }
+
+    return sections
+  }
+
+
+  renderLinks(section) {
+
+    let links = []
+
+    for (let i = 0; i < section.links.length; i++) {
+
+      let link = section.links[i]
+      if (link.text) {
+        links.push(
+          <div
+            key={`link_${i + 1}`}
+            style={{
+              cursor: link.link ? "pointer" : "default",
+              fontWeight: link.link ? "400" : "regular"
+            }}
+            onClick={() => {
+              if (link.link) {
+                this.toggleModal(true, link.text, link.link)
+              }
+            }}>
+            {link.text}
+          </div>
+        )
+      }
+      else if (link.src) {
+        links.push(
+          <img
+            key={`link_${i + 1}`}
+            src={link.src}
+            style={{
+              width: link.width,
+              cursor: link.link ? "pointer" : "default"
+            }} />
+        )
+      }
+    }
+
+    return links
   }
 
   render() {
 
+    let { showModal, modalHeader, modalSrc, isNarrowDisplay } = this.state
+
     return (
       <>
-        <MDBFooter color="light" style={{ color: "black" }}>
-          <hr />
+        <div style={{
+          padding: "5px 45px 5px 45px",
+          borderTop: "1px solid gainsboro",
+          borderLeft: "1px solid gainsboro",
+          borderRight: "1px solid gainsboro",
+          backgroundColor: "white",
+          color: "black"
+        }}>
+          <br />
+          <Row>
+            {this.renderSections(footerContent)}
+          </Row>
+          <br />
+        </div>
+
+        <div style={{
+          padding: "10px 45px 10px 45px",
+          backgroundColor: DEAGreen,
+          color: "white"
+        }}>
           <Row>
             <Col md="12">
-              <div style={{ float: "right" }}>
-                <p style={{ textAlign: "right" }}>
-                  {/* <a disabled href="#/tech" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
-                    <b>Technical Information</b>
-                  </a>
-                  <br className="d-block d-md-none" /> */}
-                  <a disabled href="#/contact" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
-                    <b>Contact</b>
-                  </a>
-                  <br className="d-block d-md-none" />
-                  <a disabled href="#/login" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
-                    <b>Login</b>
-                  </a>
-                  <br className="d-block d-md-none" />
-                  <a disabled href="#/register" style={{ marginLeft: "15px", marginRight: "15px", color: "grey" }}>
-                    <b>Register</b>
-                  </a>
-                </p>
-              </div>
+              <b>
+                Created by
+                <span> <a style={{ color: "white" }} href="http://www.saeon.ac.za" target="saeon"><strong>SAEON</strong></a> </span>
+                using
+                <span> <a style={{ color: "white" }} href="https://reactjs.org/" target="react"><strong>React</strong></a>, </span>
+                <span> <a style={{ color: "white" }} href="https://mdbootstrap.com/react" target="mdb"><strong> MDBootstrap</strong></a>, </span>
+                <span> <a style={{ color: "white" }} href="https://ant.design/" target="antdesign"><strong> Ant Design </strong></a> </span>
+                and SAEON Open Data Platform APIs.
+              </b>
+              <br />
+              Copyright &copy; {(new Date().getFullYear())}
             </Col>
           </Row>
-          <hr style={{ marginTop: "0px"}} />
-          <Row className="align-items-center" style={{ marginBottom: "10px", marginTop: "10px" }}>
-            <Col sm="9">
-              <p>
-                <b>Created by SAEON using React, MDBootstrap and AntDesign</b>
-                <br />
-                &copy; {(new Date().getFullYear())} Copyright:
-                  <a href="http://www.saeon.ac.za" style={{ color: "black" }}>
-                  <b> <u>SAEON.ac.za</u> </b>
-                </a>
-              </p>
-            </Col>
-            <Col md="3" className="d-none d-md-block">
-              <img onClick={this.toggleModal} src={nrf_seaon} style={{ width: "80%", marginTop: "-8px", cursor: "pointer" }} align="right" />
-            </Col>
-          </Row>
-        </MDBFooter>
+        </div>
 
-        <Container>
-          <Modal fade={false} isOpen={this.state.showModal} toggle={this.toggleModal} size="fluid" style={{ width: "80%" }} >
-            <ModalHeader toggle={this.toggleModal}>What SAEON offers:</ModalHeader>
-            <ModalBody>
-              <iframe
-                style={{
-                  width: "100%",
-                  height: "500px",
-                  margin: "0px",
-                  border: "1px solid gainsboro"
-                }}
-                src={"https://example.com/"}
-              />
-            </ModalBody>
-          </Modal>
-        </Container>
+        <Modal isOpen={showModal} toggle={() => this.toggleModal(false)} size="fluid" style={{ width: "95%" }} >
+          <ModalHeader toggle={() => this.toggleModal(false)}>{modalHeader}</ModalHeader>
+          <ModalBody>
+            <iframe
+              style={{
+                width: "100%",
+                height: "500px",
+                margin: "0px",
+                border: "1px solid gainsboro",
+                // backgroundImage: `url(${loader})`,
+                // backgroundRepeat: "no-repeat",
+                // backgroundPosition: "50% 50%"
+              }}
+              src={modalSrc}
+            />
+          </ModalBody>
+        </Modal>
       </>
     )
   }

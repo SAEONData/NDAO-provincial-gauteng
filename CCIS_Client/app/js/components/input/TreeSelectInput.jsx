@@ -23,77 +23,107 @@ class TreeSelectInput extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = { value: "" }
-  }
-
-  componentDidMount() {
-
-    this.setInternalValue()
-  }
-
-  componentDidUpdate() {
-
-    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
-      this.setInternalValue()
-    }
-  }
-
-  setInternalValue() {
-    //Init state
-    let { value } = this.props
-
-    if (globalFunctions.isEmptyValue(value)) {
-      value = ""
-    }
-
-    this.setState({ value: value })
   }
 
   renderTreeSelectNodes(data) {
 
+    let { transform } = this.props
+
     if (typeof data !== 'undefined') {
       return data.map((item) => {
+
+        if (typeof transform !== 'undefined') {
+          item = transform(item)
+        }
+
+        let valCol = "text"
+        if (!item.text) valCol = "value"
+
         if (item.children) {
           return (
-            <TreeSelectNode value={item.text} title={item.text} key={item.id}>
+            <TreeSelectNode value={item[valCol]} title={item[valCol]} key={item.id}>
               {this.renderTreeSelectNodes(item.children)}
             </TreeSelectNode>
           )
         }
-        return <TreeSelectNode value={item.text} title={item.text} key={item.id} />
+        return <TreeSelectNode value={item[valCol]} title={item[valCol]} key={item.id} />
       })
     }
+  }
+
+  //Performs a recursive search by Id and
+  //returns the corresponding value/text
+  getValueById(data, id) {
+
+    let { transform } = this.props
+
+    if (data && data.length > 0) {
+
+      for (let item of data) {
+
+        let tItem = transform(item)
+
+        if (tItem.id == id) {
+          return tItem.text
+        }
+        else if (tItem.children && tItem.children.length > 0) {
+          let tmpVal = this.getValueById(tItem.children, id)
+          if (tmpVal !== id) {
+            return tmpVal
+          }
+        }
+
+      }
+    }
+
+    return id
   }
 
   onChange(value, label, extra) {
 
     this.setState({ value: value })
 
-    let { callback } = this.props
+    let { callback, multiple } = this.props
+
     if (typeof callback !== 'undefined') {
-      if (typeof extra.triggerNode !== 'undefined') {
-        callback({ id: extra.triggerNode.props.eventKey, text: value })
+
+      if (!multiple) {
+        if (typeof extra.triggerNode !== 'undefined') {
+          callback({ id: extra.triggerNode.props.eventKey, text: value })
+        }
+        else {
+          callback({ id: 0, text: "" })
+        }
       }
       else {
-        callback({ id: 0, text: "" })
+        callback(value)
       }
+
     }
   }
 
   render() {
 
-    let { label, tooltip, data, allowEdit, placeHolder } = this.props
-    let { value } = this.state
+    let { label, tooltip, data, allowEdit, placeHolder, allowClear, style, value, multiple } = this.props
 
-    if (typeof value === 'undefined' || value === "" || value === null) {
+    //Attempt to get the actual value
+    if (typeof value === 'undefined' || value === "" || value === null || value === 0) {
       value = undefined
     }
+    else {
+      value = this.getValueById(data, value)
+    }
 
-    // label = globalFunctions.fixEmptyValue(label, "Label:")
+    //Ensure value is not a number
+    if(!isNaN(value)){
+      value = value.toString()
+    }
+
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     placeHolder = globalFunctions.fixEmptyValue(placeHolder, "Select...")
+    allowClear = globalFunctions.fixEmptyValue(allowClear, true)
+    style = globalFunctions.fixEmptyValue(style, {})
 
     return (
       <>
@@ -114,14 +144,15 @@ class TreeSelectInput extends React.Component {
         }
 
         <TreeSelect
+          multiple={multiple}
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
-          style={{ width: "100%" }}
+          style={{ width: "100%", ...style }}
           value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto', paddingRight: "20px" }}
           placeholder={placeHolder}
-          allowClear
+          allowClear={allowClear}
           onChange={this.onChange.bind(this)}
         >
           {this.renderTreeSelectNodes(data)}

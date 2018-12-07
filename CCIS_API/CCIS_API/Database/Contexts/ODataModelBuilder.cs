@@ -1,6 +1,7 @@
 ﻿using CCIS_API.Database.Models;
 using CCIS_API.ViewModels;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CCIS_API.Database.Contexts
         {
             var builder = new ODataConventionModelBuilder(serviceProvider);
 
-            builder.EntitySet<Goal1>("Goal1")
+            builder.EntitySet<Goal>("Goals")
                 .EntityType
                 .Filter() // Allow for the $filter Command
                 .Count() // Allow for the $count Command
@@ -24,7 +25,7 @@ namespace CCIS_API.Database.Contexts
                 .Page() // Allow for the $top and $skip Commands
                 .Select();// Allow for the $select Command; 
 
-            builder.EntitySet<Goal2>("Goal2")
+            builder.EntitySet<Question>("Questions")
                 .EntityType
                 .Filter() // Allow for the $filter Command
                 .Count() // Allow for the $count Command
@@ -33,77 +34,61 @@ namespace CCIS_API.Database.Contexts
                 .Page() // Allow for the $top and $skip Commands
                 .Select();// Allow for the $select Command; 
 
-            builder.EntitySet<Goal3>("Goal3")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
 
-            builder.EntitySet<Goal4>("Goal4")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //#####################//
+            // ACTIONS & FUNCTIONS //
+            //#####################//
 
-            builder.EntitySet<Goal5>("Goal5")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //UploadFile//
+            builder
+                .Action("UploadFile")
+                .Returns<FileDetails>()
+                .Parameter<UploadFile>("fileData");
 
-            builder.EntitySet<Goal6>("Goal6")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //RemoveFile//
+            builder
+                .Action("RemoveFile")
+                .Returns<bool>()
+                .Parameter<UploadFile>("fileData");
 
-            builder.EntitySet<Goal7>("Goal7")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //RemoveAllFiles//
+            builder
+                .Action("RemoveAllFiles");
 
-            builder.EntitySet<Goal8>("Goal8")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //GetFilteredInstitutions//
+            var function = builder.Function("GetFilteredInstitutions").ReturnsCollection<string>();
+            function.Parameter<int>("region");
+            function.Parameter<int>("sector");
 
-            builder.EntitySet<Goal9>("Goal9")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //GetTrafficLightData//
+            //function = builder.Function("GetTrafficLightData").ReturnsCollection<GoalStatus>();
+            //function.Parameter<int>("region");
+            //function.Parameter<int>("sector");
+            //function.Parameter<int>("goal");
+            //function.Parameter<int>("year");
+            //function.Parameter<string>("institution");
 
-            builder.EntitySet<Goals>("Goals")
-                .EntityType
-                .Filter() // Allow for the $filter Command
-                .Count() // Allow for the $count Command
-                .Expand() // Allow for the $expand Command
-                .OrderBy() // Allow for the $orderby Command
-                .Page() // Allow for the $top and $skip Commands
-                .Select();// Allow for the $select Command; 
+            //Goals as GeoJson
+            builder.Namespace = "Extensions";
+            builder.
+                EntityType<Goal>().
+                Collection.
+                Function("GeoJson").
+                Returns<JsonResult>();
+
+            //Goals Filtered
+            function = builder.EntityType<Goal>()
+                .Collection
+                .Function("GetGoalData")
+                .ReturnsCollectionViaEntitySetPath<Goal>("bindingParameter");
+
+            function.Parameter<int>("region");
+            function.Parameter<int>("sector");
+            function.Parameter<int>("goal");
+            function.Parameter<int>("year");
+            function.Parameter<string>("institution");
+            //#####################//
+
 
             return builder.GetEdmModel();
         }

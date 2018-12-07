@@ -13,10 +13,11 @@ module.exports = {
   devtool: 'inline-source-map',
   mode,
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 8091
   },
   entry: {
-    app: ['./js/index.jsx'],
+    app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
     react: [
       'react',
@@ -43,9 +44,8 @@ module.exports = {
     },
     {
       test: /\.json$/,
-      use: [
-        'json-loader'
-      ]
+      use: ['json-loader'],
+      exclude: /node_modules/
     },
     {
       test: /\.css$/,
@@ -107,6 +107,6 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc|pptx|ignore)$/)
+    new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
   ]
 }

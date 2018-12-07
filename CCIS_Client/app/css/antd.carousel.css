@@ -1,7 +1,8 @@
 .ant-carousel {
-  border: 1px solid gainsboro;
-  border-radius: 5px;
-  padding: 10px;
+  /* border: 1px solid gainsboro; */
+  /* border-radius: 5px; */
+  padding: 5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .ant-carousel .slick-slide {

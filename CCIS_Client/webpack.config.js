@@ -11,8 +11,12 @@ const mode = 'production'
 module.exports = {
   context: path.join(cwd, 'app'),
   mode,
+  optimization: {
+		// We no not want to minimize our code.
+		minimize: false
+	},
   entry: {
-    app: ['./js/index.jsx'],
+    app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
     react: [
       'react',
@@ -24,6 +28,12 @@ module.exports = {
       'react-router-redux',
       'history'
     ],
+    config : [
+      './js/Config/serviceURLs.cfg',
+      './js/secrets.cfg',
+      './js/Config/colours.cfg',
+      './js/Config/ui_config.cfg'
+    ]
   },
 
   output: {
@@ -39,9 +49,8 @@ module.exports = {
     },
     {
       test: /\.json$/,
-      use: [
-        'json-loader'
-      ]
+      use: ['json-loader'],
+      exclude: /node_modules/
     },
     {
       test: /\.css$/,
@@ -103,13 +112,14 @@ module.exports = {
         PRODUCTION: mode === 'production'
       }
     }),
-    new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
-    new CopyWebpackPlugin([
-      {
-        from: 'js/config/*.cfg',
-        to: '[name].[ext]',
-        toType: 'template'
-      }
-    ])
+    new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
+    // new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: 'js/Config/*.cfg',
+    //     to: '[name].[ext]',
+    //     toType: 'template'
+    //   }
+    // ])
   ]
 }

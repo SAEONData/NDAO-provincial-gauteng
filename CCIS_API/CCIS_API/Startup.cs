@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CCIS_API.Database.Contexts;
@@ -8,11 +9,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -35,7 +38,12 @@ namespace CCIS_API
                 options.AddPolicy("CORSPolicy",
                       builder =>
                       {
-                          builder.WithOrigins("http://localhost:8080", "http://app01.saeon.ac.za/ccis")
+                          builder.WithOrigins(
+                                        "http://localhost:8085", //NCCRD LOCAL
+                                        "http://localhost:8091", //CCIS LOCAL
+                                        "http://app01.saeon.ac.za/ccis", //CCIS LIVE
+                                        "http://app01.saeon.ac.za/nccrdsite" //NCCRD LIVE
+                                    )
                                  .AllowAnyHeader()
                                  .AllowAnyMethod();
                       });
@@ -86,12 +94,9 @@ namespace CCIS_API
 
             app.UseCors("CORSPolicy");
 
-
             app.UseHttpsRedirection();
 
-            //app.UseMvc();
-            app
-                .UseAuthentication()
+            app.UseAuthentication()
                 .UseMvc(routeBuilder =>
                 {
                     routeBuilder.MapODataServiceRoute(
@@ -99,6 +104,14 @@ namespace CCIS_API
                         "odata",
                         modelBuilder.GetEdmModel(app.ApplicationServices));
                 });
+
+            //To serve file downloads
+            app.UseStaticFiles(); // For the wwwroot folder
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
+                RequestPath = new PathString("/Uploads")
+            });
         }
     }
 }
