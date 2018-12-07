@@ -251,7 +251,7 @@ class Goal2Contrib extends React.Component {
       if (metaUID !== null) {
         await this.saveGoal(metaUID)
       }
-      
+
     }
 
     setLoading(false)
@@ -843,7 +843,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  2.2 Does your climate change unit have dedicated funding?
+                  2.2 Does your climate change unit have dedicated funding (y/n)?
                 </label>
                 <br />
                 <Button
@@ -864,162 +864,167 @@ class Goal2Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  What is the total budget?
-                </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 1 }) }}>0k - 10k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 2 }) }}>10k - 100k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 3 }) }}>100k - 1m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 4 }) }}>1m - 10m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 5 }) }}>10m - 100m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q2_2_A: 6 }) }}>> 100m</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={6}
-                    value={Q2_2_A}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q2_2_A: value }) }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br />
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="5">
-                <label style={{ fontWeight: "bold" }}>
-                  How long will the funding last (years)?
-                </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q2_2_B: 1 }) }}>0 - 5</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q2_2_B: 2 }) }}>5 - 10</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q2_2_B: 3 }) }}>> 10</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={3}
-                    value={Q2_2_B}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q2_2_B: value }) }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br />
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Who is the funding agency?
-                </label>
-
-                <OData
-                  baseUrl={ccrdBaseURL + 'Funders'}
-                  query={{
-                    select: ['FunderId', 'FundingAgency'],
-                    orderBy: ['FundingAgency']
-                  }}>
-
-                  {({ loading, error, data }) => {
-
-                    let processedData = []
-
-                    if (loading) {
-                      processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
-                    }
-
-                    if (error) {
-                      console.error(error)
-                    }
-
-                    if (data) {
-                      if (data.value && data.value.length > 0) {
-                        processedData = data.value
-                      }
-                    }
-
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
-                        value={Q2_2_C}
-                        callback={(value) => { this.setState({ Q2_2_C: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+            {
+              Q2_2 === true &&
+              <div>
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      What is the total budget?
+                  </label>
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 1 }) }}>0k - 10k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 2 }) }}>10k - 100k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 3 }) }}>100k - 1m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 4 }) }}>1m - 10m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 5 }) }}>10m - 100m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q2_2_A: 6 }) }}>> 100m</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={6}
+                        value={Q2_2_A}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q2_2_A: value }) }}
                       />
-                    )
-                  }}
-                </OData>
-              </Col>
-            </Row>
-            <br />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Are there any partnering departments/organisations that share the costs?
-                </label>
-
-                <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
-
-                  {({ loading, error, data }) => {
-
-                    let processedData = []
-
-                    if (loading) {
-                      processedData = [{ id: "Loading...", value: "Loading..." }]
-                    }
-
-                    if (error) {
-                      console.error(error)
-                    }
-
-                    if (data) {
-                      if (data.items && data.items.length > 0) {
-                        processedData = data.items
-                      }
-                    }
-
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q2_2_D}
-                        callback={(value) => { this.setState({ Q2_2_D: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="5">
+                    <label style={{ fontWeight: "bold" }}>
+                      How long will the funding last (years)?
+                  </label>
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="4" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q2_2_B: 1 }) }}>0 - 5</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q2_2_B: 2 }) }}>5 - 10</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q2_2_B: 3 }) }}>> 10</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={3}
+                        value={Q2_2_B}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q2_2_B: value }) }}
                       />
-                    )
-                  }}
-                </OData>
-              </Col>
-            </Row>
-            <br />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Who is the funding agency?
+                  </label>
+
+                    <OData
+                      baseUrl={ccrdBaseURL + 'Funders'}
+                      query={{
+                        select: ['FunderId', 'FundingAgency'],
+                        orderBy: ['FundingAgency']
+                      }}>
+
+                      {({ loading, error, data }) => {
+
+                        let processedData = []
+
+                        if (loading) {
+                          processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
+                        }
+
+                        if (error) {
+                          console.error(error)
+                        }
+
+                        if (data) {
+                          if (data.value && data.value.length > 0) {
+                            processedData = data.value
+                          }
+                        }
+
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
+                            value={Q2_2_C}
+                            callback={(value) => { this.setState({ Q2_2_C: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Are there any partnering departments/organisations that share the costs?
+                  </label>
+
+                    <OData
+                      baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                      {({ loading, error, data }) => {
+
+                        let processedData = []
+
+                        if (loading) {
+                          processedData = [{ id: "Loading...", value: "Loading..." }]
+                        }
+
+                        if (error) {
+                          console.error(error)
+                        }
+
+                        if (data) {
+                          if (data.items && data.items.length > 0) {
+                            processedData = data.items
+                          }
+                        }
+
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                            value={Q2_2_D}
+                            callback={(value) => { this.setState({ Q2_2_D: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+                  </Col>
+                </Row>
+                <br />
+              </div>
+            }
 
             <Row style={{ marginBottom: "15px" }}>
               <Col md="12">

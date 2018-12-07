@@ -52,6 +52,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q5_1: 1, //TechnologyAwareness
   Q5_2: "", //EvidenceLink
+  Q5_3: false, //DedicatedFunding
   Q5_3_A: 1, //TotalBudget
   Q5_3_B: 1, //BudgetDuration
   Q5_3_C: 0, //FundingAgency
@@ -170,6 +171,7 @@ class Goal5Contrib extends React.Component {
           goalId: editGoalId,
           Q5_1: parseInt(data.Questions.filter(x => x.Key === "TechnologyAwareness")[0].Value),
           Q5_2: data.Questions.filter(x => x.Key === "EvidenceLink")[0].Value,
+          Q5_3: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
           Q5_3_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q5_3_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
           Q5_3_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
@@ -279,7 +281,7 @@ class Goal5Contrib extends React.Component {
   async saveGoal(metaUID) {
 
     let {
-      goalId, goalStatus, Q5_1, Q5_2, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
+      goalId, goalStatus, Q5_1, Q5_2, Q5_3, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
       metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement,
       attachmentDetails, metaRegion
     } = this.state
@@ -294,6 +296,7 @@ class Goal5Contrib extends React.Component {
       Questions: [
         { Key: "TechnologyAwareness", Value: Q5_1.toString() },
         { Key: "EvidenceLink", Value: Q5_2 },
+        { Key: "DedicatedFunding", Value: Q5_3.toString() },
         { Key: "TotalBudget", Value: Q5_3_A.toString() },
         { Key: "BudgetDuration", Value: Q5_3_B.toString() },
         { Key: "FundingAgency", Value: Q5_3_C.toString() },
@@ -507,7 +510,7 @@ class Goal5Contrib extends React.Component {
   render() {
 
     let {
-      editing, goalStatus, goalId, Q5_1, Q5_2, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
+      editing, goalStatus, goalId, Q5_1, Q5_2, Q5_3, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
     } = this.state
@@ -808,167 +811,188 @@ class Goal5Contrib extends React.Component {
                 <label style={{ fontWeight: "bold" }}>
                   5.3 Does your climate change unit have dedicated funding (y/n)?
                 </label>
-              </Col>
-            </Row>
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  What is the total budget for adaptation technologies?
-                </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 1 }) }}>0k - 10k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 2 }) }}>10k - 100k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 3 }) }}>100k - 1m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 4 }) }}>1m - 10m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 5 }) }}>10m - 100m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q5_3_A: 6 }) }}>> 100m</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={6}
-                    value={Q5_3_A}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q5_3_A: value }) }}
-                  />
-                </div>
+                <br />
+                <Button
+                  onClick={() => { this.setState({ Q5_3: true }) }}
+                  color=""
+                  style={{ fontSize: Q5_3 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q5_3 ? DEAGreen : "grey" }}
+                  size="sm">
+                  YES
+                </Button>
+                <Button
+                  onClick={() => { this.setState({ Q5_3: false }) }}
+                  color=""
+                  style={{ fontSize: !Q5_3 ? "13px" : "10px", backgroundColor: !Q5_3 ? DEAGreen : "grey" }}
+                  size="sm">
+                  NO
+                </Button>
               </Col>
             </Row>
             <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="5">
-                <label style={{ fontWeight: "bold" }}>
-                  How long will the funding for the adaptation technologies last?
+            {
+              Q5_3 === true &&
+              <div>
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      What is the total budget for adaptation technologies?
                 </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q5_3_B: 1 }) }}>0 - 5</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q5_3_B: 2 }) }}>5 - 10</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q5_3_B: 3 }) }}>> 10</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={3}
-                    value={Q5_3_B}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q5_3_B: value }) }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br />
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Who is the funding agency for the adaptation technologies?
-                </label>
-
-                <OData
-                  baseUrl={ccrdBaseURL + 'Funders'}
-                  query={{
-                    select: ['FunderId', 'FundingAgency'],
-                    orderBy: ['FundingAgency']
-                  }}>
-
-                  {({ loading, error, data }) => {
-
-                    let processedData = []
-
-                    if (loading) {
-                      processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
-                    }
-
-                    if (error) {
-                      console.error(error)
-                    }
-
-                    if (data) {
-                      if (data.value && data.value.length > 0) {
-                        processedData = data.value
-                      }
-                    }
-
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
-                        value={Q5_3_C}
-                        callback={(value) => { this.setState({ Q5_3_C: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 1 }) }}>0k - 10k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 2 }) }}>10k - 100k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 3 }) }}>100k - 1m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 4 }) }}>1m - 10m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 5 }) }}>10m - 100m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q5_3_A: 6 }) }}>> 100m</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={6}
+                        value={Q5_3_A}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q5_3_A: value }) }}
                       />
-                    )
-                  }}
-                </OData>
-              </Col>
-            </Row>
-            <br />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Are there any partnering departments/organisations that share the cost for the adaptation
-                  technologies?
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="5">
+                    <label style={{ fontWeight: "bold" }}>
+                      How long will the funding for the adaptation technologies last?
+                </label>
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="4" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q5_3_B: 1 }) }}>0 - 5</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q5_3_B: 2 }) }}>5 - 10</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q5_3_B: 3 }) }}>> 10</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={3}
+                        value={Q5_3_B}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q5_3_B: value }) }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Who is the funding agency for the adaptation technologies?
                 </label>
 
-                <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                    <OData
+                      baseUrl={ccrdBaseURL + 'Funders'}
+                      query={{
+                        select: ['FunderId', 'FundingAgency'],
+                        orderBy: ['FundingAgency']
+                      }}>
 
-                  {({ loading, error, data }) => {
+                      {({ loading, error, data }) => {
 
-                    let processedData = []
+                        let processedData = []
 
-                    if (loading) {
-                      processedData = [{ id: "Loading...", value: "Loading..." }]
-                    }
+                        if (loading) {
+                          processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
+                        }
 
-                    if (error) {
-                      console.error(error)
-                    }
+                        if (error) {
+                          console.error(error)
+                        }
 
-                    if (data) {
-                      if (data.items && data.items.length > 0) {
-                        processedData = data.items
-                      }
-                    }
+                        if (data) {
+                          if (data.value && data.value.length > 0) {
+                            processedData = data.value
+                          }
+                        }
 
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q5_3_D}
-                        callback={(value) => { this.setState({ Q5_3_D: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
-                      />
-                    )
-                  }}
-                </OData>
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
+                            value={Q5_3_C}
+                            callback={(value) => { this.setState({ Q5_3_C: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+                  </Col>
+                </Row>
+                <br />
 
-              </Col>
-            </Row>
-            <br />
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Are there any partnering departments/organisations that share the cost for the adaptation
+                      technologies?
+                </label>
+
+                    <OData
+                      baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                      {({ loading, error, data }) => {
+
+                        let processedData = []
+
+                        if (loading) {
+                          processedData = [{ id: "Loading...", value: "Loading..." }]
+                        }
+
+                        if (error) {
+                          console.error(error)
+                        }
+
+                        if (data) {
+                          if (data.items && data.items.length > 0) {
+                            processedData = data.items
+                          }
+                        }
+
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                            value={Q5_3_D}
+                            callback={(value) => { this.setState({ Q5_3_D: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+
+                  </Col>
+                </Row>
+                <br />
+              </div>
+            }
 
             <Row>
               <Col md="8">

@@ -44,6 +44,7 @@ const defaultState = {
   goalStatus: "R",
   goalId: _gf.GetUID(),
   Q4_1: 1, //CapacityBuilding
+  Q4_2: false, //DedicatedFunding
   Q4_2_A: 1, //TotalBudget
   Q4_2_B: 1, //BudgetDuration
   Q4_2_C: 0, //FundingAgency
@@ -148,6 +149,7 @@ class Goal4Contrib extends React.Component {
           editing: true,
           goalId: editGoalId,
           Q4_1: parseInt(data.Questions.filter(x => x.Key === "CapacityBuilding")[0].Value),
+          Q4_2: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
           Q4_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q4_2_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
           Q4_2_C: parseInt(data.Questions.filter(x => x.Key === "FundingAgency")[0].Value),
@@ -183,7 +185,7 @@ class Goal4Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
+    let { goalId, goalStatus, Q4_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -196,6 +198,7 @@ class Goal4Contrib extends React.Component {
       Type: 4,
       Questions: [
         { Key: "CapacityBuilding", Value: Q4_1.toString() },
+        { Key: "DedicatedFunding", Value: Q4_2.toString() },
         { Key: "TotalBudget", Value: Q4_2_A.toString() },
         { Key: "BudgetDuration", Value: Q4_2_B.toString() },
         { Key: "FundingAgency", Value: Q4_2_C.toString() },
@@ -245,7 +248,7 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q4_1, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
+    let { editing, goalStatus, goalId, Q4_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
 
     return (
       <>
@@ -373,169 +376,190 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  4.2 Budget for adaptation technologies:
+                  4.2 Does your climate change unit have dedicated funding for adaptation technologies (y/n)?
                 </label>
-              </Col>
-            </Row>
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  What is the total budget for adaptation technologies?
-                </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 1 }) }}>0k - 10k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 2 }) }}>10k - 100k</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 3 }) }}>100k - 1m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 4 }) }}>1m - 10m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 5 }) }}>10m - 100m</a>
-                    </Col>
-                    <Col md="2" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_2_A: 6 }) }}>> 100m</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={6}
-                    value={Q4_2_A}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q4_2_A: value }) }}
-                  />
-                </div>
+                <br />
+                <Button
+                  onClick={() => { this.setState({ Q4_2: true }) }}
+                  color=""
+                  style={{ fontSize: Q4_2 ? "13px" : "10px", marginLeft: "0px", backgroundColor: Q4_2 ? DEAGreen : "grey" }}
+                  size="sm">
+                  YES
+                </Button>
+                <Button
+                  onClick={() => { this.setState({ Q4_2: false }) }}
+                  color=""
+                  style={{ fontSize: !Q4_2 ? "13px" : "10px", backgroundColor: !Q4_2 ? DEAGreen : "grey" }}
+                  size="sm">
+                  NO
+                </Button>
               </Col>
             </Row>
             <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="5">
-                <label style={{ fontWeight: "bold" }}>
-                  How long will the funding for the adaptation technologies last?
+            {
+              Q4_2 === true &&
+              <div>
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      What is the total budget for adaptation technologies?
                 </label>
-                <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
-                  <Row style={{ marginBottom: "-10px" }}>
-                    <Col md="4" style={{ textAlign: "left" }}>
-                      <a onClick={() => { this.setState({ Q4_2_B: 1 }) }}>0 - 5</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "center" }}>
-                      <a onClick={() => { this.setState({ Q4_2_B: 2 }) }}>5 - 10</a>
-                    </Col>
-                    <Col md="4" style={{ textAlign: "right" }}>
-                      <a onClick={() => { this.setState({ Q4_2_B: 3 }) }}>> 10</a>
-                    </Col>
-                  </Row>
-                  <Slider
-                    min={1}
-                    max={3}
-                    value={Q4_2_B}
-                    style={{ marginLeft: "15px", marginRight: "15px" }}
-                    onChange={(value) => { this.setState({ Q4_2_B: value }) }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br />
-
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Who is the funding agency for the adaptation technologies?
-                </label>
-
-                <OData
-                  baseUrl={ccrdBaseURL + 'Funders'}
-                  query={{
-                    select: ['FunderId', 'FundingAgency'],
-                    orderBy: ['FundingAgency']
-                  }}>
-
-                  {({ loading, error, data }) => {
-
-                    let processedData = []
-
-                    if (loading) {
-                      processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
-                    }
-
-                    if (error) {
-                      console.error(error)
-                    }
-
-                    if (data) {
-                      if (data.value && data.value.length > 0) {
-                        processedData = data.value
-                      }
-                    }
-
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
-                        value={Q4_2_C}
-                        callback={(value) => { this.setState({ Q4_2_C: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 1 }) }}>0k - 10k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 2 }) }}>10k - 100k</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 3 }) }}>100k - 1m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 4 }) }}>1m - 10m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 5 }) }}>10m - 100m</a>
+                        </Col>
+                        <Col md="2" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q4_2_A: 6 }) }}>> 100m</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={6}
+                        value={Q4_2_A}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q4_2_A: value }) }}
                       />
-                    )
-                  }}
-                </OData>
-              </Col>
-            </Row>
-            <br />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
 
-            <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
-              <Col md="8">
-                <label style={{ fontWeight: "bold" }}>
-                  Are there any partnering departments/organisations that share the cost for the adaptation
-                    technologies?
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="5">
+                    <label style={{ fontWeight: "bold" }}>
+                      How long will the funding for the adaptation technologies last?
+                </label>
+                    <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
+                      <Row style={{ marginBottom: "-10px" }}>
+                        <Col md="4" style={{ textAlign: "left" }}>
+                          <a onClick={() => { this.setState({ Q4_2_B: 1 }) }}>0 - 5</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "center" }}>
+                          <a onClick={() => { this.setState({ Q4_2_B: 2 }) }}>5 - 10</a>
+                        </Col>
+                        <Col md="4" style={{ textAlign: "right" }}>
+                          <a onClick={() => { this.setState({ Q4_2_B: 3 }) }}>> 10</a>
+                        </Col>
+                      </Row>
+                      <Slider
+                        min={1}
+                        max={3}
+                        value={Q4_2_B}
+                        style={{ marginLeft: "15px", marginRight: "15px" }}
+                        onChange={(value) => { this.setState({ Q4_2_B: value }) }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Who is the funding agency for the adaptation technologies?
                 </label>
 
-                <OData
-                  baseUrl={vmsBaseURL + 'SAGovDepts'}>
+                    <OData
+                      baseUrl={ccrdBaseURL + 'Funders'}
+                      query={{
+                        select: ['FunderId', 'FundingAgency'],
+                        orderBy: ['FundingAgency']
+                      }}>
 
-                  {({ loading, error, data }) => {
+                      {({ loading, error, data }) => {
 
-                    let processedData = []
+                        let processedData = []
 
-                    if (loading) {
-                      processedData = [{ id: "Loading...", value: "Loading..." }]
-                    }
+                        if (loading) {
+                          processedData = [{ FunderId: "Loading...", FundingAgency: "Loading..." }]
+                        }
 
-                    if (error) {
-                      console.error(error)
-                    }
+                        if (error) {
+                          console.error(error)
+                        }
 
-                    if (data) {
-                      if (data.items && data.items.length > 0) {
-                        processedData = data.items
-                      }
-                    }
+                        if (data) {
+                          if (data.value && data.value.length > 0) {
+                            processedData = data.value
+                          }
+                        }
 
-                    return (
-                      <TreeSelectInput
-                        data={processedData}
-                        transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                        value={Q4_2_D}
-                        callback={(value) => { this.setState({ Q4_2_D: value.id }) }}
-                        allowClear={true}
-                        placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
-                      />
-                    )
-                  }}
-                </OData>
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
+                            value={Q4_2_C}
+                            callback={(value) => { this.setState({ Q4_2_C: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Funding Agency...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+                  </Col>
+                </Row>
+                <br />
 
-              </Col>
-            </Row>
-            <br />
+                <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Are there any partnering departments/organisations that share the cost for the adaptation
+                        technologies?
+                </label>
+
+                    <OData
+                      baseUrl={vmsBaseURL + 'SAGovDepts'}>
+
+                      {({ loading, error, data }) => {
+
+                        let processedData = []
+
+                        if (loading) {
+                          processedData = [{ id: "Loading...", value: "Loading..." }]
+                        }
+
+                        if (error) {
+                          console.error(error)
+                        }
+
+                        if (data) {
+                          if (data.items && data.items.length > 0) {
+                            processedData = data.items
+                          }
+                        }
+
+                        return (
+                          <TreeSelectInput
+                            data={processedData}
+                            transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+                            value={Q4_2_D}
+                            callback={(value) => { this.setState({ Q4_2_D: value.id }) }}
+                            allowClear={true}
+                            placeHolder={"Select Departments/Organisations...  (Leave empty for 'None')"}
+                          />
+                        )
+                      }}
+                    </OData>
+
+                  </Col>
+                </Row>
+                <br />
+              </div>
+            }
 
             <Row>
               <Col md="8">
@@ -638,7 +662,7 @@ class Goal4Contrib extends React.Component {
                 </OData>
               </Col>
             </Row>
-            <br />            
+            <br />
 
             <Row>
               <Col md="4">

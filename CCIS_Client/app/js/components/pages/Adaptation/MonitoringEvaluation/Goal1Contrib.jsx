@@ -815,14 +815,14 @@ class Goal1Contrib extends React.Component {
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   1.2 Please add the details of all of the climate change adaptation or mitigation options
-                  or any research options described in your document to the Climate Change Response Database (CCR).
+                  or any research options described in your document to the National Climate Change Response Database (NCCRD).
               </label>
                 <Button
                   onClick={() => { this.setState({ showNCCRD: true }) }}
                   color=""
                   style={{ fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }}
                   size="sm">
-                  CCR
+                  NCCRD
                 </Button>
               </Col>
             </Row>
