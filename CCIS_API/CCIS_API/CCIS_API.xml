@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CCIS_API</name>
+    </assembly>
+    <members>
+        <member name="M:CCIS_API.Controllers.AdHocController.GetFilteredInstitutions(System.Int32,System.Int32)">
+            <summary>
+            Get a filtered list of Institution names
+            </summary>
+            <param name="region">Region filter (optional)</param>
+            <param name="sector">Sector filter (optional)</param>
+            <returns>Filtered list of Institution names</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.AdHocController.GetFilteredGoalsIDs(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Get filtered list of GoalId
+            </summary>
+            <param name="region">Region filter (optional)</param>
+            <param name="sector">Sector filter (optional)</param>
+            <param name="goal">Goal filter (optional)</param>
+            <param name="year">Year filter (optional)</param>
+            <param name="institution">Institution filter (optional)</param>
+            <returns>Filtered list of GoalId</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.FileManagerController.UploadFile(CCIS_API.ViewModels.UploadFile)">
+            <summary>
+            Upload a file to the server
+            </summary>
+            <param name="fileData">Details of file to upload</param>
+            <returns>FileDetails object</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.FileManagerController.RemoveFile(CCIS_API.ViewModels.UploadFile)">
+            <summary>
+            Remove a file from the server
+            </summary>
+            <param name="fileData">Details of file to upload</param>
+            <returns>True (success) / False (fail)</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.FileManagerController.RemoveAllFiles">
+            <summary>
+            Remove all files from server (this methos was created for testing purposes)
+            </summary>
+        </member>
+        <member name="M:CCIS_API.Controllers.GoalsController.Get">
+            <summary>
+            Get a list of Goal
+            </summary>
+            <returns>List of Goal</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.GoalsController.Post(CCIS_API.Database.Models.Goal)">
+            <summary>
+            Add/Update a specific Goal
+            </summary>
+            <param name="goal">Goal to add/update</param>
+            <returns>Success/Fail status</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.GoalsController.GeoJson">
+            <summary>
+            Get a list of Goal in GeoJSON format
+            </summary>
+            <returns>List of Goal in GeoJSON format</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.GoalsController.GetGoalData(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Get a filtered list of Goal with additional data
+            </summary>
+            <param name="region">Region filter (optional)</param>
+            <param name="sector">Sector filter (optional)</param>
+            <param name="goal">Goal filter (optional)</param>
+            <param name="year">Year filter (optional)</param>
+            <param name="institution">Institution filter (optional)</param>
+            <returns>Filtered list of Goal with additional data</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.GoalsController.ParseIntCustom(System.String)">
+            <summary>
+            Converts string value to int, returns 0 for invalid strings
+            </summary>
+        </member>
+        <member name="M:CCIS_API.Controllers.QuestionsController.Get">
+            <summary>
+            Get a list of Question
+            </summary>
+            <returns>List of Question</returns>
+        </member>
+        <member name="M:CCIS_API.Controllers.QuestionsController.Post(CCIS_API.Database.Models.Question)">
+            <summary>
+            Add/Update a specific Question
+            </summary>
+            <param name="question">Question to add/update</param>
+            <returns>Success/Fail status</returns>
+        </member>
+        <member name="T:CCIS_API.Database.Contexts.CustomDocumentFilter">
+            <summary>
+            I found the starting point of this class and its implemetation on StackOverflow and GitHub:
+            https://stackoverflow.com/a/51774147/4261155
+            https://github.com/nycdanielp/swashbuckle-custom-odata/blob/master/CustomDocumentFilter.cs
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -26,6 +26,10 @@ namespace CCIS_API.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Get a list of Question
+        /// </summary>
+        /// <returns>List of Question</returns>
         [HttpGet]
         [EnableQuery]
         public IQueryable<Question> Get()
@@ -33,7 +37,11 @@ namespace CCIS_API.Controllers
             return _context.Questions.AsQueryable();
         }
 
-        //Add/Update
+        /// <summary>
+        /// Add/Update a specific Question
+        /// </summary>
+        /// <param name="question">Question to add/update</param>
+        /// <returns>Success/Fail status</returns>
         [HttpPost]
         [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
