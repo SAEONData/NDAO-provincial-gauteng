@@ -1,7 +1,7 @@
 import { siteBaseURL } from '../JS/Config/serviceURLs.cfg'
 
 export const MapConfig = {
-  "service": "http://app01.saeon.ac.za/CCIS_API/odata/goals/extensions.geojson",
+  "service": "http://app01.saeon.ac.za/ccistestapi/odata/goals/extensions.geojson",
   "domain": siteBaseURL,
   "IDField": "properties.id",
   "toolTipTitle": "properties.title",
