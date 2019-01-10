@@ -44,6 +44,11 @@ namespace CCIS_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Upload a file to the server
+        /// </summary>
+        /// <param name="fileData">Details of file to upload</param>
+        /// <returns>FileDetails object</returns>
         [HttpPost]
         [ODataRoute("UploadFile")]
         [EnableCors("CORSPolicy")]
@@ -54,6 +59,11 @@ namespace CCIS_API.Controllers
             return fileManager.UploadFile(fileData);
         }
 
+        /// <summary>
+        /// Remove a file from the server
+        /// </summary>
+        /// <param name="fileData">Details of file to upload</param>
+        /// <returns>True (success) / False (fail)</returns>
         [HttpPost]
         [ODataRoute("RemoveFile")]
         [EnableCors("CORSPolicy")]
@@ -63,7 +73,10 @@ namespace CCIS_API.Controllers
             return fileManager.RemoveFile(fileData);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Remove all files from server (this methos was created for testing purposes)
+        /// </summary>
+        //[HttpGet] //Removed to hide from SwaggerUI
         [ODataRoute("RemoveAllFiles")]
         [EnableCors("CORSPolicy")]
         public void RemoveAllFiles()

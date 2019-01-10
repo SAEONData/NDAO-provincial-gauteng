@@ -42,6 +42,10 @@ namespace CCIS_API.Controllers
             _config = config;
         }
 
+        /// <summary>
+        /// Get a list of Goal
+        /// </summary>
+        /// <returns>List of Goal</returns>
         [HttpGet]
         [EnableQuery]
         public IQueryable<Goal> Get()
@@ -49,7 +53,11 @@ namespace CCIS_API.Controllers
             return _context.Goals.AsQueryable();
         }
 
-        //Add/Update
+        /// <summary>
+        /// Add/Update a specific Goal
+        /// </summary>
+        /// <param name="goal">Goal to add/update</param>
+        /// <returns>Success/Fail status</returns>
         [HttpPost]
         [Authorize(Roles = "Contributor,Custodian,Configurator,SysAdmin")]
         [EnableQuery]
@@ -100,6 +108,10 @@ namespace CCIS_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a list of Goal in GeoJSON format
+        /// </summary>
+        /// <returns>List of Goal in GeoJSON format</returns>
         [HttpGet]
         [EnableQuery]
         public JsonResult GeoJson()
@@ -134,6 +146,15 @@ namespace CCIS_API.Controllers
             return new JsonResult(goalData);
         }
 
+        /// <summary>
+        /// Get a filtered list of Goal with additional data
+        /// </summary>
+        /// <param name="region">Region filter (optional)</param>
+        /// <param name="sector">Sector filter (optional)</param>
+        /// <param name="goal">Goal filter (optional)</param>
+        /// <param name="year">Year filter (optional)</param>
+        /// <param name="institution">Institution filter (optional)</param>
+        /// <returns>Filtered list of Goal with additional data</returns>
         [HttpGet]
         [EnableQuery]
         [ODataRoute("GetGoalData(region={region},sector={sector},goal={goal},year={year},institution={institution})")]
