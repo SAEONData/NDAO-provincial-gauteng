@@ -2,8 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const cwd = process.cwd()
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const mode = 'production'
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 /**
  * Config
@@ -13,27 +13,40 @@ module.exports = {
   mode,
   optimization: {
 		// We no not want to minimize our code.
-		minimize: false
-	},
+    minimize: false,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]App[\\/]JS[\\/]Config[\\/]/,
+          name: "config",
+          chunks: "all"
+        }
+      }
+    }
+  },
   entry: {
     app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
-    react: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      'react-router',
-      'redux',
-      'react-redux',
-      'react-router-redux',
-      'history'
-    ],
-    config : [
-      './js/Config/serviceURLs.cfg',
-      './js/secrets.cfg',
-      './js/Config/colours.cfg',
-      './js/Config/ui_config.cfg'
-    ]
+    // I used to declare React as a separate bundle, but I believe SplitChunks takes care of that for me.
+    // react: [
+    //   'react',
+    //   'react-dom',
+    //   'react-router-dom',
+    //   'react-router',
+    //   'redux',
+    //   'react-redux',
+    //   'react-router-redux',
+    //   'history'
+    // ],
+
+    //Here I create my 'config' bundle, but these files still get bundled in the main bundle too, 
+    //making this bundle useless
+    // config : [
+    //   './js/Config/serviceURLs.js',
+    //   './js/secrets.cfg',
+    //   './js/Config/colours.js',
+    //   './js/Config/ui_config.js'
+    // ]
   },
 
   output: {
@@ -97,6 +110,7 @@ module.exports = {
   },
 
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.ejs',
       chunks: ["app"],
@@ -109,17 +123,16 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       CONSTANTS: {
-        PRODUCTION: mode === 'production'
+        PROD: true,
+        TEST: false,
+        DEV: false
       }
     }),
+    new HtmlWebpackPlugin({
+      template: './index.ejs',
+      chunks: ["config"],
+      filename: "index.html"
+    }),
     new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
-    // new webpack.IgnorePlugin(/^(fs|ipc|cfg|ignore)$/),
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: 'js/Config/*.cfg',
-    //     to: '[name].[ext]',
-    //     toType: 'template'
-    //   }
-    // ])
   ]
 }

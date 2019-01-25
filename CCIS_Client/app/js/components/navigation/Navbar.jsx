@@ -3,8 +3,8 @@
 import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Fa, Navbar as MDBNavbar, NavbarNav, NavbarToggler, NavItem, NavLink } from 'mdbreact';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DEAGreen } from "../../Config/colours.cfg";
-import { ssoBaseURL } from '../../../JS/Config/serviceURLs.cfg';
+import { DEAGreen } from "../../Config/colours.js";
+import { ssoBaseURL } from '../../../JS/Config/serviceURLs.js';
 import DASL from '../Pages/Tools/DASL.jsx';
 import NDMC from '../Pages/Tools/NDMC.jsx';
 import LRT from '../Pages/Tools/LRT.jsx';

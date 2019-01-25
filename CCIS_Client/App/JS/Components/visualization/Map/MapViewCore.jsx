@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import popout from '../../../../Images/Icons/popout.png'
 import popin from '../../../../Images/Icons/popin.png'
 import { MapConfig } from '../../../../Data/mapConfig'
-import { vmsBaseURL } from '../../../../JS/Config/serviceURLs.cfg'
+import { vmsBaseURL } from '../../../../JS/Config/serviceURLs.js'
 
 const mapStateToProps = (state, props) => {
   return {}

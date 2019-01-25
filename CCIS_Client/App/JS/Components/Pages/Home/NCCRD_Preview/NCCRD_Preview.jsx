@@ -3,7 +3,7 @@ import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import OData from 'react-odata'
 import ProjectCard from './ProjectCard.jsx'
-import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../../JS/Config/serviceURLs.cfg'
+import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../../JS/Config/serviceURLs.js'
 import NCCRD from '../../Tools/NCCRD.jsx'
 
 //images

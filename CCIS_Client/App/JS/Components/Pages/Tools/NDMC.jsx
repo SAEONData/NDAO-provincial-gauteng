@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import HostedContentFrame from '../../Layout/HostedContentFrame.jsx'
-import { ndmcSiteBaseURL } from '../../../../JS/Config/serviceURLs.cfg'
+import { ndmcSiteBaseURL } from '../../../../JS/Config/serviceURLs.js'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -39,6 +39,8 @@ class NDMC extends React.Component {
     if(query){
       url += query
     }
+
+    console.log("###", url)
 
     return (
       <>

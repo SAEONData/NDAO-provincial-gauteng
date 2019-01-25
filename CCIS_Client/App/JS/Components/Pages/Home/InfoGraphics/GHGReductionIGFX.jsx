@@ -2,7 +2,7 @@ import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import buildQuery from 'odata-query'
-import { ccrdBaseURL } from '../../../../../JS/Config/serviceURLs.cfg'
+import { ccrdBaseURL } from '../../../../../JS/Config/serviceURLs.js'
 import moment from 'moment'
 
 //images

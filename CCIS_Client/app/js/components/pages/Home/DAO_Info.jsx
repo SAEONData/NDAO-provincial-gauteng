@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact';
-import { DEAGreenDark, DEAOrangeDark } from "../../../Config/colours.cfg"
+import { DEAGreenDark, DEAOrangeDark } from "../../../Config/colours.js"
 
 //Images
 import DEAGreenLightDark from '../../../../Images/Other/DEAGreenLightDark.png'

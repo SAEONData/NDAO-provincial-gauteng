@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Row, Col, Button, Fa, CardTitle, CardText } from 'mdbreact'
-import { DEAGreen } from '../../../../Config/colours.cfg'
+import { DEAGreen } from '../../../../Config/colours.js'
 
 //images
 import sarva_ct from '../../../../../Images/Maps/sarva_ct.png'
