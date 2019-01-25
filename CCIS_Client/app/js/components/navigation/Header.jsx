@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row, Container } from 'mdbreact';
-import { DEAGreen, DEAGreenDark } from '../../Config/colours.cfg'
+import { DEAGreen, DEAGreenDark } from '../../Config/colours.js'
 
 //Images
 import environmental_affairs_logo from '../../../Images/DEA/environmental_affairs_logo.png'

@@ -1,5 +1,5 @@
 
-const _ = require('./ui_config.cfg')
+//const _ = require('./ui_config.js')
 
 export function UILookup(key, defaultLabel) {
 
@@ -17,3 +17,17 @@ export function UILookup(key, defaultLabel) {
     }
   }
 }
+
+export const ui_config = [
+  {
+    key: "exampleKey1",
+    label: "Example label 1:",
+    tooltip2: "Example tooltip 1"
+  },
+  {
+    key: "exampleKey2",
+    label: "Example label 2:",
+    tooltip: "Example tooltip 2A",
+    tooltip2: "Example tooltip 2B"
+  }
+]

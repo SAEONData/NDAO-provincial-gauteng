@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
-import { vmsBaseURL } from '../../../../../JS/Config/serviceURLs.cfg'
+import { vmsBaseURL } from '../../../../../JS/Config/serviceURLs.js'
 import moment from 'moment'
 
 //images

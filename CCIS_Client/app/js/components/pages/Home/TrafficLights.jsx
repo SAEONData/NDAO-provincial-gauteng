@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact';
 import TrafficLightBar from '../../visualization/TrafficLightBar.jsx';
-import { Red, Amber, Green } from "../../../Config/colours.cfg"
+import { Red, Amber, Green } from "../../../Config/colours.js"
 import moment from 'moment'
 
 //images

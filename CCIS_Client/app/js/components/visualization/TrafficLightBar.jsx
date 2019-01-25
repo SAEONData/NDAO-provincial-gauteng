@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Popover, PopoverBody, PopoverHeader, Modal, ModalHeader, ModalBody } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from '../../Config/colours.cfg'
+import { DEAGreen, Red, Amber, Green } from '../../Config/colours.js'
 
 const _gf = require('../../globalFunctions')
 
