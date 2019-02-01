@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
-import { DEAGreen, Red, Amber, Green } from '../../../../Config/colours.js'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../JS/Config/serviceURLs.js'
+import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.js'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../js/config/serviceURLs.js'
 import FileUpload from '../../../input/FileUpload.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
@@ -14,15 +14,15 @@ import buildQuery from 'odata-query'
 import moment from 'moment'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
-import { metaDataCredentials } from '../../../../../js/secrets.cfg'
+import { metaDataCredentials } from '../../../../../js/secrets.js'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
 import 'antd/lib/slider/style/css'
 
 //Images
-import gear from '../../../../../Images/Icons/gear.png'
-import checklist from '../../../../../Images/Icons/checklist.png'
+import gear from '../../../../../images/Icons/gear.png'
+import checklist from '../../../../../images/Icons/checklist.png'
 
 //Content
 import OrganogramTemplate from '../../../../../content/OrganogramTemplate.pptx'

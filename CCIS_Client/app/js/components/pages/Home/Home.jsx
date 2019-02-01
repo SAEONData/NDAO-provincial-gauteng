@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from "../../../Config/colours.js"
+import { DEAGreen, Red, Amber, Green } from "../../../config/colours.js"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
 import DAO_Info from './DAO_Info.jsx'
@@ -13,7 +13,7 @@ import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
 import SectorFilter from './Filters/SectorFilter.jsx'
 import GoalFilter from './Filters/GoalFilter.jsx'
-import { apiBaseURL, vmsBaseURL } from '../../../../JS/Config/serviceURLs.js'
+import { apiBaseURL, vmsBaseURL } from '../../../../js/config/serviceURLs.js'
 import InstitutionFilter from './Filters/InstitutionFilter.jsx'
 import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
 import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'

@@ -1,4 +1,4 @@
-import { siteBaseURL, apiBaseURL } from '../JS/Config/serviceURLs.js'
+import { siteBaseURL, apiBaseURL } from '../js/config/serviceURLs.js'
 
 export const MapConfig = {
   "service": `${apiBaseURL}goals/extensions.geojson`,

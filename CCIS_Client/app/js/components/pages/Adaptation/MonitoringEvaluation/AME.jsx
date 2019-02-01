@@ -8,9 +8,9 @@ import {
 } from 'mdbreact'
 import SelectInput from '../../../input/SelectInput.jsx'
 import OData from 'react-odata';
-import { DEAGreen } from '../../../../Config/colours.js'
+import { DEAGreen } from '../../../../config/colours.js'
 import About from './About.jsx'
-import { apiBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { apiBaseURL } from '../../../../../js/config/serviceURLs.js'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
 import Goal2Contrib from './Goal2Contrib.jsx'

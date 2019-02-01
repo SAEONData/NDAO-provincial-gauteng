@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
-import userManager from '../Authentication/userManager'
+import userManager from '../authentication/userManager'
 import Icon from 'antd/lib/icon'
 
 const _gf = require("../../globalFunctions")

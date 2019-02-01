@@ -1,10 +1,10 @@
 import React from 'react'
 import { Col, Row, Container } from 'mdbreact';
-import { DEAGreen, DEAGreenDark } from '../../Config/colours.js'
+import { DEAGreen, DEAGreenDark } from '../../config/colours.js'
 
 //Images
-import environmental_affairs_logo from '../../../Images/DEA/environmental_affairs_logo.png'
-import sa_flag from '../../../Images/Other/sa_flag.jpg'
+import environmental_affairs_logo from '../../../images/DEA/environmental_affairs_logo.png'
+import sa_flag from '../../../images/Other/sa_flag.jpg'
 
 class Header extends React.Component {
 

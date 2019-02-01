@@ -2,17 +2,17 @@
 
 import React from 'react'
 import { Row, Col, Button, Fa, CardTitle, CardText } from 'mdbreact'
-import { DEAGreen } from '../../../../Config/colours.js'
+import { DEAGreen } from '../../../../config/colours.js'
 
 //images
-import sarva_ct from '../../../../../Images/Maps/sarva_ct.png'
-import sarva_gp from '../../../../../Images/Maps/sarva_gp.png'
-import sarva_kzn from '../../../../../Images/Maps/sarva_kzn.png'
+import sarva_ct from '../../../../../images/Maps/sarva_ct.png'
+import sarva_gp from '../../../../../images/Maps/sarva_gp.png'
+import sarva_kzn from '../../../../../images/Maps/sarva_kzn.png'
 
 //AntD Carousel
 import Carousel from 'antd/lib/carousel'
 import 'antd/lib/carousel/style/css'
-import '../../../../../CSS/antd.carousel.css'
+import '../../../../../css/antd.carousel.css'
 
 const _ = require('lodash')
 

@@ -42,10 +42,10 @@ module.exports = {
     //Here I create my 'config' bundle, but these files still get bundled in the main bundle too, 
     //making this bundle useless
     // config : [
-    //   './js/Config/serviceURLs.js',
-    //   './js/secrets.cfg',
-    //   './js/Config/colours.js',
-    //   './js/Config/ui_config.js'
+    //   './js/config/serviceURLs.js',
+    //   './js/secrets.js',
+    //   './js/config/colours.js',
+    //   './js/config/ui_config.js'
     // ]
   },
 

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Col, Row } from 'mdbreact';
 import TrafficLightBar from '../../visualization/TrafficLightBar.jsx';
-import { Red, Amber, Green } from "../../../Config/colours.js"
+import { Red, Amber, Green } from "../../../config/colours.js"
 import moment from 'moment'
 
 //images
-import popout from '../../../../Images/Icons/popout.png'
-import popin from '../../../../Images/Icons/popin.png'
+import popout from '../../../../images/Icons/popout.png'
+import popin from '../../../../images/Icons/popin.png'
 
 const _gf = require('../../../globalFunctions')
 

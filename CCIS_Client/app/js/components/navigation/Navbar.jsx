@@ -3,14 +3,14 @@
 import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Fa, Navbar as MDBNavbar, NavbarNav, NavbarToggler, NavItem, NavLink } from 'mdbreact';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DEAGreen } from "../../Config/colours.js";
-import { ssoBaseURL } from '../../../JS/Config/serviceURLs.js';
-import DASL from '../Pages/Tools/DASL.jsx';
-import NDMC from '../Pages/Tools/NDMC.jsx';
-import LRT from '../Pages/Tools/LRT.jsx';
-import NCCRD from '../Pages/Tools/NCCRD.jsx';
-import NWIS from '../Pages/Tools/NWIS.jsx';
-import SARVA from '../Pages/Tools/SARVA.jsx';
+import { DEAGreen } from "../../config/colours.js";
+import { ssoBaseURL } from '../../../js/config/serviceURLs.js';
+import DASL from '../pages/Tools/DASL.jsx';
+import NDMC from '../pages/Tools/NDMC.jsx';
+import LRT from '../pages/Tools/LRT.jsx';
+import NCCRD from '../pages/Tools/NCCRD.jsx';
+import NWIS from '../pages/Tools/NWIS.jsx';
+import SARVA from '../pages/Tools/SARVA.jsx';
 import { data as NavData } from '../../../data/sideNavData'
 
 const _gf = require('../../globalFunctions')

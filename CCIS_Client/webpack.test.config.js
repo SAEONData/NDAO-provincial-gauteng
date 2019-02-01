@@ -5,48 +5,40 @@ const cwd = process.cwd()
 const mode = 'production'
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-/**
- * Config
- */
 module.exports = {
   context: path.join(cwd, 'app'),
   mode,
+
   optimization: {
-		// We no not want to minimize our code.
+    runtimeChunk: 'single',
     minimize: false,
     splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
       cacheGroups: {
-        commons: {
-          test: /[\\/]App[\\/]JS[\\/]Config[\\/]/,
-          name: "config",
-          chunks: "all"
+        config: {
+          test: /[\\/]app[\\/]js[\\/]config[\\/]/,
+          minSize: 0
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          },
         }
-      }
-    }
+      },
+    },
   },
+
   entry: {
     app: ["babel-polyfill", './js/index.jsx'],
     silentRenew: ["./silent_renew/silent_renew.js"],
-    // I used to declare React as a separate bundle, but I believe SplitChunks takes care of that for me.
-    // react: [
-    //   'react',
-    //   'react-dom',
-    //   'react-router-dom',
-    //   'react-router',
-    //   'redux',
-    //   'react-redux',
-    //   'react-router-redux',
-    //   'history'
-    // ],
-
-    //Here I create my 'config' bundle, but these files still get bundled in the main bundle too, 
-    //making this bundle useless
-    // config : [
-    //   './js/Config/serviceURLs.js',
-    //   './js/secrets.cfg',
-    //   './js/Config/colours.js',
-    //   './js/Config/ui_config.js'
-    // ]
   },
 
   output: {
@@ -113,12 +105,11 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.ejs',
-      chunks: ["app"],
-      filename: "index.html"
+      excludeChunks: ["silentRenew"],
     }),
     new HtmlWebpackPlugin({
       template: "./silent_renew/silent_renew.html",
-      chunks: ["silentRenew"],
+      chunks: ["silentRenew",],
       filename: "silent_renew.html"
     }),
     new webpack.DefinePlugin({
@@ -127,11 +118,6 @@ module.exports = {
         TEST: true,
         DEV: false
       }
-    }),
-    new HtmlWebpackPlugin({
-      template: './index.ejs',
-      chunks: ["config"],
-      filename: "index.html"
     }),
     new webpack.IgnorePlugin(/^(fs|ipc|ignore)$/)
   ]
