@@ -1,23 +1,36 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const cwd = process.cwd()
 const mode = 'production'
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   context: path.join(cwd, 'app'),
   mode,
 
   optimization: {
+    minimizer: [
+      new TerserPlugin({
+        chunkFilter: (chunk) => {
+          if (chunk.name === 'config') {
+            return false;
+          }
+    
+          return true;
+        },
+      }),
+    ],
     runtimeChunk: 'single',
-    minimize: false,
+    //minimize: false,
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
         config: {
+          name: "config",
           test: /[\\/]app[\\/]js[\\/]config[\\/]/,
           minSize: 0
         },
