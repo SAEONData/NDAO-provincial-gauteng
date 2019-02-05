@@ -1,9 +1,9 @@
 import React from 'react'
 import { Col, Row, Modal, ModalBody, ModalHeader } from 'mdbreact';
-import { DEAGreen, DEAGreenDark } from '../../Config/colours.js'
+import { DEAGreen, DEAGreenDark } from '../../config/colours.js'
 
 import { footerContent } from '../../../data/footerConfig'
-import loader from '../../../Images/Other/loader.gif'
+import loader from '../../../images/Other/loader.gif'
 
 class Footer extends React.Component {
 

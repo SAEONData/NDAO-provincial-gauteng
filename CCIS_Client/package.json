@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.2",
@@ -48,14 +49,16 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
+    "html-webpack-externals-plugin": "^3.8.0",
     "html-webpack-plugin": "^3.2.0",
     "json-loader": "^0.5.7",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "react-hot-loader": "^4.3.5",
     "style-loader": "^0.20.3",
+    "terser-webpack-plugin": "^1.2.2",
     "webpack": "^4.17.1",
     "webpack-cli": "^2.1.5",
-    "webpack-dev-server": "^3.1.7"
+    "webpack-dev-server": "^3.1.14"
   }
 }

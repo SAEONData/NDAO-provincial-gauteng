@@ -3,11 +3,11 @@ import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import OData from 'react-odata'
 import ProjectCard from './ProjectCard.jsx'
-import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../../js/config/serviceURLs.js'
 import NCCRD from '../../Tools/NCCRD.jsx'
 
 //images
-import popout from '../../../../../Images/Icons/popout.png'
+import popout from '../../../../../images/Icons/popout.png'
 
 const mapStateToProps = (state, props) => {
   return {}

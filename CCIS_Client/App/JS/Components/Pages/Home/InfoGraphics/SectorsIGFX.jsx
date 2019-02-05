@@ -1,11 +1,11 @@
 import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
-import { vmsBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { vmsBaseURL } from '../../../../../js/config/serviceURLs.js'
 import moment from 'moment'
 
 //images
-import sectors from '../../../../../Images/Icons/sectors.jpg'
+import sectors from '../../../../../images/Icons/sectors.jpg'
 
 const mapStateToProps = (state, props) => {
   return {}

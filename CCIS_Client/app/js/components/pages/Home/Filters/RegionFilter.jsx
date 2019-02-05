@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'mdbreact'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx';
-import { vmsBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { vmsBaseURL } from '../../../../../js/config/serviceURLs.js'
 import OData from 'react-odata'
 
 const _gf = require('../../../../globalFunctions')

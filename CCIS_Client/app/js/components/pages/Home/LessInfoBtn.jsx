@@ -1,5 +1,5 @@
 import React from 'react'
-import { DEAGreen } from "../../../Config/colours.js"
+import { DEAGreen } from "../../../config/colours.js"
 
 class LessInfoBtn extends React.Component {
 

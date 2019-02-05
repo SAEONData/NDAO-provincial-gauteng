@@ -10,17 +10,17 @@ import 'mdbreact/dist/css/mdb.css'
 import React from 'react'
 import { connect } from 'react-redux'
 import { HashRouter as Router, Redirect, Switch, Route } from 'react-router-dom'
-import Home from './components/Pages/Home/Home.jsx'
-import Login from './components/Authentication/Login.jsx'
-import Logout from './components/Authentication/Logout.jsx'
+import Home from './components/pages/Home/Home.jsx'
+import Login from './components/authentication/Login.jsx'
+import Logout from './components/authentication/Logout.jsx'
 import Navbar from './components/navigation/Navbar.jsx'
 import Footer from './components/navigation/Footer.jsx'
-import CallbackPage from '../js/components/Authentication/callback.jsx';
+import CallbackPage from '../js/components/authentication/callback.jsx';
 import LoadingPanel from './components/input/LoadingPanel.jsx'
 import Header from './components/navigation/Header.jsx';
 import AME from './components/pages/Adaptation/MonitoringEvaluation/AME.jsx';
 import SideNav from './components/navigation/SideNav.jsx'
-import userManager from './components/Authentication/userManager'
+import userManager from './components/authentication/userManager'
 
 //Data
 const Oidc = require("oidc-client")

@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact'
 
-// import AME from '../../../../../Images/AME.png'
+// import AME from '../../../../../images/AME.png'
 
 const mapStateToProps = (state, props) => {
   return {}

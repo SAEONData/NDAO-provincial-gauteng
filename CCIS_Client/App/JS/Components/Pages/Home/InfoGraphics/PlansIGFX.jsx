@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 //images
-import plans from '../../../../../Images/Icons/plans.jpg'
+import plans from '../../../../../images/Icons/plans.jpg'
 
 const mapStateToProps = (state, props) => {
   return {}
