@@ -3,10 +3,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen, Red, Amber, Green } from "../../../config/colours.js"
+import { DEAGreen } from "../../../config/colours.js"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
-import DAO_Info from './DAO_Info.jsx'
 import LessInfoBtn from './LessInfoBtn.jsx'
 import TrafficLights from './TrafficLights.jsx'
 import YearFilter from './Filters/YearFilter.jsx'
@@ -247,7 +246,7 @@ class Home extends React.Component {
     }
     finally {
 
-      if(parentSet === false){
+      if (parentSet === false) {
         this.setState({
           filterRegionParent: parseInt(filterRegion)
         })
@@ -260,77 +259,47 @@ class Home extends React.Component {
   render() {
 
     let {
-      infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution, 
+      infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution,
       goalData, goalDataUnfiltered, trafficLightFull, mapFullView
     } = this.state
 
     return (
-      <div style={{ padding: "15px", borderRadius: "10px" }}>
+      <div style={{ padding: "0px 15px 15px 15px", borderRadius: "10px" }}>
 
         <AME_Banner />
 
-        <br />
-        <br />
+        {/* <div style={{ height: 3 }} /> */}
 
-        <div style={{ marginBottom: "15px" }}>
-          <LessInfoBtn
-            infoSection={infoSection}
-            callback={(ifoSec) => { this.setState({ infoSection: !ifoSec }) }}
-          />
-          <Collapse isOpen={infoSection}>
-            <br />
-            <AME_Info />
-            {/* <br />
-            <DAO_Info /> */}
-            {/* <br /> */}
-            {/* <LessInfoBtn
+        <Row style={{ marginTop: -5 }}>
+          <Col sm="6">
+            <LessInfoBtn
               infoSection={infoSection}
               callback={(ifoSec) => { this.setState({ infoSection: !ifoSec }) }}
-              scrollUp
-            /> */}
-          </Collapse>
-        </div>
+            />
+          </Col>
+          <Col sm="6" style={{ textAlign: "right" }}>
+            <Button
+              size="sm"
+              onClick={() => { location.hash = "#/ame/contribute" }}
+              //style={{ margin: "35px 5px 0px 0px" }}
+              style={{
+                minHeight: 35,
+                //paddingTop: 10,
+                marginRight: 0,
+                marginLeft: 0
+              }}
+              color="warning">Submit your contribution
+            </Button>
+          </Col>
+        </Row>
 
-        <br />
+        <Collapse isOpen={infoSection}>
+          <AME_Info />
+        </Collapse>
 
-        <div>
-          <Row>
-            <Col md="12">
-              <h3>
-                <b style={{ marginRight: "15px" }}>Climate Change Adaptation Status Across South Africa</b>
-                {/* <Button 
-                  style={{ 
-                    marginTop: "0px", 
-                    marginLeft: "0px", 
-                    height: "40px", 
-                    fontSize: "16px" 
-                  }} 
-                  size="sm" 
-                  color="gainsboro"
-                >
-                  View Gauteng
-                </Button> */}
-              </h3>
-              <p style={{ marginBottom: "0px" }}>
-                A simple pragmatic approach has been developed to monitor and evaluate the progress being made
-                in achieving individual desired adaptation outcomes using traffic light colours as a scoring
-                system to summarise progress.
-              </p>
-              <br />
-              <p style={{ marginBottom: "0px" }}>
-                <b style={{ color: Red }}>RED</b> indicates that no or only preliminary work has begun towards a goal,
-                <br />
-                <b style={{ color: Amber }}>AMBER</b> indicates that significant progress is being made towards a goal, and
-                <br />
-                <b style={{ color: Green }}>GREEN</b> indicates that work on a goal is in an ideal state.
-              </p>
-            </Col>
-          </Row>
-        </div>
+        <div style={{ height: 5 }} />
 
-        <br />
-
-        <div style={{ borderTop: "1px solid gainsboro", borderBottom: "1px solid gainsboro", paddingTop: "15px", paddingBottom: "10px" }}>
+        <div style={{ borderTop: "1px solid gainsboro", borderBottom: "1px solid gainsboro", paddingTop: "12px", paddingBottom: "8px" }}>
           <Row >
             <Col md="3" style={{ marginBottom: "3px" }}>
               <RegionFilter
@@ -372,8 +341,9 @@ class Home extends React.Component {
               <Button
                 size="sm"
                 style={{
-                  height: "35px",
+                  height: "31px",
                   marginTop: "0px",
+                  paddingTop: 6,
                   width: "100%",
                   fontSize: "13px",
                   marginLeft: "0px",
@@ -395,7 +365,8 @@ class Home extends React.Component {
           </Row>
         </div>
 
-        <br />
+        {/* <br /> */}
+        <div style={{ height: 12 }} />
 
         {
           (trafficLightFull === true) &&
@@ -417,7 +388,7 @@ class Home extends React.Component {
           <Row>
             <Col md="12">
               <MapViewCore
-                height={550}
+                height={525}
                 popCallback={() => { this.setState({ mapFullView: false }) }}
                 fullView
                 filters={{
@@ -445,7 +416,8 @@ class Home extends React.Component {
                 </Col>
               </Row>
 
-              <br />
+              {/* <br /> */}
+              <div style={{ height: 10 }} />
 
               <Row>
                 <Col md="12">
@@ -466,7 +438,7 @@ class Home extends React.Component {
               <Row>
                 <Col md="12">
                   <MapViewCore
-                    height={400}
+                    height={420}
                     popCallback={() => { this.setState({ mapFullView: true }) }}
                     filters={{
                       region: filterRegion,
@@ -480,24 +452,14 @@ class Home extends React.Component {
                 </Col>
               </Row>
 
-              <Row style={{ textAlign: "right" }}>
-                <Col md="12">
-                  <Button
-                    onClick={() => { location.hash = "#/ame/contribute" }}
-                    style={{ margin: "35px 5px 0px 0px" }}
-                    color="warning">Submit your contribution
-              </Button>
-                </Col>
-              </Row>
-
             </Col>
 
           </Row>
         }
 
         <div style={{
-          marginTop: "25px",
-          marginBottom: "25px",
+          marginTop: "15px",
+          marginBottom: "15px",
           paddingTop: "15px",
           paddingBottom: "15px",
           borderTop: "1px solid gainsboro",

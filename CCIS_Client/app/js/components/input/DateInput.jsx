@@ -3,13 +3,9 @@
 import React from 'react'
 import { Tooltip } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
+import { DatePicker } from 'antd'
 
-import DatePicker from 'antd/lib/date-picker'
 import moment from 'moment';
-import '../../../css/antd.date-picker.css'
-import '../../../css/antd.time-picker.css'
-import '../../../css/antd.input.css'
-//const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
 // Properties:
 //  - label : Component label

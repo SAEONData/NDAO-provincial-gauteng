@@ -45,11 +45,11 @@ class GoalDetails extends React.Component {
         borderRadius: "10px",
         padding: "15px 15px 5px 15px"
       }}>
-        <h4 style={{ margin: "0px" }}>
+        <h5 style={{ margin: "0px" }}>
           <b>Goal Details</b>
-        </h4>
+        </h5>
         <hr style={{ marginTop: "10px" }} />
-        <p style={{ overflowY: "auto", height: "132px", paddingRight: "15px" }}>
+        <p style={{ overflowY: "auto", height: "112px", paddingRight: "15px" }}>
           {this.getGoalDetails()}
         </p>
       </div>

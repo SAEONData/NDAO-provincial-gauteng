@@ -3,10 +3,11 @@
 import React from 'react'
 import { Tooltip } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
+import { Select } from 'antd'
 
 //AntD Select
-import Select from 'antd/lib/select'
-import '../../../css/antd.select.css' //Overrides default antd.select css
+// import Select from 'antd/lib/select'
+// import '../../../css/antd.select.css' //Overrides default antd.select css
 const Option = Select.Option;
 
 // Properties:

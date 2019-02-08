@@ -3,10 +3,9 @@
 import React from 'react'
 import { Tooltip } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
+import { Tree } from 'antd'
 
 //AntD Tree
-import Tree from 'antd/lib/tree'
-import '../../../css/antd.tree.css' //Overrides default antd.tree css
 const TreeNode = Tree.TreeNode
 
 // Properties:

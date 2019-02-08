@@ -24,16 +24,19 @@ class YearFilter extends React.Component {
             <tbody>
               <tr>
                 <td>
-                  <span style={{ color: "silver", fontSize: "16px" }}>Year:</span>
-              </td>
+                  <span style={{ color: "silver", fontSize: "15px" }}>Year:</span>
+                </td>
                 <td width="100%">
                   <Slider
                     min={currentYear - 5}
                     max={currentYear}
                     defaultValue={value}
-                    style={{ marginLeft: "7px", marginRight: "7px", marginTop: "11px", marginBottom: "11px" }}
+                    style={{ marginLeft: "7px", marginRight: "7px", marginTop: "9px", marginBottom: "11px", height: 6 }}
                     onAfterChange={(value) => { callback(value) }}
                   />
+                </td>
+                <td>
+                  <span style={{ color: "#81BFE2", fontSize: "17px", fontWeight: "bold"}}>&nbsp;{value}&nbsp;</span>
                 </td>
               </tr>
             </tbody>

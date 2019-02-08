@@ -85,6 +85,8 @@ class Navbar extends React.Component {
           style={{
             boxShadow: "0px 15px 10px -15px gainsboro",
             borderTop: "1px solid #E8E8E8",
+            paddingTop: 2,
+            paddingBottom: 2
           }}
         >
 

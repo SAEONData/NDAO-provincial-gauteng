@@ -79,7 +79,7 @@ class TrafficLightBar extends React.Component {
             <p
               style={{
                 fontSize: "18px",
-                fontWeight: "bold"
+                fontWeight: "bolder"
               }}
             >
               {item.key}

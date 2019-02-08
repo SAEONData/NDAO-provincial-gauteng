@@ -11,7 +11,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "antd": "^3.7.0",
+    "antd": "^3.13.2",
     "basic-authorization-header": "^0.2.7",
     "bootstrap": "^4.1.3",
     "font-awesome": "^4.7.0",
@@ -44,6 +44,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.2",
     "babel-plugin-emotion": "^9.2.8",
+    "babel-plugin-import": "^1.11.0",
     "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.5.2",

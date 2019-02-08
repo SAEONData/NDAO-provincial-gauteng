@@ -153,9 +153,9 @@ class MapViewCore extends React.Component {
     return (
       <div style={{ backgroundColor: "white", padding: "10px", borderRadius: "10px", border: "1px solid gainsboro" }}>
 
-        <h4 style={{ margin: "5px 5px 0px 19px", display: "inline-block" }}>
+        <h5 style={{ margin: "5px 5px 0px 19px", display: "inline-block" }}>
           <b>Map</b>
-        </h4>
+        </h5>
 
         <img
           src={fullView ? popin : popout}
@@ -170,7 +170,7 @@ class MapViewCore extends React.Component {
           }}
         />
 
-        <hr />
+        <hr style={{ marginTop: 8 }} />
 
         <iframe
           style={{
