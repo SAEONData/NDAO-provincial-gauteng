@@ -1,10 +1,10 @@
 import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
-import popout from '../../../../../Images/Icons/popout.png'
+import popout from '../../../../../images/Icons/popout.png'
 import OData from 'react-odata'
 import EventCard from './EventCard.jsx'
-import { ndmcBaseURL, ndmcSiteBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { ndmcBaseURL, ndmcSiteBaseURL } from '../../../../../js/config/serviceURLs.js'
 import NDMC from '../../Tools/NDMC.jsx'
 
 const mapStateToProps = (state, props) => {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'mdbreact';
 
 //Images
-import AME1 from '../../../../Images/Other/AME1.png'
+import AME1 from '../../../../images/Other/AME1.png'
 
 class AME_Info extends React.Component {
 
@@ -14,7 +14,7 @@ class AME_Info extends React.Component {
 
     return (
       <>
-        <Row>
+        <Row style={{ marginBottom: 10, marginTop: 10, paddingTop: 12, borderTop: "1px solid gainsboro" }}>
           <Col md="6">
             <h3 style={{ marginTop: "10px" }}>
               <b>

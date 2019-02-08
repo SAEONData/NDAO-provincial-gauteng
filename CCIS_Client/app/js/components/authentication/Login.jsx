@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import userManager from '../Authentication/userManager'
+import userManager from '../authentication/userManager'
 import Icon from 'antd/lib/icon'
 
 class Login extends React.Component {

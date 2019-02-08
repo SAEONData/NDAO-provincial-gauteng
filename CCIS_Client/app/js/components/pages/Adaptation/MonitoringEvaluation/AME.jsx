@@ -8,9 +8,9 @@ import {
 } from 'mdbreact'
 import SelectInput from '../../../input/SelectInput.jsx'
 import OData from 'react-odata';
-import { DEAGreen } from '../../../../Config/colours.js'
+import { DEAGreen } from '../../../../config/colours.js'
 import About from './About.jsx'
-import { apiBaseURL } from '../../../../../JS/Config/serviceURLs.js'
+import { apiBaseURL } from '../../../../../js/config/serviceURLs.js'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
 import Goal2Contrib from './Goal2Contrib.jsx'
@@ -195,11 +195,29 @@ class AME extends React.Component {
                   {selectedGoal === 8 && <Goal8Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
                   {selectedGoal === 9 && <Goal9Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
                 </Row>
-                <br />
+                <hr />
 
-                {selectedGoal < 9 &&
-                  <Row style={{ textAlign: "right" }}>
-                    <Col md="12" >
+                <Row /*style={{ textAlign: "right" }}*/>
+                  <Col md="6">
+                    <Button
+                      color=""
+                      style={{
+                        backgroundColor: DEAGreen,
+                        marginLeft: 15
+                        // margin: "5px 0px 0px 0px",
+                        // height: "36px",
+                        // padding: "0px 15px 0px 15px"
+                      }}
+                      onClick={() => { this.setState({ selectGoalModal: true }) }}
+                    >
+                      <Fa icon="pencil" style={{ marginRight: "10px" }} />
+                      Edit existing <b><i>Goal-{selectedGoal}</i></b>
+                    </Button>
+                  </Col>
+
+                  <Col md="6" style={{ textAlign: "right" }}>
+                    {
+                      selectedGoal < 9 &&
                       <Button color="grey" onClick={() => {
                         window.scroll({
                           top: 180,
@@ -211,10 +229,11 @@ class AME extends React.Component {
                         }, 100)
                       }}>
                         Next
-                </Button>
-                    </Col>
-                  </Row>
-                }
+                      </Button>
+                    }
+                  </Col>
+                </Row>
+
               </Collapse>
             </div>
           }
@@ -242,7 +261,7 @@ class AME extends React.Component {
                   query={{
                     filter: { CreateUser: { eq: { type: 'guid', value: user.profile.UserId } }, Type: selectedGoal },
                     select: ['Id', 'CreateDate', 'UpdateDate'],
-                    orderBy: "CreateDate desc"                    
+                    orderBy: "CreateDate desc"
                   }}>
                   {({ loading, error, data }) => {
 

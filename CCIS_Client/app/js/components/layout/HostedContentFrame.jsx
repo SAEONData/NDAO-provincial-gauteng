@@ -4,7 +4,7 @@ import React from 'react'
 import * as globalFunctions from '../../globalFunctions'
 import { Col, Row, Container, Footer as MDBFooter, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
 
-import loader from '../../../Images/Other/loader.gif'
+import loader from '../../../images/Other/loader.gif'
 
 // Properties:
 //  - source : Component label

@@ -3,11 +3,12 @@
 import React from 'react'
 import { Tooltip } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
+import { TreeSelect } from 'antd'
 
 //AntD Tree-Select
-import TreeSelect from 'antd/lib/tree-select'
-import '../../../css/antd.tree-select.css' //Overrides default antd.tree-select css
-import '../../../css/antd.select.css' //Overrides default antd.select css
+// import TreeSelect from 'antd/lib/tree-select'
+// import '../../../css/antd.tree-select.css' //Overrides default antd.tree-select css
+// import '../../../css/antd.select.css' //Overrides default antd.select css
 const TreeSelectNode = TreeSelect.TreeNode;
 
 // Properties:

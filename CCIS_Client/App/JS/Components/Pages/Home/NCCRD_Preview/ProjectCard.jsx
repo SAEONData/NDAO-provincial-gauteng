@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardBody, CardText, CardTitle, Button, Fa } from 'mdbreact'
 import { connect } from 'react-redux'
-import { DEAGreen } from '../../../../Config/colours.js'
+import { DEAGreen } from '../../../../config/colours.js'
 
 const _gf = require('../../../../globalFunctions')
 

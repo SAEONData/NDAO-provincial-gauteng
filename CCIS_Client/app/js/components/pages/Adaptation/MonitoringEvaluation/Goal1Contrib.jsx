@@ -6,21 +6,21 @@ import { Row, Col, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, } 
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
-import { DEAGreen, Red, Amber, Green } from '../../../../Config/colours.js'
+import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.js'
 import DateInput from '../../../input/DateInput.jsx'
-import NCCRD from '../../../Pages/Tools/NCCRD.jsx'
+import NCCRD from '../../../pages/Tools/NCCRD.jsx'
 import FileUpload from '../../../input/FileUpload.jsx'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../JS/Config/serviceURLs.js'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../js/config/serviceURLs.js'
 import moment from 'moment'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
-import { metaDataCredentials } from '../../../../../js/secrets.cfg'
+import { metaDataCredentials } from '../../../../../js/secrets.js'
 
 //Images
-import gear from '../../../../../Images/Icons/gear.png'
-import checklist from '../../../../../Images/Icons/checklist.png'
+import gear from '../../../../../images/Icons/gear.png'
+import checklist from '../../../../../images/Icons/checklist.png'
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
