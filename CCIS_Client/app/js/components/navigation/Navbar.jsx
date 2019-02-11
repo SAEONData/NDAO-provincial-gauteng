@@ -96,11 +96,6 @@ class Navbar extends React.Component {
             {/* LEFT */}
             <NavbarNav left>
 
-              {/* <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
-                style={{ width: "45px", marginLeft: "0px", marginRight: "15px", paddingLeft: "18px" }}>
-                <Fa icon="bars" />
-              </Button> */}
-
               {
                 NavData.enabled &&
                 <Button size="sm" color="grey" onClick={() => { toggleSideNav(!showSideNav) }}
@@ -159,23 +154,26 @@ class Navbar extends React.Component {
                 <Dropdown>
                   <DropdownToggle nav caret style={{ color: "black" }}><b>Tools</b></DropdownToggle>
                   <DropdownMenu>
-                    <DropdownItem onClick={() => { this.setState({ showNCCRD: true }) }}>
-                      Climate Change Responses
-                    </DropdownItem>
-                    <DropdownItem onClick={() => { this.setState({ showSARVA: true }) }}>
-                      Risk And Vulnerability Hotspots
-                    </DropdownItem>
-                    <DropdownItem onClick={() => { window.open("http://niwis.dws.gov.za/niwis2/", "_blank") /*this.setState({ showNWIS: true })*/ }}>
-                      National Water Information System
-                    </DropdownItem>
-                    <DropdownItem onClick={() => { window.open("http://www.letsrespondtoolkit.org/", "_blank") /*this.setState({ showLRT: true })*/ }}>
-                      Lets Respond Toolkit
+                    <DropdownItem onClick={() => { window.open("https://south-africa-platform.vizzuality.com/ ", "_blank") }}>
+                      Biennial Update Report (BUR)
                     </DropdownItem>
                     <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") /*this.setState({ showDASL: true })*/ }}>
                       Dam And Stream Levels
                     </DropdownItem>
+                    <DropdownItem onClick={() => { window.open("http://www.letsrespondtoolkit.org/", "_blank") /*this.setState({ showLRT: true })*/ }}>
+                      Lets Respond Toolkit
+                    </DropdownItem>
+                    <DropdownItem onClick={() => { this.setState({ showNCCRD: true }) }}>
+                      National Climate Change Response Database
+                    </DropdownItem>
                     <DropdownItem onClick={() => { this.setState({ showNDMC: true }) }}>
-                      Extreme Weather Events Database
+                      National Hazardous Events Database
+                    </DropdownItem>
+                    <DropdownItem onClick={() => { window.open("http://niwis.dws.gov.za/niwis2/", "_blank") /*this.setState({ showNWIS: true })*/ }}>
+                      National Water Information System
+                    </DropdownItem>
+                    <DropdownItem onClick={() => { this.setState({ showSARVA: true }) }}>
+                      Risk And Vulnerability Hotspots
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
