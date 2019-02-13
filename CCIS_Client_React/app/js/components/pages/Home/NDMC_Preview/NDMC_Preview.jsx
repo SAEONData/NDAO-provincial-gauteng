@@ -3,7 +3,6 @@ import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import popout from '../../../../../images/Icons/popout.png'
 import OData from 'react-odata'
-import EventCard from './EventCard.jsx'
 import { ndmcBaseURL, ndmcSiteBaseURL } from '../../../../../js/config/serviceURLs.js'
 import NDMC from '../../Tools/NDMC.jsx'
 
@@ -69,7 +68,7 @@ class NDMC_Preview extends React.Component {
       }
     }
 
-    console.log("#X#", ndmcSiteBaseURL)
+    console.log("preview", `${ndmcSiteBaseURL}events?config=${encodeURI(JSON.stringify(NDMC_Config))}`)
 
     return (
       <>

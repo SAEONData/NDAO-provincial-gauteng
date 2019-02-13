@@ -2,7 +2,6 @@ import React from 'react'
 import { Row, Col, Button } from 'mdbreact'
 import { connect } from 'react-redux'
 import OData from 'react-odata'
-import ProjectCard from './ProjectCard.jsx'
 import { ccrdBaseURL, ccrdSiteBaseURL } from '../../../../../js/config/serviceURLs.js'
 import NCCRD from '../../Tools/NCCRD.jsx'
 
