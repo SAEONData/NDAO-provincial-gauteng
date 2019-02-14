@@ -13,15 +13,15 @@ class SectorFilter extends React.Component {
     let { value, callback } = this.props
 
     const data = [
-      { id: 1, text: "Goal-1" },
-      { id: 2, text: "Goal-2" },
-      { id: 3, text: "Goal-3" },
-      { id: 4, text: "Goal-4" },
-      { id: 5, text: "Goal-5" },
-      { id: 6, text: "Goal-6" },
-      { id: 7, text: "Goal-7" },
-      { id: 8, text: "Goal-8" },
-      { id: 9, text: "Goal-9" },
+      { id: 1, text: "Goal-1: Plans, policy and actions" },
+      { id: 2, text: "Goal-2: Resources, capacity and processes" },
+      { id: 3, text: "Goal-3: Accurate climate information" },
+      { id: 4, text: "Goal-4: Development, education and awareness programmes" },
+      { id: 5, text: "Goal-5: New and adapted technologies" },
+      { id: 6, text: "Goal-6: Risks, impacts and vulnerabilities" },
+      { id: 7, text: "Goal-7: Evidence of reduced risk and vulnerability" },
+      { id: 8, text: "Goal-8: Land use, population demographics and natural resources" },
+      { id: 9, text: "Goal-9: Secure food, water and energy supply" },
     ]
 
     //Get current value
