@@ -17,7 +17,7 @@ if (CONSTANTS.DEV) {
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/' //'https://localhost:44334/odata/'
   _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/' //'http://localhost:8080/#/'
   _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/' //'http://localhost:64161/api/'
-  _ssoBaseURL = 'https://identity.saeon.ac.za/' //'http://localhost:44320/'
+  _ssoBaseURL = 'http://identity.saeon.ac.za/' //'http://localhost:44320/'
   _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
@@ -29,7 +29,7 @@ else if (CONSTANTS.TEST) {
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/'
   _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/'
   _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/'
-  _ssoBaseURL = 'https://identity.saeon.ac.za/'
+  _ssoBaseURL = 'http://identity.saeon.ac.za/'
   _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
@@ -41,7 +41,7 @@ else if (CONSTANTS.PROD) {
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmcapi/odata/'
   _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmcsite/#/'
   _vmsBaseURL = 'http://app01.saeon.ac.za/vms/api/'
-  _ssoBaseURL = 'https://identity.saeon.ac.za/'
+  _ssoBaseURL = 'http://identity.saeon.ac.za/'
   _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
