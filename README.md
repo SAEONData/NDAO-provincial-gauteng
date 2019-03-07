@@ -1,5 +1,5 @@
-# CCIS
-Climate Change Information System for the Department of Environmental Affairs South Africa
+# NCCIS
+National Climate Change Information System for the Department of Environmental Affairs South Africa
 
 Dashboard
 ![alt text](NCCIS001.png)
