@@ -22,7 +22,7 @@ import Goal7Contrib from './Goal7Contrib.jsx'
 import Goal8Contrib from './Goal8Contrib.jsx'
 import Goal9Contrib from './Goal9Contrib.jsx'
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   let user = state.oidc.user
   return { user }
 }
@@ -248,7 +248,12 @@ class AME extends React.Component {
 
         {/* Select goal modal */}
         <Container>
-          <Modal isOpen={this.state.selectGoalModal} toggle={() => { this.setState({ selectGoalModal: false }) }} size="lg" centered>
+          <Modal 
+            isOpen={ this.state.selectGoalModal } 
+            toggle={() => { this.setState({ selectGoalModal: false }) }} 
+            size="lg" 
+            centered
+          >
             <ModalHeader toggle={() => { this.setState({ selectGoalModal: false }) }}>
               Select <b><i>Goal-{selectedGoal}</i></b> to edit:
             </ModalHeader>

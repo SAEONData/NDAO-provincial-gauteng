@@ -62,7 +62,9 @@ class App extends React.Component {
       await userManager.signinSilent()
     }
     catch (ex) {
-      console.warn("Sign-in-silent failed!", ex)
+      console.warn("Sign-in-silent failed!", ex,)
+      console.error()
+      
     }
   }
 

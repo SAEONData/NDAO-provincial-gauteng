@@ -424,7 +424,7 @@ class Goal1Contrib extends React.Component {
 
       //Get response body
       res = await res.json()
-
+      
       if (!status) {
         throw new Error(res.error.message)
       }
@@ -547,14 +547,17 @@ class Goal1Contrib extends React.Component {
       tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
     } = this.state
 
+    let { user } = this.props
+
     let NCCRD_Config = {
-      header: false,
+      header: true,
       navbar: true,
       sidenav: false,
       footer: false,
       daoid: goalId,
       readOnly: false,
       backToList: true,
+      user: "",
       listOptions: {
         expandCollapse: false,
         view: true,
@@ -818,7 +821,7 @@ class Goal1Contrib extends React.Component {
                   or any research options described in your document to the National Climate Change Response Database (NCCRD).
               </label>
                 <Button
-                  onClick={() => { this.setState({ showNCCRD: true }) }}
+                  onClick={(username) => { this.setState({ showNCCRD: true }) }}
                   color=""
                   style={{ fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }}
                   size="sm">
@@ -1010,7 +1013,7 @@ class Goal1Contrib extends React.Component {
         </Row>
         <br />
 
-        {showNCCRD &&
+        {showNCCRD && 
           // <NCCRD goalId={goalId} closeCallback={() => { this.setState({ showNCCRD: false }) }} />
           // <NCCRD
           //   query={`?navbar=addOnly&daoid=${goalId}&popin=hidden`}

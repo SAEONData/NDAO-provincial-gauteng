@@ -35,7 +35,7 @@ class CallbackPage extends React.Component {
     this.props.updateNav(location.hash)
   }
 
-  successCallbackHandler(user) {
+  successCallbackHandler() {
 
     //Redirect
     let locHash = "#"

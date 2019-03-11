@@ -35,7 +35,7 @@ class NCCRD extends React.Component {
     if(path){
       url += path
     }
-
+ 
     if(query){
       url += query
     }
@@ -48,6 +48,7 @@ class NCCRD extends React.Component {
           source={url}
           closeCallback={closeCallback}
           showSource={false}
+          
          />
       </>
     )
