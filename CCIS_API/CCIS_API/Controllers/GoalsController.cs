@@ -125,8 +125,8 @@ namespace CCIS_API.Controllers
                     type = "Feature",
                     geometry = new
                     {
-                        type = "Polygon",
-                        coordinates = new object[] { GetCoordinates(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions) }
+                        type = GetWKTType(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions),
+                        coordinates = GetCoordinates(g.Questions.FirstOrDefault(q => q.Key == "Region"), vmsRegions)
                     },
                     properties = new
                     {
@@ -140,7 +140,8 @@ namespace CCIS_API.Controllers
                         status = g.Status
                     }
                 })
-                .Where(x => x.geometry.coordinates.Count() > 0 && (x.geometry.coordinates[0] as object[]).Count() > 0) //Exclude no coordinates
+                //.Where(x => x.geometry.coordinates.Count() > 0 && (x.geometry.coordinates[0] as object[]).Count() > 0) //Exclude no coordinates
+                .Where(x => x.geometry.coordinates.Count() > 0) //Exclude no coordinates
                 .ToList();
 
             return new JsonResult(goalData);
@@ -184,9 +185,9 @@ namespace CCIS_API.Controllers
                 .AsQueryable();
         }
 
-        private object[] GetCoordinates(Question Region, List<StandardVocabItem> vmsRegions)
+        private string GetWKTType(Question Region, List<StandardVocabItem> vmsRegions)
         {
-            var polygon = new List<object>();
+            string type = "Polygon";
 
             var vmsRegion = vmsRegions.FirstOrDefault(v => v.Id.ToString() == Region.Value);
             if (vmsRegion != null)
@@ -194,27 +195,79 @@ namespace CCIS_API.Controllers
                 var simpleWKT = vmsRegion.AdditionalData.FirstOrDefault(ad => ad.Key == "SimpleWKT");
                 if (!string.IsNullOrEmpty(simpleWKT.Value))
                 {
-                    var parsedWKT = simpleWKT.Value.Replace("POLYGON((", "").Replace("))", "");
+                    type = WKTConvert.GetWKTType(simpleWKT.Value).ToString();
+                }
+            }
 
-                    foreach (var point in parsedWKT.Split(","))
+            return type;
+        }
+
+        private object[] GetCoordinates(Question Region, List<StandardVocabItem> vmsRegions)
+        {
+            var result = new List<object>();
+
+            var vmsRegion = vmsRegions.FirstOrDefault(v => v.Id.ToString() == Region.Value);
+            if (vmsRegion != null)
+            {
+                var simpleWKT = vmsRegion.AdditionalData.FirstOrDefault(ad => ad.Key == "SimpleWKT");
+                if (!string.IsNullOrEmpty(simpleWKT.Value))
+                {
+                    //Extract polygon data
+                    var WKTPolygons = WKTConvert.GetPolygons(simpleWKT.Value);
+                    foreach (var poly in WKTPolygons)
                     {
-                        var pointValues = point.Trim().Split(" ");
-                        if (pointValues.Length == 2)
+                        var polygon = new List<object>();
+
+                        //Convert points
+                        foreach (var point in poly.WKTPoints)
                         {
-                            if (double.TryParse(pointValues[0].Trim(), out double pointLat) &&
-                                double.TryParse(pointValues[1].Trim(), out double pointLon))
-                            {
-                                var polyPoint = new double[] { pointLat, pointLon };
-                                polygon.Add(polyPoint);
-                            }
+                            var polyPoint = new double[] { point.Lat, point.Lng };
+                            polygon.Add(polyPoint);
+                        }
+
+                        //Add result if relevant
+                        if (polygon.Count > 0)
+                        {
+                            result.Add(polygon);
                         }
                     }
                 }
-
             }
 
-            return polygon.ToArray();
+            return result.ToArray();
         }
+
+        //private object[] GetCoordinates(Question Region, List<StandardVocabItem> vmsRegions)
+        //{
+        //    var polygon = new List<object>();
+
+        //    var vmsRegion = vmsRegions.FirstOrDefault(v => v.Id.ToString() == Region.Value);
+        //    if (vmsRegion != null)
+        //    {
+        //        var simpleWKT = vmsRegion.AdditionalData.FirstOrDefault(ad => ad.Key == "SimpleWKT");
+        //        if (!string.IsNullOrEmpty(simpleWKT.Value))
+        //        {
+        //            var parsedWKT = simpleWKT.Value.Replace("POLYGON((", "").Replace("))", "");
+
+        //            foreach (var point in parsedWKT.Split(","))
+        //            {
+        //                var pointValues = point.Trim().Split(" ");
+        //                if (pointValues.Length == 2)
+        //                {
+        //                    if (double.TryParse(pointValues[0].Trim(), out double pointLat) &&
+        //                        double.TryParse(pointValues[1].Trim(), out double pointLon))
+        //                    {
+        //                        var polyPoint = new double[] { pointLat, pointLon };
+        //                        polygon.Add(polyPoint);
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //    }
+
+        //    return polygon.ToArray();
+        //}
 
         private async Task<List<StandardVocabItem>> GetVMSData(string relativeURL)
         {
