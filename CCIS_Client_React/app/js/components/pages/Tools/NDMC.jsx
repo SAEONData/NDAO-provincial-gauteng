@@ -4,6 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import HostedContentFrame from '../../layout/HostedContentFrame.jsx'
 import { ndmcSiteBaseURL } from '../../../../js/config/serviceURLs.js'
+import { object } from 'prop-types'
+
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -41,6 +43,7 @@ class NDMC extends React.Component {
     }
 
     console.log("###", url)
+    
 
     return (
       <>
@@ -53,7 +56,9 @@ class NDMC extends React.Component {
          />
       </>
     )
+    
   }
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NDMC)

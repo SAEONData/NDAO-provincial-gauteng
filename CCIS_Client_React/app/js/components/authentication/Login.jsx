@@ -1,8 +1,27 @@
+
+
 'use strict'
 
 import React from 'react'
 import userManager from '../authentication/userManager'
 import Icon from 'antd/lib/icon'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state, props) => {
+  let { general: { loading } } = state 
+  return { loading }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
+    },
+    updateNav: payload => {
+      dispatch({ type: "NAV", payload })
+    }
+  }
+}
 
 class Login extends React.Component {
 
@@ -11,7 +30,10 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    userManager.signinRedirect()
+     //Hide loading and redirect to IDS
+     this.props.updateNav(location.hash)
+     this.props.setLoading(false)
+     userManager.signinRedirect()
   }
 
   render() {
@@ -29,4 +51,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
