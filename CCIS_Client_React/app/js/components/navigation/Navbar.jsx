@@ -51,13 +51,6 @@ class Navbar extends React.Component {
     this.listsDropToggle = this.listsDropToggle.bind(this)
   }
 
-  // componentDidUpdate(){
-  //   let { user } = this.props
-  //   if(user){
-  //     console.log("USER", user)
-  //   }
-  // }
-
   onClick() {
     this.setState({
       collapse: !this.state.collapse,
@@ -188,17 +181,26 @@ class Navbar extends React.Component {
 
               {/* Username */}
               {(user && !user.expired) &&
-                <NavItem style={{ marginRight: "15px" }}>
-                  <NavLink to="#" disabled>
-                    <b style={{ color: DEAGreen }}>
-                      {"Hello, " + user.profile.email}
-                    </b>
-                  </NavLink>
-                </NavItem>
+                <table>
+                  <tbody>
+                    <tr style={{ height: "40px" }}>
+                      <td valign="middle">
+                        <div style={{ marginRight: "7px", color: DEAGreen }} >
+                          <Fa size="2x" icon="user-circle-o" />
+                        </div>
+                      </td>
+                      <td valign="middle">
+                        <div style={{ fontSize: "17px" }} >
+                          <b>{`${user.profile.FirstName} ${user.profile.Surname}`}</b>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               }
 
               {/* Contact */}
-              <NavItem style={{ marginRight: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
+              <NavItem style={{ marginLeft: "15px", marginRight: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
                 <NavLink disabled to="contact" style={{ color: "grey" }}><b>Contact</b></NavLink>
               </NavItem>
 

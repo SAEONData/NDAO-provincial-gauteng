@@ -42,9 +42,6 @@ class NDMC extends React.Component {
       url += query
     }
 
-    console.log("###", url)
-    
-
     return (
       <>
         <br />

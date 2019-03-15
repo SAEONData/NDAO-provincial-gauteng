@@ -174,7 +174,6 @@ class Home extends React.Component {
 
       if (res.ok) {
         res = await res.json() //parse response
-        // console.log("RES", res)
         if (res) {
           this.setState({ goalData: res.value })
         }
@@ -198,7 +197,6 @@ class Home extends React.Component {
 
       if (res.ok) {
         res = await res.json() //parse response
-        // console.log("RES", res)
         if (res) {
           this.setState({ goalDataUnfiltered: res.value })
         }

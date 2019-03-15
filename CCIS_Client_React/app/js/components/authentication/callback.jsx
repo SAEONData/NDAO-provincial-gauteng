@@ -47,7 +47,7 @@ class CallbackPage extends React.Component {
   }
 
   errorCallbackHandler(e) {
-    console.log("Login failed!!", e)
+    console.error("Login failed!!", e)
     location = "#"
   }
 

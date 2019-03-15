@@ -440,8 +440,6 @@ class Goal8Contrib extends React.Component {
       bounds: [] //required
     }
 
-    //console.log("jsonData", jsonData)
-
     try {
       let res = await fetch(metadataServiceURL, {
         method: "POST",

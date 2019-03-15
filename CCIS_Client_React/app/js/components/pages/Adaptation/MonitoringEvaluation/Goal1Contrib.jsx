@@ -403,8 +403,6 @@ class Goal1Contrib extends React.Component {
       bounds: [] //required
     }
 
-    //console.log("jsonData", jsonData)
-
     try {
       let res = await fetch(metadataServiceURL, {
         method: "POST",
@@ -1022,7 +1020,11 @@ class Goal1Contrib extends React.Component {
           <NCCRD
             path={'projects'}
             query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
-            closeCallback={() => { this.setState({ showNCCRD: "" }) }}
+            closeCallback={() => { 
+              console.log("Deleting config cookie")
+              _gf.DeleteCookie("NCCRD_CONFIG_TMP")
+              this.setState({ showNCCRD: "" }) 
+            }}
           />
         }
 

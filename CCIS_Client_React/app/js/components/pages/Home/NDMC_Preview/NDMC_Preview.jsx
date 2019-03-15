@@ -68,8 +68,6 @@ class NDMC_Preview extends React.Component {
       }
     }
 
-    console.log("preview", `${ndmcSiteBaseURL}events?config=${encodeURI(JSON.stringify(NDMC_Config))}`)
-
     return (
       <>
         <iframe

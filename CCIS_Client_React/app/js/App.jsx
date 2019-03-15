@@ -54,17 +54,21 @@ class App extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  componentWillMount(){
+    this.processSilentSignIn()
+  }
+
+  componentDidMount() {
     this.saveCurrentURL()
     window.onhashchange = this.saveCurrentURL
+  }
 
+  async processSilentSignIn() {
     try {
       await userManager.signinSilent()
     }
     catch (ex) {
-      console.warn("Sign-in-silent failed!", ex,)
-      console.error()
-      
+      console.warn("Sign-in-silent failed!", ex)
     }
   }
 
@@ -90,7 +94,6 @@ class App extends React.Component {
   saveCurrentURL() {
 
     if (location.hash !== this.state.currentURL && !this.ignoreURL()) {
-      console.log("NAV", location.hash)
       this.setState({ currentURL: location.hash })
       _gf.SaveCurrentUrl()
     }

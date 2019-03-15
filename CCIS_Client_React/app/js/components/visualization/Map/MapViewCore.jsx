@@ -130,9 +130,6 @@ class MapViewCore extends React.Component {
       delete mapConfig.viewport
     }
 
-    //console.log("mapConfig", mapConfig)
-    // console.log("strMapConfig", JSON.stringify(mapConfig))
-
     return encodeURIComponent(JSON.stringify(mapConfig))
   }
 
