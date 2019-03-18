@@ -290,7 +290,7 @@ class Home extends React.Component {
           <Button size="sm" style={{ minHeight: 35 }}>
             <CSVLink
                 style={{ marginRight:'', textDecoration: 'none', color:'white' }}
-                headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status', 'Questions' ]}
+                headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status' ]}
                 filename={"testreport.csv"}
                 data={[...this.state.goalData]}
                 asyncOnClick={true}
