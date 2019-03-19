@@ -24,6 +24,9 @@ import GovernmentsIGFX from './InfoGraphics/GovernmentsIGFX.jsx'
 import GHGReductionIGFX from './InfoGraphics/GHGReductionIGFX.jsx'
 import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
 import GoalDetails from './GoalDetails.jsx'
+import { CSVLink } from 'react-csv'
+import { json2csv } from 'json-2-csv';
+
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -261,6 +264,12 @@ class Home extends React.Component {
       goalData, goalDataUnfiltered, trafficLightFull, mapFullView
     } = this.state
 
+    let qData = [{ 
+      Id: "",
+      Key:"",
+      Value:""
+    }]
+
     return (
       <div style={{ padding: "0px 15px 15px 15px", borderRadius: "10px" }}>
 
@@ -276,6 +285,20 @@ class Home extends React.Component {
             />
           </Col>
           <Col sm="6" style={{ textAlign: "right" }}>
+          <Button size="sm" style={{ minHeight: 35 }}>
+            <CSVLink
+                style={{ marginRight:'', textDecoration: 'none', color:'white' }}
+                headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status' ]}
+                filename={"testreport.csv"}
+                data={[...this.state.goalData]}
+                asyncOnClick={true}
+                onClick={() => {
+                  console.log(this.state.goalData)
+                }}
+              >
+                Download
+            </CSVLink>
+          </Button>
             <Button
               size="sm"
               onClick={() => { location.hash = "#/ame/contribute" }}

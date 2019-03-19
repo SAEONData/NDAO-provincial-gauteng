@@ -4,6 +4,9 @@ import popout from '../../../../images/Icons/popout.png'
 import popin from '../../../../images/Icons/popin.png'
 import { MapConfig } from '../../../../data/mapConfig'
 import { vmsBaseURL } from '../../../../js/config/serviceURLs.js'
+import { CSVLink } from 'react-csv'
+import { MDBBtn } from 'mdbreact';
+
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -167,6 +170,8 @@ class MapViewCore extends React.Component {
           }}
         />
 
+
+
         <hr style={{ marginTop: 8 }} />
 
         <iframe
@@ -181,7 +186,6 @@ class MapViewCore extends React.Component {
           }}
           src={mapSrc}
         />
-
       </div>
     )
   }
