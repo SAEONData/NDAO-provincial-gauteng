@@ -73,11 +73,11 @@ export const wait = ms => new Promise((r, j) => setTimeout(r, ms))
 //-------------------------//
 
 export function SaveCurrentUrl() {
-  CreateCookie("ccis_last_url", document.URL, 1);
+  CreateCookie("ndao_last_url", document.URL, 1);
 }
 
 export function ReadLastUrl() {
-  return ReadCookie("ccis_last_url")
+  return ReadCookie("ndao_last_url")
 }
 
 export function CreateCookie(name, value, days) {

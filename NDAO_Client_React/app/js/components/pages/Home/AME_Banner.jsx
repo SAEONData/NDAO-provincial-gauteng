@@ -27,7 +27,7 @@ class AME_Banner extends React.Component {
               </h3>
               <div style={{ height: 5 }} />
               <p>
-                The Department of Environmental Affairs Climate Change Information System (CCIS) was designed to monitor
+                The Department of Environmental Affairs National Desired Adaptation Outcomes (NDAO) was designed to monitor
                 and track South Africa’s progress on climate change, to that end, nine desired adaptation outcome
                 goals were developed to establish progress across the country.
               <br />
