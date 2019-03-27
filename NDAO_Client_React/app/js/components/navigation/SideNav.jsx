@@ -230,7 +230,7 @@ class SideNav extends React.Component {
               style={{
                 padding: 0,
                 width: "100%",
-                height: "91vh",
+                height: "90vh",
                 border: "none",
               }}
               src={contentLink}
