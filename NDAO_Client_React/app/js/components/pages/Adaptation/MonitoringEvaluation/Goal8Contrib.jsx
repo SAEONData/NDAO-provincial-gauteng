@@ -58,7 +58,6 @@ const defaultState = {
   metaAuthors: [],
   metaDocTitle: "",
   metaKeywords: [],
-  metaDocFormat: "",
   metaDocDescr: "",
   metaAgreement: false,
   metaUID: "",
@@ -168,7 +167,6 @@ class Goal8Contrib extends React.Component {
           metaAuthors: data.Questions.filter(x => x.Key === "DocumentAuthors")[0].Value.split("||"),
           metaDocTitle: data.Questions.filter(x => x.Key === "DocumentTitle")[0].Value,
           metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
-          metaDocFormat: data.Questions.filter(x => x.Key === "DocumentFormat")[0].Value,
           metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
           metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
@@ -225,7 +223,7 @@ class Goal8Contrib extends React.Component {
 
   validate() {
 
-    let { Q8_2, metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement } = this.state
+    let { Q8_2, metaAuthors, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement } = this.state
 
     if (!_gf.isEmptyValue(Q8_2)) {
 
@@ -241,11 +239,6 @@ class Goal8Contrib extends React.Component {
 
       if (metaKeywords.length === 0) {
         this.showMessage("Required", "Document keywords required - please add at least one keyword?")
-        return false
-      }
-
-      if (_gf.isEmptyValue(metaDocFormat)) {
-        this.showMessage("Required", "Document format required - please select the type of document attached?")
         return false
       }
 
@@ -268,7 +261,7 @@ class Goal8Contrib extends React.Component {
 
     let {
       goalId, goalStatus, Q8_1, Q8_2, Q8_3, Q8_4, Q8_5,
-      metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement,
+      metaAuthors, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement,
       attachmentDetails, metaRegion
     } = this.state
     let { user } = this.props
@@ -288,7 +281,6 @@ class Goal8Contrib extends React.Component {
         { Key: "DocumentAuthors", Value: metaAuthors.join("||") },
         { Key: "DocumentTitle", Value: metaDocTitle },
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
-        { Key: "DocumentFormat", Value: metaDocFormat },
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
@@ -328,7 +320,7 @@ class Goal8Contrib extends React.Component {
 
     let {
       goalId, Q8_2, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocFormat, metaDocDescr, attachmentDetails, metaUID, metaRegion
+      metaDocDescr, attachmentDetails, metaUID, metaRegion
     } = this.state
 
     //Get Creators
@@ -392,7 +384,7 @@ class Goal8Contrib extends React.Component {
         }
       ],
       resourceType: {
-        resourceTypeGeneral: metaDocFormat, //Selected ducument format, eg. Text
+        resourceTypeGeneral: 'Dataset', //Selected ducument format, eg. Text
         resourceType: resourceType.toUpperCase() //file extension, eg. PDF
       },
       formats: [
@@ -491,7 +483,7 @@ class Goal8Contrib extends React.Component {
     let {
       editing, goalStatus, goalId, Q8_1, Q8_2, Q8_3, Q8_4, Q8_5,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
-      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
     } = this.state
 
     return (
@@ -705,23 +697,6 @@ class Goal8Contrib extends React.Component {
                       callback={(value) => {
                         this.setState({ metaKeywords: value })
                       }}
-                    />
-                  </Col>
-                </Row>
-                <br />
-
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="6">
-                    <label style={{ fontWeight: "bold" }}>
-                      Please select the type of object you are uploading:
-                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <TreeSelectInput
-                      data={metaDocFormatsList}
-                      transform={(item) => ({ id: item, text: item })}
-                      value={metaDocFormat}
-                      placeHolder={"Unspecified"}
-                      callback={(value) => { this.setState({ metaDocFormat: value.text }) }}
                     />
                   </Col>
                 </Row>
