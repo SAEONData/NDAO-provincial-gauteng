@@ -606,7 +606,7 @@ class Goal8Contrib extends React.Component {
                   8.2 Add an attachments to any evidence:
                 </label>
                 <br />
-                <TextInput
+                {/* <TextInput
                   width="95%"
                   value={Q8_2}
                   callback={(value) => {
@@ -614,7 +614,7 @@ class Goal8Contrib extends React.Component {
                     this.setState({ Q8_2: value })
                   }}
                   readOnly={true}
-                />
+                /> */}
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>

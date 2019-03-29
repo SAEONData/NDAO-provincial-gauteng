@@ -669,7 +669,7 @@ class Goal2Contrib extends React.Component {
                         <u>Download Organogram Template</u>
                       </p>
                     </a>
-                    <TextInput
+                    {/* <TextInput
                       width="95%"
                       value={Q2_1_A}
                       callback={(value) => {
@@ -677,7 +677,7 @@ class Goal2Contrib extends React.Component {
                         this.setState({ Q2_1_A: value })
                       }}
                       readOnly={true}
-                    />
+                    /> */}
                   </Col>
                 </Row>
                 <Row style={{ marginBottom: "7px" }}>

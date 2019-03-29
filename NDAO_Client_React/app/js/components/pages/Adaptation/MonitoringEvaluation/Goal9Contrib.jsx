@@ -596,7 +596,7 @@ class Goal9Contrib extends React.Component {
                 <label style={{ fontWeight: "bold" }}>
                   9.2 Add attachments to any evidence:
                 </label>
-                <TextInput
+                {/* <TextInput
                   width="95%"
                   value={Q9_2}
                   callback={(value) => {
@@ -604,7 +604,7 @@ class Goal9Contrib extends React.Component {
                     this.setState({ Q9_2: value })
                   }}
                   readOnly={true}
-                />
+                /> */}
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>

@@ -645,7 +645,7 @@ class Goal1Contrib extends React.Component {
                   1.1 Attach your document (see above description):
                   <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
-                <TextInput
+                {/* <TextInput
                   width="95%"
                   value={Q1_1}
                   callback={(value) => {
@@ -653,7 +653,7 @@ class Goal1Contrib extends React.Component {
                     this.setState({ Q1_1: value })
                   }}
                   readOnly={true}
-                />
+                /> */}
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>

@@ -632,7 +632,7 @@ class Goal5Contrib extends React.Component {
                 <label style={{ fontWeight: "bold", marginTop: "5px" }}>
                   5.2 Add attachments to any evidence:
                 </label>
-                <TextInput
+                {/* <TextInput
                   width="95%"
                   value={Q5_2}
                   callback={(value) => {
@@ -640,7 +640,7 @@ class Goal5Contrib extends React.Component {
                     this.setState({ Q5_2: value })
                   }}
                   readOnly={true}
-                />
+                /> */}
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>
