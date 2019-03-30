@@ -15,18 +15,16 @@ import GoalFilter from './Filters/GoalFilter.jsx'
 import { apiBaseURL, vmsBaseURL } from '../../../../js/config/serviceURLs.js'
 import InstitutionFilter from './Filters/InstitutionFilter.jsx'
 import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
-import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'
-import NDMC_Preview from './NDMC_Preview/NDMC_Preview.jsx'
-import SARVA_Preview from './SARVA_Preview/SARVA_Preview.jsx'
-import FundingIGFX from './InfoGraphics/FundingIGFX.jsx'
-import PlansIGFX from './InfoGraphics/PlansIGFX.jsx'
-import GovernmentsIGFX from './InfoGraphics/GovernmentsIGFX.jsx'
-import GHGReductionIGFX from './InfoGraphics/GHGReductionIGFX.jsx'
-import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
+// import NCCRD_Preview from './NCCRD_Preview/NCCRD_Preview.jsx'
+// import NDMC_Preview from './NDMC_Preview/NDMC_Preview.jsx'
+// import SARVA_Preview from './SARVA_Preview/SARVA_Preview.jsx'
+// import FundingIGFX from './InfoGraphics/FundingIGFX.jsx'
+// import PlansIGFX from './InfoGraphics/PlansIGFX.jsx'
+// import GovernmentsIGFX from './InfoGraphics/GovernmentsIGFX.jsx'
+// import GHGReductionIGFX from './InfoGraphics/GHGReductionIGFX.jsx'
+// import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
 import GoalDetails from './GoalDetails.jsx'
 import { CSVLink } from 'react-csv'
-import { json2csv } from 'json-2-csv';
-
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -478,7 +476,7 @@ class Home extends React.Component {
           </Row>
         }
 
-        <div style={{
+        {/* <div style={{
           marginTop: "15px",
           marginBottom: "15px",
           paddingTop: "15px",
@@ -504,24 +502,19 @@ class Home extends React.Component {
               <SectorsIGFX data={goalDataUnfiltered} year={filterYear} />
             </Col>
           </Row>
-        </div>
+        </div> */}
 
-        <Row>
-
+        {/* <Row>
           <Col md="4">
             <SARVA_Preview />
           </Col>
-
           <Col md="5">
             <NCCRD_Preview />
           </Col>
-
           <Col md="3">
             <NDMC_Preview />
           </Col>
-
-        </Row>
-
+        </Row> */}
 
       </div>
     )

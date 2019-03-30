@@ -13,8 +13,6 @@ import NWIS from '../pages/Tools/NWIS.jsx';
 import SARVA from '../pages/Tools/SARVA.jsx';
 import { data as NavData } from '../../../data/sideNavData'
 
-const _gf = require('../../globalFunctions')
-
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
   let { general: { showSideNav } } = state
@@ -143,17 +141,17 @@ class Navbar extends React.Component {
               </NavItem>
 
               {/* Tools */}
-              <NavItem>
+              {/* <NavItem>
                 <Dropdown>
                   <DropdownToggle nav caret style={{ color: "black" }}><b>Tools</b></DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem onClick={() => { window.open("https://south-africa-platform.vizzuality.com/ ", "_blank") }}>
                       Biennial Update Report (BUR)
                     </DropdownItem>
-                    <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") /*this.setState({ showDASL: true })*/ }}>
+                    <DropdownItem onClick={() => { window.open("https://www.dwa.gov.za/Hydrology/Weekly/Province.aspx", "_blank") }}>
                       Dam And Stream Levels
                     </DropdownItem>
-                    <DropdownItem onClick={() => { window.open("http://www.letsrespondtoolkit.org/", "_blank") /*this.setState({ showLRT: true })*/ }}>
+                    <DropdownItem onClick={() => { window.open("http://www.letsrespondtoolkit.org/", "_blank") }}>
                       Lets Respond Toolkit
                     </DropdownItem>
                     <DropdownItem onClick={() => { this.setState({ showNCCRD: true }) }}>
@@ -162,7 +160,7 @@ class Navbar extends React.Component {
                     <DropdownItem onClick={() => { this.setState({ showNDMC: true }) }}>
                       National Hazardous Events Database
                     </DropdownItem>
-                    <DropdownItem onClick={() => { window.open("http://niwis.dws.gov.za/niwis2/", "_blank") /*this.setState({ showNWIS: true })*/ }}>
+                    <DropdownItem onClick={() => { window.open("http://niwis.dws.gov.za/niwis2/", "_blank") }}>
                       National Water Information System
                     </DropdownItem>
                     <DropdownItem onClick={() => { this.setState({ showSARVA: true }) }}>
@@ -170,7 +168,7 @@ class Navbar extends React.Component {
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
-              </NavItem>
+              </NavItem> */}
 
             </NavbarNav>
 
@@ -200,9 +198,9 @@ class Navbar extends React.Component {
               }
 
               {/* Contact */}
-              <NavItem style={{ marginLeft: "15px", marginRight: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
+              {/* <NavItem style={{ marginLeft: "15px", marginRight: "15px", borderBottom: (locationHash === "#/contact" ? "4px solid dimgrey" : "0px solid white") }}>
                 <NavLink disabled to="contact" style={{ color: "grey" }}><b>Contact</b></NavLink>
-              </NavItem>
+              </NavItem> */}
 
               {/* Login / Logout */}
               <NavItem style={{ marginRight: "15px" }}>
