@@ -1,8 +1,15 @@
+// IE fixes
+import 'whatwg-fetch'
+import smoothscroll from 'smoothscroll-polyfill'
+
+smoothscroll.polyfill() // kick off the polyfill!
+
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './store'
-import userManager from './components/authentication/userManager';
+import userManager from './components/authentication/userManager'
 import { OidcProvider } from 'redux-oidc'
 import App from './App.jsx'
 

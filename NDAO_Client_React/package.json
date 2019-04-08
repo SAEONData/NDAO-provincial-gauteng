@@ -19,7 +19,7 @@
     "font-awesome": "^4.7.0",
     "js-file-download": "^0.4.4",
     "json-2-csv": "^3.4.1",
-    "luxon": "^1.11.3",
+    "luxon": "^1.12.1",
     "mdbreact": "git+https://oauth2:TrvzhasQo5h8aod8YSLE@git.mdbootstrap.com/mdb/react/re-pro.git",
     "moment": "^2.24.0",
     "odata-query": "^5.4.3",
@@ -41,6 +41,7 @@
     "react-tooltip": "^3.6.1",
     "redux": "^3.7.2",
     "redux-oidc": "^3.0.2",
+    "smoothscroll-polyfill": "^0.4.4",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
