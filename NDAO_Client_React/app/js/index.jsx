@@ -1,9 +1,8 @@
 // IE fixes
 import 'whatwg-fetch'
 import smoothscroll from 'smoothscroll-polyfill'
-
 smoothscroll.polyfill() // kick off the polyfill!
-
+// IE fixes
 
 import React from 'react'
 import ReactDOM from 'react-dom'

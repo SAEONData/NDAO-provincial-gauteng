@@ -39,14 +39,10 @@ namespace NDAO_API
                 options.AddPolicy("CORSPolicy",
                       builder =>
                       {
-                          builder.WithOrigins(
-                                        "http://localhost:8085", //NCCRD LOCAL
-                                        "http://localhost:8091", //CCIS LOCAL
-                                        "http://app01.saeon.ac.za/ccis", //CCIS LIVE
-                                        "http://app01.saeon.ac.za/nccrdsite" //NCCRD LIVE
-                                    )
-                                 .AllowAnyHeader()
-                                 .AllowAnyMethod();
+                          builder
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                       });
             });
 

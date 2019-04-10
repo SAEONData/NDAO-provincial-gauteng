@@ -2,6 +2,27 @@ import React from 'react'
 import { DEAGreen } from './config/colours.js'
 const queryString = require('query-string')
 
+const fetchDefaults = require("fetch-defaults")
+var apiFetch = fetchDefaults(fetch, {
+  headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' }
+})
+
+export function CustomFetch(url, options) {
+
+  // Detect IE //
+  let ua = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  let is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+
+  // Execute relevant fetch
+  if (is_ie) {
+    return apiFetch(url, options)
+  }
+  else {
+    return fetch(url, options)
+  }
+}
+
 export function fixEmptyValue(value, defaultValue) {
 
   if (isEmptyValue(value)) {

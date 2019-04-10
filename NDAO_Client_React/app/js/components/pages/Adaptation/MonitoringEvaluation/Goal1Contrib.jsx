@@ -21,6 +21,7 @@ import { metaDataCredentials } from '../../../../../js/secrets.js'
 //Images
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
@@ -122,7 +123,7 @@ class Goal1Contrib extends React.Component {
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goals${query}`)
+      let res = await CustomFetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
 
       if (res.value && res.value.length > 0) {
@@ -249,7 +250,7 @@ class Goal1Contrib extends React.Component {
 
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goals', {
+      let res = await CustomFetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -396,7 +397,7 @@ class Goal1Contrib extends React.Component {
     }
 
     try {
-      let res = await fetch(metadataServiceURL, {
+      let res = await CustomFetch(metadataServiceURL, {
         method: "POST",
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -504,7 +505,7 @@ class Goal1Contrib extends React.Component {
 
     try {
 
-      let res = await fetch(`${ccrdBaseURL}Projects${query}`)
+      let res = await CustomFetch(`${ccrdBaseURL}Projects${query}`)
 
       if (!res.ok) {
         //Get response body

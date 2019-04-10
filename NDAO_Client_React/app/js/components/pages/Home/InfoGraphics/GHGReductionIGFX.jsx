@@ -7,6 +7,7 @@ import moment from 'moment'
 
 //images
 import ghg_reduction from '../../../../../images/Icons/ghg_reduction.jpg'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -71,7 +72,7 @@ class GHGReductionIGFX extends React.Component {
     })
 
     try {
-      let res = await fetch(ccrdBaseURL + `Projects${query}`)
+      let res = await CustomFetch(ccrdBaseURL + `Projects${query}`)
       res = await res.json()
 
       if (res.value) {

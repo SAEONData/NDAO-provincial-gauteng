@@ -6,6 +6,7 @@ import moment from 'moment'
 
 //images
 import governments from '../../../../../images/Icons/governments.jpg'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -29,7 +30,7 @@ class GovernmentsIGFX extends React.Component {
 
     //Get Region count
     try {
-      let res = await fetch(vmsBaseURL + 'Regions/flat')
+      let res = await CustomFetch(vmsBaseURL + 'Regions/flat')
       res = await res.json()
 
       if (res.items) {

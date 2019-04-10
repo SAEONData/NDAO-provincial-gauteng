@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Collapse } from 'mdbreact'
-import { DEAGreen } from "../../../config/colours.js"
+import { DEAGreen, DEAGreenDark } from "../../../config/colours.js"
 import AME_Banner from './AME_Banner.jsx'
 import AME_Info from './AME_Info.jsx'
 import LessInfoBtn from './LessInfoBtn.jsx'
@@ -25,6 +25,7 @@ import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
 // import SectorsIGFX from './InfoGraphics/SectorsIGFX.jsx'
 import GoalDetails from './GoalDetails.jsx'
 import { CSVLink } from 'react-csv'
+import { CustomFetch } from '../../../globalFunctions.js';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -141,7 +142,7 @@ class Home extends React.Component {
     setLoading(true)
 
     try {
-      let res = await fetch(apiBaseURL +
+      let res = await CustomFetch(apiBaseURL +
         `GetFilteredInstitutions(region=${filterRegion},sector=${filterSector})`)
 
       if (res.ok) {
@@ -169,7 +170,7 @@ class Home extends React.Component {
     setLoading(true)
 
     try {
-      let res = await fetch(apiBaseURL + "Goals/Extensions." +
+      let res = await CustomFetch(apiBaseURL + "Goals/Extensions." +
         `GetGoalData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')` +
         "?$expand=Questions")
 
@@ -194,7 +195,7 @@ class Home extends React.Component {
     setLoading(true)
 
     try {
-      let res = await fetch(apiBaseURL + "Goals?$expand=Questions")
+      let res = await CustomFetch(apiBaseURL + "Goals?$expand=Questions")
 
       if (res.ok) {
         res = await res.json() //parse response
@@ -218,7 +219,7 @@ class Home extends React.Component {
 
     let parentSet = false
     try {
-      let res = await fetch(vmsBaseURL + 'Regions/Flat')
+      let res = await CustomFetch(vmsBaseURL + 'Regions/Flat')
 
       if (res.ok) {
         res = await res.json() //parse response
@@ -262,10 +263,10 @@ class Home extends React.Component {
       goalData, goalDataUnfiltered, trafficLightFull, mapFullView
     } = this.state
 
-    let qData = [{ 
+    let qData = [{
       Id: "",
-      Key:"",
-      Value:""
+      Key: "",
+      Value: ""
     }]
 
     return (
@@ -283,20 +284,26 @@ class Home extends React.Component {
             />
           </Col>
           <Col sm="6" style={{ textAlign: "right" }}>
-          <Button size="sm" style={{ minHeight: 35 }}>
             <CSVLink
-                style={{ marginRight:'', textDecoration: 'none', color:'white' }}
-                headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status' ]}
-                filename={"DAO-list.csv"}
-                data={[...this.state.goalData]}
-                asyncOnClick={true}
-                onClick={() => {
-                  console.log(this.state.goalData)
-                }}
-              >
-                Download
+              data={[...this.state.goalData]}
+              headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
+              filename={"DAO-list.csv"}
+              style={{
+                marginRight: 15,
+                textDecoration: 'none',
+                color: 'white',
+                backgroundColor: DEAGreen,
+                padding: "10px 25px 11px 25px",
+                borderRadius: 2,
+                fontSize: 11,
+                border: "1px solid dimgrey",
+                fontWeight: 400
+              }}
+              asyncOnClick={true}
+            >
+              DOWNLOAD DAO DATA
             </CSVLink>
-          </Button>
+
             <Button
               size="sm"
               onClick={() => { location.hash = "#/ame/contribute" }}

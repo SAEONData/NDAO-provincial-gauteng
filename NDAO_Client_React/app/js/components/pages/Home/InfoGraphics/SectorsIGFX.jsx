@@ -6,6 +6,7 @@ import moment from 'moment'
 
 //images
 import sectors from '../../../../../images/Icons/sectors.jpg'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -29,7 +30,7 @@ class SectorsIGFX extends React.Component {
 
     //Get Sector count
     try {
-      let res = await fetch(vmsBaseURL + 'Sectors/flat')
+      let res = await CustomFetch(vmsBaseURL + 'Sectors/flat')
       res = await res.json()
 
       if (res.items) {

@@ -185,15 +185,17 @@ class AME extends React.Component {
                 </Row>
                 <br />
                 <Row>
-                  {selectedGoal === 1 && <Goal1Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 2 && <Goal2Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 3 && <Goal3Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 4 && <Goal4Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 5 && <Goal5Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 6 && <Goal6Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 7 && <Goal7Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 8 && <Goal8Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
-                  {selectedGoal === 9 && <Goal9Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                  <Col>
+                    {selectedGoal === 1 && <Goal1Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 2 && <Goal2Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 3 && <Goal3Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 4 && <Goal4Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 5 && <Goal5Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 6 && <Goal6Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 7 && <Goal7Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 8 && <Goal8Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                    {selectedGoal === 9 && <Goal9Contrib editGoalId={editGoalId} resetEdit={this.resetEdit} />}
+                  </Col>
                 </Row>
                 <hr />
 
@@ -248,10 +250,10 @@ class AME extends React.Component {
 
         {/* Select goal modal */}
         <Container>
-          <Modal 
-            isOpen={ this.state.selectGoalModal } 
-            toggle={() => { this.setState({ selectGoalModal: false }) }} 
-            size="lg" 
+          <Modal
+            isOpen={this.state.selectGoalModal}
+            toggle={() => { this.setState({ selectGoalModal: false }) }}
+            size="lg"
             centered
           >
             <ModalHeader toggle={() => { this.setState({ selectGoalModal: false }) }}>
