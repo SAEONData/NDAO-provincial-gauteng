@@ -2,6 +2,27 @@ import React from 'react'
 import { DEAGreen } from './config/colours.js'
 const queryString = require('query-string')
 
+const fetchDefaults = require("fetch-defaults")
+var apiFetch = fetchDefaults(fetch, {
+  headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' }
+})
+
+export function CustomFetch(url, options) {
+
+  // Detect IE //
+  let ua = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  let is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+
+  // Execute relevant fetch
+  if (is_ie) {
+    return apiFetch(url, options)
+  }
+  else {
+    return fetch(url, options)
+  }
+}
+
 export function fixEmptyValue(value, defaultValue) {
 
   if (isEmptyValue(value)) {
@@ -39,10 +60,12 @@ export function readFiltersFromURL(){
 
 export function GetUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var crypto = window.crypto || window.msCrypto
     var r = crypto.getRandomValues(new Uint8Array(1))[0] % 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
+
 
 export function StringToHTML(strVal) {
 
@@ -73,11 +96,11 @@ export const wait = ms => new Promise((r, j) => setTimeout(r, ms))
 //-------------------------//
 
 export function SaveCurrentUrl() {
-  CreateCookie("ccis_last_url", document.URL, 1);
+  CreateCookie("ndao_last_url", document.URL, 1);
 }
 
 export function ReadLastUrl() {
-  return ReadCookie("ccis_last_url")
+  return ReadCookie("ndao_last_url")
 }
 
 export function CreateCookie(name, value, days) {

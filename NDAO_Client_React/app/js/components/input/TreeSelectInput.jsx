@@ -4,6 +4,7 @@ import React from 'react'
 import { Tooltip } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
 import { TreeSelect } from 'antd'
+import '../../../css/antd.tree-select.css'
 
 //AntD Tree-Select
 // import TreeSelect from 'antd/lib/tree-select'

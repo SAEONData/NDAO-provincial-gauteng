@@ -1,0 +1,37 @@
+.ant-select-tree li .ant-select-tree-node-content-wrapper {
+  display: inline-block; 
+  width: calc(100% - 22px); /*changed: calc(100% - 24px)*/
+  margin: 0;
+  padding: 3px 5px;
+  color: rgba(0, 0, 0, 0.65);
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.ant-select-tree li span.ant-select-tree-switcher {
+  position: relative;
+  margin-top: -5px; /*added*/
+  margin-left: -1px; /*added*/
+  margin-right: 2px; /*added*/
+}
+
+:root .ant-select-tree li span.ant-select-tree-switcher.ant-select-tree-switcher_open .ant-select-switcher-icon {
+  font-size: 22px;  /*changed: 12px*/
+  color: white; /*added*/
+  background-color: #8EAC85; /*added*/
+  border: 1px solid dimgray; /*added*/
+  border-radius: 2px; /*added*/
+  width: 26px; /*added*/
+}
+
+:root .ant-select-tree li span.ant-select-tree-switcher.ant-select-tree-switcher_close .ant-select-switcher-icon {
+  font-size: 24px;  /*changed: 12px*/
+  color: dimgray; /*added*/
+  background-color: #8EAC85; /*added*/
+  border: 1px solid dimgray; /*added*/
+  border-radius: 2px; /*added*/
+  width: 26px; /*added*/
+}

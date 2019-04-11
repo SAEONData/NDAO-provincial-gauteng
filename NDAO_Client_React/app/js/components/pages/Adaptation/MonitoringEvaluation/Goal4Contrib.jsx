@@ -17,6 +17,7 @@ import 'antd/lib/slider/style/css'
 
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const _gf = require('../../../../globalFunctions')
 
@@ -141,7 +142,7 @@ class Goal4Contrib extends React.Component {
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goals${query}`)
+      let res = await CustomFetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
@@ -211,7 +212,7 @@ class Goal4Contrib extends React.Component {
 
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goals', {
+      let res = await CustomFetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -10,7 +10,7 @@ let _metadataServiceURL = ''
 let _mapServerBaseURL = ''
 
 if (CONSTANTS.DEV) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ccistestapi/odata/' //'https://localhost:44301/odata/'
+  _apiBaseURL = 'http://app01.saeon.ac.za/ndaotestapi/odata/' //'https://localhost:44301/odata/'
   _siteBaseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`
   _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdtestapi/odata/' //'http://localhost:62553/odata/'
   _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdtestsite/#/' //'http://localhost:8085/#/'
@@ -22,8 +22,8 @@ if (CONSTANTS.DEV) {
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
 else if (CONSTANTS.TEST) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ccistestapi/odata/'
-  _siteBaseURL = 'http://app01.saeon.ac.za/ccistestsite/'
+  _apiBaseURL = 'http://app01.saeon.ac.za/ndaotestapi/odata/'
+  _siteBaseURL = 'http://app01.saeon.ac.za/ndaotestsite/'
   _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdtestapi/odata/'
   _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdtestsite/#/'
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/'
@@ -34,8 +34,8 @@ else if (CONSTANTS.TEST) {
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
 else if (CONSTANTS.PROD) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ccisapi/odata/'
-  _siteBaseURL = 'http://app01.saeon.ac.za/ccissite/'
+  _apiBaseURL = 'http://app01.saeon.ac.za/ndaoapi/odata/'
+  _siteBaseURL = 'http://app01.saeon.ac.za/ndaosite/'
   _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdapi/odata/'
   _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdsite/#/'
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmcapi/odata/'

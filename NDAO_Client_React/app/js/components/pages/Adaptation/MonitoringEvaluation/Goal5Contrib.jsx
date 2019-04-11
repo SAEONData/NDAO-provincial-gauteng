@@ -22,6 +22,7 @@ import 'antd/lib/slider/style/css'
 
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
+import { CustomFetch } from '../../../../globalFunctions.js';
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
@@ -67,7 +68,6 @@ const defaultState = {
   metaAuthors: [],
   metaDocTitle: "",
   metaKeywords: [],
-  metaDocFormat: "",
   metaDocDescr: "",
   metaAgreement: false,
   metaUID: "",
@@ -162,7 +162,7 @@ class Goal5Contrib extends React.Component {
     })
 
     try {
-      let res = await fetch(apiBaseURL + `Goals${query}`)
+      let res = await CustomFetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
@@ -182,7 +182,6 @@ class Goal5Contrib extends React.Component {
           metaAuthors: data.Questions.filter(x => x.Key === "DocumentAuthors")[0].Value.split("||"),
           metaDocTitle: data.Questions.filter(x => x.Key === "DocumentTitle")[0].Value,
           metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
-          metaDocFormat: data.Questions.filter(x => x.Key === "DocumentFormat")[0].Value,
           metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
           metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
@@ -239,7 +238,7 @@ class Goal5Contrib extends React.Component {
 
   validate() {
 
-    let { Q5_2, metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement } = this.state
+    let { Q5_2, metaAuthors, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement } = this.state
 
     if (!_gf.isEmptyValue(Q5_2)) {
 
@@ -255,11 +254,6 @@ class Goal5Contrib extends React.Component {
 
       if (metaKeywords.length === 0) {
         this.showMessage("Required", "Document keywords required - please add at least one keyword?")
-        return false
-      }
-
-      if (_gf.isEmptyValue(metaDocFormat)) {
-        this.showMessage("Required", "Document format required - please select the type of document attached?")
         return false
       }
 
@@ -282,7 +276,7 @@ class Goal5Contrib extends React.Component {
 
     let {
       goalId, goalStatus, Q5_1, Q5_2, Q5_3, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
-      metaAuthors, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement,
+      metaAuthors, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement,
       attachmentDetails, metaRegion
     } = this.state
     let { user } = this.props
@@ -307,7 +301,6 @@ class Goal5Contrib extends React.Component {
         { Key: "DocumentAuthors", Value: metaAuthors.join("||") },
         { Key: "DocumentTitle", Value: metaDocTitle },
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
-        { Key: "DocumentFormat", Value: metaDocFormat },
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
         { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
@@ -318,7 +311,7 @@ class Goal5Contrib extends React.Component {
 
     //Submit
     try {
-      let res = await fetch(apiBaseURL + 'Goals', {
+      let res = await CustomFetch(apiBaseURL + 'Goals', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -347,7 +340,7 @@ class Goal5Contrib extends React.Component {
 
     let {
       goalId, Q5_2, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocFormat, metaDocDescr, attachmentDetails, metaUID, metaRegion
+      metaDocDescr, attachmentDetails, metaUID, metaRegion
     } = this.state
 
     //Get Creators
@@ -411,7 +404,7 @@ class Goal5Contrib extends React.Component {
         }
       ],
       resourceType: {
-        resourceTypeGeneral: metaDocFormat, //Selected ducument format, eg. Text
+        resourceTypeGeneral: 'Dataset', //Selected ducument format, eg. Text
         resourceType: resourceType.toUpperCase() //file extension, eg. PDF
       },
       formats: [
@@ -460,7 +453,7 @@ class Goal5Contrib extends React.Component {
     }
 
     try {
-      let res = await fetch(metadataServiceURL, {
+      let res = await CustomFetch(metadataServiceURL, {
         method: "POST",
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -510,7 +503,7 @@ class Goal5Contrib extends React.Component {
     let {
       editing, goalStatus, goalId, Q5_1, Q5_2, Q5_3, Q5_3_A, Q5_3_B, Q5_3_C, Q5_3_D, Q5_4, Q5_5, Q5_6,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
-      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocFormat, metaDocDescr, metaAgreement
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
     } = this.state
 
     return (
@@ -640,7 +633,7 @@ class Goal5Contrib extends React.Component {
                 <label style={{ fontWeight: "bold", marginTop: "5px" }}>
                   5.2 Add attachments to any evidence:
                 </label>
-                <TextInput
+                {/* <TextInput
                   width="95%"
                   value={Q5_2}
                   callback={(value) => {
@@ -648,7 +641,7 @@ class Goal5Contrib extends React.Component {
                     this.setState({ Q5_2: value })
                   }}
                   readOnly={true}
-                />
+                /> */}
               </Col>
             </Row>
             <Row style={{ marginBottom: "7px" }}>
@@ -731,23 +724,6 @@ class Goal5Contrib extends React.Component {
                       callback={(value) => {
                         this.setState({ metaKeywords: value })
                       }}
-                    />
-                  </Col>
-                </Row>
-                <br />
-
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="6">
-                    <label style={{ fontWeight: "bold" }}>
-                      Please select the type of object you are uploading:
-                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <TreeSelectInput
-                      data={metaDocFormatsList}
-                      transform={(item) => ({ id: item, text: item })}
-                      value={metaDocFormat}
-                      placeHolder={"Unspecified"}
-                      callback={(value) => { this.setState({ metaDocFormat: value.text }) }}
                     />
                   </Col>
                 </Row>
