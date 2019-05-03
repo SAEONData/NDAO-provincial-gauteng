@@ -994,7 +994,7 @@ class Goal1Contrib extends React.Component {
           //   closeCallback={() => { this.setState({ showNCCRD: false }) }}
           // />
           <NCCRD
-            path={'projects'}
+            path={'#/projects'}
             query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
             closeCallback={() => { 
               console.log("Deleting config cookie")

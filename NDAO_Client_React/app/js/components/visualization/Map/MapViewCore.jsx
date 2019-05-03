@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import popout from '../../../../images/Icons/popout.png'
 import popin from '../../../../images/Icons/popin.png'
 import { MapConfig } from '../../../../data/mapConfig'
-import { vmsBaseURL } from '../../../../js/config/serviceURLs.js'
+import { vmsBaseURL, mapServerBaseURL } from '../../../../js/config/serviceURLs.js'
 import { CSVLink } from 'react-csv'
 import { MDBBtn } from 'mdbreact';
 
@@ -140,7 +140,7 @@ class MapViewCore extends React.Component {
 
     let { height, width, fullView, popCallback } = this.props
     let mapConfig = this.buildMapConfig()
-    let mapSrc = `http://app01.saeon.ac.za/components/map?conf=${mapConfig}`
+    let mapSrc = `${mapServerBaseURL}?conf=${mapConfig}`
 
     if (!height) {
       height = "300px"

@@ -10,14 +10,14 @@ let _metadataServiceURL = ''
 let _mapServerBaseURL = ''
 
 if (CONSTANTS.DEV) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ndaotestapi/odata/' //'https://localhost:44301/odata/'
+  _apiBaseURL = 'https://localhost:44301/odata/'
   _siteBaseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`
   _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdtestapi/odata/' //'http://localhost:62553/odata/'
   _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdtestsite/#/' //'http://localhost:8085/#/'
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/' //'https://localhost:44334/odata/'
   _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/' //'http://localhost:8080/#/'
   _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/' //'http://localhost:64161/api/'
-  _ssoBaseURL = 'http://identity.saeon.ac.za/' //'http://localhost:44320/'
+  _ssoBaseURL = 'https://identity.saeon.ac.za/' //'http://localhost:44320/'
   _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
@@ -34,16 +34,16 @@ else if (CONSTANTS.TEST) {
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }
 else if (CONSTANTS.PROD) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ndaoapi/odata/'
-  _siteBaseURL = 'http://app01.saeon.ac.za/ndaosite/'
-  _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdapi/odata/'
-  _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdsite/#/'
-  _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmcapi/odata/'
-  _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmcsite/#/'
-  _vmsBaseURL = 'http://app01.saeon.ac.za/vms/api/'
-  _ssoBaseURL = 'http://identity.saeon.ac.za/'
-  _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
-  _mapServerBaseURL = 'http://app01.saeon.ac.za'
+  _apiBaseURL = 'https://ccis.environment.gov.za/ndao/api/odata/';
+  _siteBaseURL = 'https://ccis.environment.gov.za/ndao/';
+  _ccrdBaseURL = 'https://ccis.environment.gov.za/nccrd/api/odata/';
+  _ccrdSiteBaseURL = 'https://ccis.environment.gov.za/nccrd/';
+  _ndmcBaseURL = 'https://ccis.environment.gov.za/nhe/api/odata/';
+  _ndmcSiteBaseURL = 'https://ccis.environment.gov.za/nhe/';
+  _vmsBaseURL = 'https://ccis.environment.gov.za/vms/api/';
+  _ssoBaseURL = 'https://identity.saeon.ac.za/';
+  _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/';
+  _mapServerBaseURL = 'https://ccis.environment.gov.za/map';
 }
 
 export const apiBaseURL = _apiBaseURL
