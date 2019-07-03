@@ -209,7 +209,7 @@ class Goal1Contrib extends React.Component {
     }
 
     if(metaAgreement === false){
-      this.showMessage("Required", "Licence agreement required - please accept the licence agreement?")
+      this.showMessage("Required", "License agreement required - please accept the licence agreement?")
       return false
     }
 
@@ -545,7 +545,7 @@ class Goal1Contrib extends React.Component {
       navbar: true,
       sidenav: false,
       footer: false,
-      daoid: goalId,
+      DAOId: goalId,
       readOnly: false,
       backToList: true,
       user: "",
@@ -788,7 +788,7 @@ class Goal1Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row style={{ marginTop: "7px" }}>
+            {/* <Row style={{ marginTop: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   1.2 Please add the details of all of the climate change adaptation or mitigation options
@@ -803,12 +803,12 @@ class Goal1Contrib extends React.Component {
                 </Button>
               </Col>
             </Row>
-            <br />
+            <br /> */}
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  1.3 Does the document have a risk and vulnerability assessment?
+                  1.2 Does the document have a risk and vulnerability assessment?
                 </label>
                 <br />
                 <Button
@@ -832,7 +832,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.4 When was the plan last updated?
+                  1.3 When was the plan last updated?
                 </label>
               </Col>
             </Row>
@@ -850,7 +850,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.5 Select a region for this plan:
+                  1.4 Select a region for this plan:
                 </label>
 
                 <OData
@@ -894,7 +894,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.6 Specify non-government organisation name (if applicable).
+                  1.5 Specify non-government organisation name (if applicable).
                 </label>
                 <TextInput
                   width="95%"
@@ -910,7 +910,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.7 Select a sector for this plan:
+                  1.6 Select a sector for this plan:
                 </label>
 
                 <OData
@@ -958,6 +958,24 @@ class Goal1Contrib extends React.Component {
                 </Button>
               </Col>
             </Row>
+            <br />      
+
+            <Row style={{ marginTop: "7px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Please add the details of all of the climate change adaptation or mitigation options
+                  or any research options described in your document to the National Climate Change Response Database (NCCRD).
+              </label>
+                <Button
+                  onClick={(username) => { this.setState({ showNCCRD: true }) }}
+                  color=""
+                  style={{ fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }}
+                  size="sm">
+                  NCCRD
+                </Button>
+              </Col>
+            </Row>
+            <br />
 
             <Row style={{ marginTop: "15px" }}>
               <Col md="12">

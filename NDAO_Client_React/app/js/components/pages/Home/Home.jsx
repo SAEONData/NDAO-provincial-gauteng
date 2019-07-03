@@ -267,7 +267,7 @@ class Home extends React.Component {
       Id: "",
       Key: "",
       Value: ""
-    }]
+    }] 
 
     return (
       <div style={{ padding: "0px 15px 15px 15px", borderRadius: "10px" }}>
@@ -285,8 +285,17 @@ class Home extends React.Component {
           </Col>
           <Col sm="6" style={{ textAlign: "right" }}>
             <CSVLink
+            // headers = {[{label: 'question', key: 'Value'}]}
               data={[...this.state.goalData]}
-              headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
+              
+              headers={['Id', 'Type', 'Questions', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
+              // headers = {[
+              //   {label: 'Id', key: 'Id'},
+              //   {label: 'Status', key: 'status'}, 
+              //   {label: 'Type', key: 'type'},
+              //   {label: 'Year', key: 'year'},
+              //   {label: 'Institution', key: 'institution'}
+              // ]}
               filename={"DAO-list.csv"}
               style={{
                 marginRight: 15,
