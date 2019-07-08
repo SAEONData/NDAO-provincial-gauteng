@@ -267,7 +267,7 @@ class Goal1Contrib extends React.Component {
 
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
-      this.reset()
+      // this.reset()
     }
     catch (ex) {
       console.error(ex)
@@ -1013,7 +1013,7 @@ class Goal1Contrib extends React.Component {
           // />
           <NCCRD
             path={'#/projects'}
-            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
+            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}` }
             closeCallback={() => { 
               console.log("Deleting config cookie")
               _gf.DeleteCookie("NCCRD_CONFIG_TMP")
