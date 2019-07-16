@@ -67,7 +67,8 @@ class Home extends React.Component {
       goalDataUnfiltered: [],
       prevFilters: { filterRegion, filterSector, filterGoal, filterYear, filterInstitution },
       trafficLightFull: false,
-      mapFullView: false
+      mapFullView: false,
+      questions: []
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
@@ -270,8 +271,10 @@ class Home extends React.Component {
     }] 
 
     return (
-      <div style={{ padding: "0px 15px 15px 15px", borderRadius: "10px" }}>
+      console.log(...this.state.goalData),
 
+      <div style={{ padding: "0px 15px 15px 15px", borderRadius: "10px" }}>
+        
         <AME_Banner />
 
         {/* <div style={{ height: 3 }} /> */}
@@ -287,14 +290,14 @@ class Home extends React.Component {
             <CSVLink
             // headers = {[{label: 'question', key: 'Value'}]}
               data={[...this.state.goalData]}
-              
-              headers={['Id', 'Type', 'Questions', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
+              // qdata={goalDataUnfiltered}
+              // headers={['Id', 'Type', 'Questions', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
               // headers = {[
-              //   {label: 'Id', key: 'Id'},
-              //   {label: 'Status', key: 'status'}, 
-              //   {label: 'Type', key: 'type'},
-              //   {label: 'Year', key: 'year'},
-              //   {label: 'Institution', key: 'institution'}
+                // {label: 'Id', key: 'Id'}, 
+                // {label: 'Type', key: 'Type'},
+                // {label: 'Created', key: 'CreateDate'},
+                // {label: 'Status', key: 'Status'},
+                // {label: 'Questions', key: 'Questions.Value'}
               // ]}
               filename={"DAO-list.csv"}
               style={{
