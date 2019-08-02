@@ -661,7 +661,7 @@ class Goal2Contrib extends React.Component {
                 <Row style={{ marginBottom: "7px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
-                      Attach your organogram:
+                      Attach an organogram representing the structure of your climate change unit:
                       <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                     </label>
                     <br />
@@ -706,7 +706,7 @@ class Goal2Contrib extends React.Component {
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
-                      Who wrote the document?
+                      Who is resonsible for the climate change unit?
                       <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                     </label>
                     <br />
@@ -746,7 +746,7 @@ class Goal2Contrib extends React.Component {
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="8">
                     <label style={{ fontWeight: "bold" }}>
-                      Please select which keywords apply to the document:
+                      Select all keywords that apply to the work of your climate change unit:
                       <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                     </label>
                     <TreeSelectInput
@@ -766,7 +766,7 @@ class Goal2Contrib extends React.Component {
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
-                      Please include an abstract or description for the document:
+                      Briefly describe the purpose of your climate change unit:
                       <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                     </label>
                     <TextAreaInput
@@ -1035,7 +1035,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.4 Select a region for this plan:
+                  2.4 Select a region for your organisation. If the climate change unit of your organisation impacts multiple offices, select the highest geographic level that applies. For example, for locations in multiple provinces select 'national', for locations in multiple district muncipalities in the same province, select the correct province, etc.:
                 </label>
 
                 <OData
@@ -1079,7 +1079,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  2.5 Specify non-government organisation name (if applicable).
+                  2.5 If your organisation is not a South African municipal, district, provincial, or national government entity, specify the name of your organisation.
                 </label>
                 <TextInput
                   width="95%"
@@ -1095,7 +1095,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.6 Select a sector for this plan:
+                  2.6 Select the sector your organisation falls under:
                 </label>
 
                 <OData

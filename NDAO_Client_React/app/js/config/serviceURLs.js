@@ -39,7 +39,7 @@ else if (CONSTANTS.TEST) {
   _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/'
   _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/'
   _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/'
-  _ssoBaseURL = 'http://identity.saeon.ac.za/'
+  _ssoBaseURL = 'https://identity.saeon.ac.za/'
   _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'http://app01.saeon.ac.za'
 }

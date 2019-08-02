@@ -22,6 +22,7 @@ import { metaDataCredentials } from '../../../../../js/secrets.js'
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
 import { CustomFetch } from '../../../../globalFunctions.js';
+import { Card } from 'antd';
 
 const _gf = require('../../../../globalFunctions')
 const _sf = require('./SharedFunctions.js')
@@ -209,7 +210,7 @@ class Goal1Contrib extends React.Component {
     }
 
     if(metaAgreement === false){
-      this.showMessage("Required", "Licence agreement required - please accept the licence agreement?")
+      this.showMessage("Required", "License agreement required - please accept the licence agreement?")
       return false
     }
 
@@ -267,7 +268,7 @@ class Goal1Contrib extends React.Component {
 
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
-      this.reset()
+      // this.reset()
     }
     catch (ex) {
       console.error(ex)
@@ -545,7 +546,7 @@ class Goal1Contrib extends React.Component {
       navbar: true,
       sidenav: false,
       footer: false,
-      daoid: goalId,
+      DAOId: goalId,
       readOnly: false,
       backToList: true,
       user: "",
@@ -630,7 +631,7 @@ class Goal1Contrib extends React.Component {
             <hr style={{ marginBottom: "20px", marginTop: "0px" }} />
           </Col>
         </Row>
-
+        <br />
         <Row style={{ marginLeft: "0px" }}>
           <Col md="1">
             <img src={checklist} style={{ height: "40px", marginBottom: "10px", marginLeft: "0px", marginRight: "5px" }} />
@@ -639,6 +640,11 @@ class Goal1Contrib extends React.Component {
             <h5 style={{ fontWeight: "bold", marginTop: "8px" }}>
               Goal 1 Assessment
             </h5>
+            </Col>
+            </Row>
+            <br />
+            <Card>
+            <h6>Part A</h6>
             <br />
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
@@ -788,7 +794,7 @@ class Goal1Contrib extends React.Component {
             </Row>
             <br />
 
-            <Row style={{ marginTop: "7px" }}>
+            {/* <Row style={{ marginTop: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   1.2 Please add the details of all of the climate change adaptation or mitigation options
@@ -803,12 +809,12 @@ class Goal1Contrib extends React.Component {
                 </Button>
               </Col>
             </Row>
-            <br />
+            <br /> */}
 
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
-                  1.3 Does the document have a risk and vulnerability assessment?
+                  1.2 Does the document have a risk and vulnerability assessment?
                 </label>
                 <br />
                 <Button
@@ -832,7 +838,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.4 When was the plan last updated?
+                  1.3 When was the plan last updated?
                 </label>
               </Col>
             </Row>
@@ -850,7 +856,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.5 Select a region for this plan:
+                  1.4 Select the region where your plan will be implemented. If your plan will be implemented in multiple locations, select the highest geographic level that applies. For example, for locations in multiple provinces select 'national', for locations in multiple district muncipalities in the same province, select the correct province, etc.
                 </label>
 
                 <OData
@@ -894,7 +900,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  1.6 Specify non-government organisation name (if applicable).
+                  1.5 If your organisation is not a South African municipal, district, provincial, or national government entity, specify the name of your organisation.
                 </label>
                 <TextInput
                   width="95%"
@@ -910,7 +916,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.7 Select a sector for this plan:
+                  1.6 Select the sector your organisation falls under:
                 </label>
 
                 <OData
@@ -951,14 +957,49 @@ class Goal1Contrib extends React.Component {
             <br />
 
             <Row>
-              <Col md="4">
-                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
+              <Col md="12">
+                <Button 
+                  color="" 
+                  size="sm"
+                  style={{ marginLeft: "0px", 
+                    backgroundColor: DEAGreen, 
+                    color: "black", 
+                    fontSize: "13px" }}
                   onClick={this.submit}>
-                  <b>{editing === true ? "Update" : "Save"}</b>
+                  {editing === true ? "Update" : "Save"}
                 </Button>
               </Col>
             </Row>
+            {/* </Col>
+            </Row> */}
+            </Card>
+            <br />      
+            <Card>
+            <Row style={{ marginTop: "7px" }}>
+              <Col md="8">
+              <h6>Part B</h6>
+                <label style={{ fontWeight: "bold" }}>
+                  1.7 Please add the details of all of the climate change adaptation or mitigation options
+                  or any research options described in your document to the National Climate Change Response Database (NCCRD).
+              </label>
+              </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Button
+                  onClick={(username) => { this.setState({ showNCCRD: true }) }}
+                  color=""
+                  style={{ fontSize: "13px", marginLeft: "0px", backgroundColor: DEAGreen }}
+                  size="sm">
+                  NCCRD
+                </Button>
 
+                </Col>
+              </Row>
+            </Card>
+         
+            <br />  
+            <Card>
             <Row style={{ marginTop: "15px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginBottom: "0px" }}>
@@ -982,9 +1023,18 @@ class Goal1Contrib extends React.Component {
                 />
               </Col>
             </Row>
-
-          </Col>
-        </Row>
+            <br />
+            <Row>
+              <Col md="4">
+                <Button color="" style={{ marginLeft: "0px", backgroundColor: DEAGreen, color: "black", fontSize: "16px" }}
+                  onClick={this.submit}>
+                  <b>{editing === true ? "Update" : "Submit"}</b>
+                </Button>
+              </Col>
+            </Row>
+            </Card>
+          {/* </Col>
+        </Row> */}
         <br />
 
         {showNCCRD && 
@@ -995,9 +1045,9 @@ class Goal1Contrib extends React.Component {
           // />
           <NCCRD
             path={'#/projects'}
-            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
+            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}` }
             closeCallback={() => { 
-              console.log("Deleting config cookie")
+              // console.log("Deleting config cookie")
               _gf.DeleteCookie("NCCRD_CONFIG_TMP")
               this.setState({ showNCCRD: "" }) 
             }}
