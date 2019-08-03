@@ -174,7 +174,7 @@ class Home extends React.Component {
         apiBaseURL + 
         "Goals/Extensions." +
         `GetGoalData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')` +
-        "?$expand=${Questions} "    
+        "?$expand=Questions"    
         )
 
       if (res.ok) {
@@ -263,7 +263,7 @@ class Home extends React.Component {
 
     let {
       infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution,
-      goalData, goalDataUnfiltered, trafficLightFull, mapFullView
+      goalData, trafficLightFull, mapFullView
     } = this.state
 
     let qData = [{

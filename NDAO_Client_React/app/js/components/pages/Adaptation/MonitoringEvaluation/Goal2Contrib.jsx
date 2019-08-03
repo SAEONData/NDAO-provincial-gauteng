@@ -1095,7 +1095,7 @@ class Goal2Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  2.6 Select the sector your organisation falls under:
+                  2.6 Select the sector your organisation:
                 </label>
 
                 <OData

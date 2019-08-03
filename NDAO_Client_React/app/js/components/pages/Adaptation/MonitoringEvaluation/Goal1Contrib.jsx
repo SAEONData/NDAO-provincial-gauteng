@@ -493,7 +493,7 @@ class Goal1Contrib extends React.Component {
       filter: {
         ProjectDAOs: {
           any: {
-            DAOId: {
+            daoid: {
               eq: {
                 type: 'guid',
                 value: goalId
@@ -1045,7 +1045,7 @@ class Goal1Contrib extends React.Component {
           // />
           <NCCRD
             path={'#/projects'}
-            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}` }
+            query={`?config=${encodeURI(JSON.stringify(NCCRD_Config))}`}
             closeCallback={() => { 
               // console.log("Deleting config cookie")
               _gf.DeleteCookie("NCCRD_CONFIG_TMP")
