@@ -52,7 +52,7 @@ else if (CONSTANTS.PROD) {
   _ndmcSiteBaseURL = 'https://ccis.environment.gov.za/nhe/';
   _vmsBaseURL = 'https://ccis.environment.gov.za/vms/api/';
   _ssoBaseURL = 'https://identity.saeon.ac.za/';
-  _metadataServiceURL = 'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/';
+  _metadataServiceURL = './../data/dea_meta/'//'http://qa.dirisa.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/';
   _mapServerBaseURL = 'https://ccis.environment.gov.za/map';
 }
 
