@@ -170,9 +170,12 @@ class Home extends React.Component {
     setLoading(true)
 
     try {
-      let res = await CustomFetch(apiBaseURL + "Goals/Extensions." +
+      let res = await CustomFetch(
+        apiBaseURL + 
+        "Goals/Extensions." +
         `GetGoalData(region=${filterRegion},sector=${filterSector},goal=${filterGoal},year=${filterYear},institution='${filterInstitution}')` +
-        "?$expand=Questions")
+        "?$expand=Questions"    
+        )
 
       if (res.ok) {
         res = await res.json() //parse response
@@ -260,7 +263,7 @@ class Home extends React.Component {
 
     let {
       infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution,
-      goalData, goalDataUnfiltered, trafficLightFull, mapFullView
+      goalData, trafficLightFull, mapFullView
     } = this.state
 
     let qData = [{
@@ -286,7 +289,7 @@ class Home extends React.Component {
           <Col sm="6" style={{ textAlign: "right" }}>
             <CSVLink
               data={[...this.state.goalData]}
-              headers={['Id', 'Type', 'CreateDate', 'CreateUser', 'UpdateDate', 'UpdateUser', 'Status']}
+              headers={['Id', 'Type', 'CreateDate', 'Status']}
               filename={"DAO-list.csv"}
               style={{
                 marginRight: 15,

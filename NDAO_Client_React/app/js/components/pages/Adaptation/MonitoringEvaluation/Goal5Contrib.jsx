@@ -631,7 +631,7 @@ class Goal5Contrib extends React.Component {
             <Row style={{ marginBottom: "7px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold", marginTop: "5px" }}>
-                  5.2 Add attachments to any evidence:
+                  5.2 Add attachments to any evidence (this can be anything from a video, to a policy document or a flyer from an event):
                 </label>
                 {/* <TextInput
                   width="95%"
@@ -971,7 +971,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  5.4 Select a Region for this plan:
+                  5.4 Select a region for your organisation. If the climate change technologies employed by your organisation impact multiple locations, select the highest geographic level that applies. For example, for locations in multiple provinces select 'national', for locations in multiple district muncipalities in the same province, select the correct province.
                 </label>
 
                 <OData
@@ -1015,7 +1015,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  5.5 Specify non-government organisation name (if applicable).
+                  5.5 If your organisation is not a South African municipal, district, provincial, or national government entity, please specify the name of your organisation.
                 </label>
                 <TextInput
                   width="95%"
@@ -1031,7 +1031,7 @@ class Goal5Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  5.6 Select a sector for this plan:
+                  5.6 Please select the sector your organisation falls under:
                 </label>
 
                 <OData

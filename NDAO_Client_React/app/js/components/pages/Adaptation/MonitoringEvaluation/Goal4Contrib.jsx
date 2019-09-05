@@ -377,7 +377,7 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  4.2 Does your climate change unit have dedicated funding for adaptation technologies (y/n)?
+                  4.2 Does your programme have dedicated funding for adaptation technologies (y/n)?
                 </label>
                 <br />
                 <Button
@@ -404,7 +404,7 @@ class Goal4Contrib extends React.Component {
                 <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
-                      What is the total budget for adaptation technologies?
+                    What is the total budget for your programme?
                 </label>
                     <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                       <Row style={{ marginBottom: "-10px" }}>
@@ -442,7 +442,7 @@ class Goal4Contrib extends React.Component {
                 <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
                   <Col md="5">
                     <label style={{ fontWeight: "bold" }}>
-                      How long will the funding for the adaptation technologies last?
+                    How long will the funding for the programme last?
                 </label>
                     <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                       <Row style={{ marginBottom: "-10px" }}>
@@ -471,7 +471,7 @@ class Goal4Contrib extends React.Component {
                 <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
                   <Col md="8">
                     <label style={{ fontWeight: "bold" }}>
-                      Who is the funding agency for the adaptation technologies?
+                      Who is the funding agency for the programme?
                 </label>
 
                     <OData
@@ -518,8 +518,7 @@ class Goal4Contrib extends React.Component {
                 <Row style={{ marginBottom: "7px", marginLeft: "0px" }}>
                   <Col md="8">
                     <label style={{ fontWeight: "bold" }}>
-                      Are there any partnering departments/organisations that share the cost for the adaptation
-                        technologies?
+                      Are there any partnering departments/organisations that share the cost for the programme?
                 </label>
 
                     <OData
@@ -565,7 +564,7 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  4.3 Select a Region for this plan:
+                  4.3 Select a region for your programme. If your organisation has programmes in multiple locations within the republic, please select the highest geographic level that applies. For example, for locations in multiple provinces select 'national', for locations in multiple district muncipalities in the same province, select the correct province, etc.
                 </label>
 
                 <OData
@@ -609,7 +608,7 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
-                  4.4 Specify non-government organisation name (if applicable).
+                  4.4 If your organisation is not a South African municipal, district, provincial, or national government entity, please specify the name of your organisation.
                 </label>
                 <TextInput
                   width="95%"
@@ -625,7 +624,7 @@ class Goal4Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  4.5 Select a sector for this plan:
+                  4.5 Please select the sector your organisation falls under:
                 </label>
 
                 <OData

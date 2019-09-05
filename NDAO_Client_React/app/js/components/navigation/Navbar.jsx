@@ -4,7 +4,7 @@ import { Button, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle,
 import React from 'react';
 import { connect } from 'react-redux';
 import { DEAGreen } from "../../config/colours.js";
-import { ssoBaseURL } from '../../../js/config/serviceURLs.js';
+import { ssoBaseURL, nccisSiteBaseURL } from '../../../js/config/serviceURLs.js';
 import DASL from '../pages/Tools/DASL.jsx';
 import NDMC from '../pages/Tools/NDMC.jsx';
 import LRT from '../pages/Tools/LRT.jsx';
@@ -110,6 +110,11 @@ class Navbar extends React.Component {
                         Climate Change Adaptation&nbsp;
                         <br className="d-block d-md-none" />
                         Monitoring and Evaluation
+                      </b>
+                    </DropdownItem>
+                    <DropdownItem href={nccisSiteBaseURL}>
+                      <b>
+                        NCCIS
                       </b>
                     </DropdownItem>
                     <DropdownItem divider />

@@ -118,11 +118,10 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.ejs',
-      excludeChunks: ["silentRenew"],
     }),
     new HtmlWebpackPlugin({
       template: "./silent_renew/silent_renew.html",
-      chunks: ["silentRenew",],
+      excludeChunks: ["app"], //Could not figure out which chunks to include here, so I just included all but 'app'
       filename: "silent_renew.html"
     }),
     new webpack.DefinePlugin({
