@@ -268,7 +268,7 @@ class Goal1Contrib extends React.Component {
 
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
-      // this.reset()
+      this.reset()
     }
     catch (ex) {
       console.error(ex)
@@ -450,13 +450,13 @@ class Goal1Contrib extends React.Component {
 
     this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
-    setTimeout(() => {
-      window.scroll({
-        top: 180,
-        left: 0,
-        behavior: 'smooth'
-      })
-    }, 100)
+    // setTimeout(() => {
+    //   window.scroll({
+    //     top: 180,
+    //     left: 0,
+    //     behavior: 'smooth'
+    //   })
+    // }, 100)
   }
 
   async assessGoalStatus() {

@@ -224,13 +224,13 @@ class Goal2Contrib extends React.Component {
 
     this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
-    setTimeout(() => {
-      window.scroll({
-        top: 180,
-        left: 0,
-        behavior: 'smooth'
-      })
-    }, 100)
+    // setTimeout(() => {
+    //   window.scroll({
+    //     top: 180,
+    //     left: 0,
+    //     behavior: 'smooth'
+    //   })
+    // }, 100)
   }
 
   async submit() {
