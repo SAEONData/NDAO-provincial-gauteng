@@ -33,6 +33,7 @@ namespace NDAO_API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.AddJsonFile("secrets.json", optional: false, reloadOnChange: true);

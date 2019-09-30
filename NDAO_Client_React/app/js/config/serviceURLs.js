@@ -11,30 +11,45 @@ let _metadataServiceURL = ''
 let _mapServerBaseURL = ''
 
 if (CONSTANTS.DEV) {
-  _apiBaseURL = 'https://ccis.environment.gov.za/ndao/api/odata/' //'https://localhost:44301/odata/' //'http://app01.saeon.ac.za/ndaotestapi/odata/'
+  // uncomment below for local
+  // _apiBaseURL = 'http://localhost:44301/odata/' 
+  // _siteBaseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`
+  // _ccrdBaseURL = 'http://localhost:62553/odata/'
+  // _ccrdSiteBaseURL = 'http://localhost:8085/#/'
+  // _nccisSiteBaseURL = 'http://192.168.105.102/'
+  // _ndmcBaseURL = 'http://localhost:44334/odata/'
+  // _ndmcSiteBaseURL = 'http://localhost:8080/#/'
+  // _vmsBaseURL = 'http://localhost:64161/api/'
+  // _ssoBaseURL = 'https://identity.saeon.ac.za/' //'http://localhost:44320/'
+  // _metadataServiceURL = 'https://qad.saeoss.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
+  // _mapServerBaseURL = 'https://ccis.environment.gov.za/map'
+
+  //uncomment below for staging 
+  _apiBaseURL = 'http://192.168.105.102/ndao/api/odata/'
   _siteBaseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`
-  _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdtestapi/odata/' //'http://localhost:62553/odata/'
-  _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdtestsite/#/' //'http://localhost:8085/#/'
-  _nccisSiteBaseURL = 'https://ccis.environment.gov.za/' //'http://app01.saeon.ac.za/nccistestsite'
-  _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/' //'https://localhost:44334/odata/'
-  _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/' //'http://localhost:8080/#/'
-  _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/' //'http://localhost:64161/api/'
-  _ssoBaseURL = 'https://identity.saeon.ac.za/' //'http://localhost:44320/'
-  _metadataServiceURL = 'https://qad.saeoss.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
-  _mapServerBaseURL = 'https://ccis.environment.gov.za/map'
-}
-else if (CONSTANTS.TEST) {
-  _apiBaseURL = 'http://app01.saeon.ac.za/ndaotestapi/odata/'
-  _siteBaseURL = 'http://app01.saeon.ac.za/ndaotestsite/'
-  _ccrdBaseURL = 'http://app01.saeon.ac.za/nccrdtestapi/odata/'
-  _ccrdSiteBaseURL = 'http://app01.saeon.ac.za/nccrdtestsite/#/'
-  _nccisSiteBaseURL = 'http://app01.saeon.ac.za/nccistestsite'
-  _ndmcBaseURL = 'http://app01.saeon.ac.za/ndmctestapi/odata/'
-  _ndmcSiteBaseURL = 'http://app01.saeon.ac.za/ndmctestsite/#/'
-  _vmsBaseURL = 'http://app01.saeon.ac.za/vmstest/api/'
+  _ccrdBaseURL = 'http://192.168.105.102/nccrd/api/odata/'
+  _ccrdSiteBaseURL = 'http://192.168.105.102/nccrd/'
+  _nccisSiteBaseURL = 'http://192.168.105.102/'
+  _ndmcBaseURL = 'http://192.168.105.102/ndmc/api/'
+  _ndmcSiteBaseURL = 'http://192.168.105.102/ndmc/'
+  _vmsBaseURL = 'http://192.168.105.102/vms/api/'
   _ssoBaseURL = 'https://identity.saeon.ac.za/'
   _metadataServiceURL = 'https://qad.saeoss.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
-  _mapServerBaseURL = 'http://app01.saeon.ac.za'
+  _mapServerBaseURL = 'http://192.168.105.102/map'
+
+}
+else if (CONSTANTS.TEST) {
+  _apiBaseURL = 'http://192.168.105.102/ndao/api/odata/'
+  _siteBaseURL = 'http://192.168.105.102/ndao/'
+  _ccrdBaseURL = 'http://192.168.105.102/nccrd/api/odata/'
+  _ccrdSiteBaseURL = 'http://192.168.105.102/nccrd/'
+  _nccisSiteBaseURL = 'http://192.168.105.102/'
+  _ndmcBaseURL = 'http://192.168.105.102/ndmc/api/'
+  _ndmcSiteBaseURL = 'http://192.168.105.102/ndmc/'
+  _vmsBaseURL = 'http://192.168.105.102/vms/api/'
+  _ssoBaseURL = 'https://identity.saeon.ac.za/'
+  _metadataServiceURL = 'https://qad.saeoss.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
+  _mapServerBaseURL = 'http://192.168.105.102/map'
 }
 else if (CONSTANTS.PROD) {
   _apiBaseURL = 'https://ccis.environment.gov.za/ndao/api/odata/';
