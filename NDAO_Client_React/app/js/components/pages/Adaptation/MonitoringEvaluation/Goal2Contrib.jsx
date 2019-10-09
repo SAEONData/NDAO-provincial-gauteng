@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'mdbreact'
+import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Container } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import TextAreaInput from '../../../input/TextAreaInput.jsx'
 import { DEAGreen, Red, Amber, Green } from '../../../../config/colours.js'
@@ -265,32 +265,32 @@ class Goal2Contrib extends React.Component {
     if (Q2_1 === true) {
 
       if (_gf.isEmptyValue(Q2_1_A)) {
-        this.showMessage("Required", "Document attachment required - please attach a document?")
+        this.showMessage("Required", "Document attachment required - please attach a document.")
         return false
       }
 
       if (metaAuthors.length === 0) {
-        this.showMessage("Required", "Document author(s) required - please add at least one author?")
+        this.showMessage("Required", "Document author(s) required - please add at least one author.")
         return false
       }
 
       if (_gf.isEmptyValue(metaDocTitle)) {
-        this.showMessage("Required", "Document title required - please provide a title for your document?")
+        this.showMessage("Required", "Document title required - please provide a title for your document.")
         return false
       }
 
       if (metaKeywords.length === 0) {
-        this.showMessage("Required", "Document keywords required - please add at least one keyword?")
+        this.showMessage("Required", "Document keywords required - please add at least one keyword.")
         return false
       }
 
       if (_gf.isEmptyValue(metaDocDescr)) {
-        this.showMessage("Required", "Document description required - please provide a short abstract description of your document?")
+        this.showMessage("Required", "Document description required - please provide a short abstract description of your document.")
         return false
       }
 
       if (metaAgreement === false) {
-        this.showMessage("Required", "Licence agreement required - please accept the licence agreement?")
+        this.showMessage("Required", "Licence agreement required - please accept the licence agreement.")
         return false
       }
 
@@ -369,7 +369,7 @@ class Goal2Contrib extends React.Component {
 
     let {
       goalId, Q2_1_A, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocDescr, attachmentDetails, metaUID, metaRegion, isDraft
+      metaDocDescr, attachmentDetails, metaUID, metaRegion
     } = this.state
 
     //Get Creators
@@ -631,6 +631,7 @@ class Goal2Contrib extends React.Component {
               Goal 2 Assessment
             </h5>
             <br />
+            
 
             <Row>
               <Col md="12">
@@ -1208,14 +1209,15 @@ class Goal2Contrib extends React.Component {
         </Row>
 
         {/* Message modal */}
-        <Modal isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
-          <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>
-            {this.state.title}
-          </ModalHeader>
-          <ModalBody>
-            <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
-              {_gf.StringToHTML(this.state.message)}
-            </div>
+        <Container>
+          <Modal isOpen={this.state.messageModal} toggle={() => { this.setState({ messageModal: false }) }} centered>
+            <ModalHeader toggle={() => { this.setState({ messageModal: false }) }}>
+              {this.state.title}
+            </ModalHeader>
+            <ModalBody>
+              <div className="col-md-12" style={{ overflowY: "auto", maxHeight: "65vh" }}>
+                {_gf.StringToHTML(this.state.message)}
+              </div>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -1226,6 +1228,7 @@ class Goal2Contrib extends React.Component {
               </Button>
           </ModalFooter>
         </Modal>
+      </Container>
 
         {/* Add author modal */}
         <Modal isOpen={this.state.metaAddAuthorModal} toggle={() => { this.setState({ metaAddAuthorModal: false }) }} centered>

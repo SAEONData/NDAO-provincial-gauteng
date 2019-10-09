@@ -5,11 +5,13 @@ import { connect } from 'react-redux'
 import { Row, Col, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, Container } from 'mdbreact'
 import TextInput from '../../../input/TextInput.jsx'
 import { DEAGreen, DEAGreenDark, Red, Amber, Green } from '../../../../config/colours.js'
-import { apiBaseURL, ccrdBaseURL, vmsBaseURL } from '../../../../../js/config/serviceURLs.js'
+import { apiBaseURL, ccrdBaseURL, vmsBaseURL, metadataServiceURL } from '../../../../../js/config/serviceURLs.js'
 import SelectInput from '../../../input/SelectInput.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
+import  FileUpload from '../../../input/FileUpload.jsx'
+import { metaDataCredentials } from '../../../../../js/secrets.js'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -18,8 +20,11 @@ import 'antd/lib/slider/style/css'
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
 import { CustomFetch } from '../../../../globalFunctions.js';
+import moment from 'moment'
 
 const _gf = require('../../../../globalFunctions')
+const _sf = require('./SharedFunctions.js')
+const basic = require('basic-authorization-header')
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -46,6 +51,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q3_1: 1, //DisseminationUtilisation
   Q3_2: 1, //MonitoringForcasting
+  Q3_3_1: "", //DocumentLink
   Q3_3: false, //DedicatedFunding
   Q3_3_A: 1, //TotalBudget
   Q3_3_B: 1, //BudgetDuration
@@ -53,7 +59,20 @@ const defaultState = {
   Q3_3_D: 0, //PartneringDepartments
   Q3_4: 0, //Region
   Q3_5: "", //Institution
-  Q3_6: 0 //Sector
+  Q3_6: 0, //Sector
+  metaAddAuthorModal: false,
+  tmpMetaAuthorName: "",
+  tmpMetaAuthorEmail: "",
+  tmpMetaAuthorInstitution: "",
+  metaAuthors: [],
+  metaDocTitle: "",
+  metaKeywords: [],
+  metaDocDescr: "",
+  metaAgreement: false,
+  metaUID: "",
+  metaRegion: "",
+  attachmentDetails: { size: 0, name: "", format: "", version: 0 }, //JSON
+  isDraft: false
 }
 
 class Goal3Contrib extends React.Component {
@@ -84,7 +103,7 @@ class Goal3Contrib extends React.Component {
 
   assessGoalStatus() {
 
-    let { goalStatus, Q3_1, Q3_2 } = this.state
+    let { goalStatus, Q3_1, Q3_2, Q3_3_1 } = this.state
     let newGoalStatus = "R"
     let redPoints = 0
     let amberPoints = 0
@@ -97,12 +116,17 @@ class Goal3Contrib extends React.Component {
     if (Q3_2 === 1) {
       redPoints += 1
     }
-
+    if (Q3_3_1 === false) {
+      redPoints += 1
+    }
     //Check amber conditions
     if (Q3_1 === 2) {
       amberPoints += 1
     }
     if (Q3_2 === 2) {
+      amberPoints += 1
+    }
+    if (Q3_3_1 === true) {
       amberPoints += 1
     }
 
@@ -111,6 +135,9 @@ class Goal3Contrib extends React.Component {
       greenPoints += 1
     }
     if (Q3_2 === 3) {
+      greenPoints += 1
+    }
+    if (Q3_3_1 === true) {
       greenPoints += 1
     }
 
@@ -150,17 +177,20 @@ class Goal3Contrib extends React.Component {
       filter: { Id: { eq: { type: 'guid', value: editGoalId.toString() } } },
       expand: "Questions"
     })
-
+    
     try {
       let res = await CustomFetch(apiBaseURL + `Goals${query}`)
       res = await res.json()
+
       if (res.value && res.value.length > 0) {
         let data = res.value[0]
+
         this.setState({
           editing: true,
           goalId: editGoalId,
           Q3_1: parseInt(data.Questions.filter(x => x.Key === "DisseminationUtilisation")[0].Value),
           Q3_2: parseInt(data.Questions.filter(x => x.Key === "MonitoringForcasting")[0].Value),
+          Q3_3_1: data.Questions.filter(x => x.Key === "DocumentLink")[0].Value,
           Q3_3: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
           Q3_3_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q3_3_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
@@ -168,7 +198,16 @@ class Goal3Contrib extends React.Component {
           Q3_3_D: parseInt(data.Questions.filter(x => x.Key === "PartneringDepartments")[0].Value),
           Q3_4: parseInt(data.Questions.filter(x => x.Key === "Region")[0].Value),
           Q3_5: data.Questions.filter(x => x.Key === "Institution")[0].Value,
-          Q3_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value)
+          Q3_6: parseInt(data.Questions.filter(x => x.Key === "Sector")[0].Value),
+          metaAuthors: data.Questions.filter(x => x.Key === "DocumentAuthors")[0].Value.split("||"),
+          metaDocTitle: data.Questions.filter(x => x.Key === "DocumentTitle")[0].Value,
+          metaKeywords: data.Questions.filter(x => x.Key === "DocumentKeywords")[0].Value.split("||"),
+          metaDocDescr: data.Questions.filter(x => x.Key === "DocumentDescription")[0].Value,
+          metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
+          metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
+          metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
+          isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
 
@@ -197,11 +236,74 @@ class Goal3Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q3_1, Q3_2, Q3_3, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4, Q3_5, Q3_6 } = this.state
-    let { setLoading, next, user } = this.props
-
+    let {  Q3_3_1 } = this.state
+    let { setLoading } = this.props
     setLoading(true)
 
+    let validated = this.validate()
+   
+    if (validated) {
+      
+      let metaUID = ""
+
+      if (Q3_3_1 === true) {
+        metaUID = await this.generateMetaData()
+      }
+      if (metaUID !== null) {
+        await this.saveGoal(metaUID)
+      }
+    }
+
+    setLoading(false)
+  }
+
+  validate() {
+    let { Q3_3_1, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, metaAuthors } = this.state
+    
+    if (Q3_3_1 === true) {
+
+      if (_gf.isEmptyValue(Q3_3_1)) {
+        this.showMessage("Required", "Document attachment required - please attach a document.")
+        return false
+      }
+
+      if (metaAuthors.length === 0) {
+        this.showMessage("Required", "Document author(s) required - please add at least one author.")
+      }
+      if (_gf.isEmptyValue(metaDocTitle)) {
+        this.showMessage("Required", "Document title required - please provide a title for your document.")
+        return false
+      }
+
+      if (metaKeywords.length === 0) {
+        this.showMessage("Required", "Document keywords required - please add at least one keyword.")
+        return false
+      }
+
+      if (_gf.isEmptyValue(metaDocDescr)) {
+        this.showMessage("Required", "Document description required - please provide a short abstract description of your document.")
+        return false
+      }
+
+      if (metaAgreement === false) {
+        this.showMessage("Required", "Licence agreement required - please accept the licence agreement.")
+        return false
+      }
+    }
+
+    return true
+  }
+
+  async saveGoal(metaUID) {
+
+    let {
+      goalId, goalStatus, Q3_1, Q3_2, Q3_3, Q3_3_A, Q3_3_B, Q3_3_C, 
+      Q3_3_D, Q3_4, Q3_5, Q3_6, Q3_3_1, attachmentDetails, 
+      metaKeywords, isDraft, metaDocDescr, metaDocTitle, metaAuthors, metaAgreement, metaRegion
+    } = this.state
+
+    let { user } = this.props
+  
     //Construct post body
     let goal = {
       Id: goalId,
@@ -218,7 +320,18 @@ class Goal3Contrib extends React.Component {
         { Key: "PartneringDepartments", Value: Q3_3_D.toString() },
         { Key: "Region", Value: Q3_4.toString() },
         { Key: "Institution", Value: Q3_5 },
-        { Key: "Sector", Value: Q3_6.toString() }
+        { Key: "Sector", Value: Q3_6.toString() },
+        { Key: "DocumentLink", Value: Q3_3_1 },
+        { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) },
+        { Key: "DocumentAuthors", Value: metaAuthors.join("||") },
+        { Key: "DocumentTitle", Value: metaDocTitle }, 
+        { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
+        { Key: "DocumentDescription", Value: metaDocDescr },
+        { Key: "DocumentAgreement", Value: metaAgreement.toString() },
+        { Key: "RegionName", Value: metaRegion.toString() },
+        { Key: "MetaDataUID", Value: metaUID },
+        { Key: "IsDraft", Value: isDraft}
+
       ]
     }
 
@@ -238,7 +351,6 @@ class Goal3Contrib extends React.Component {
         res = await res.json()
         throw new Error(res.error.message)
       }
-
       setLoading(false)
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
@@ -248,6 +360,171 @@ class Goal3Contrib extends React.Component {
       setLoading(false)
       console.error(ex)
       this.showMessage("An error occurred", ex.message)
+    }
+  }
+  
+  async generateMetaData() {
+
+    let {
+      goalId, Q3_3_1, metaAuthors, metaDocTitle, metaKeywords, 
+      metaDocDescr, attachmentDetails, metaUID, metaRegion
+    } = this.state
+
+    //Get creators
+    let creators = []
+    metaAuthors.map(auth => {
+      let authSplit = auth.split(", ")
+      if (authSplit.length === 3) {
+        creators.push({
+          creatorName: authSplit[0].trim(),
+          affiliation: `Organisation: ${authSplit[2].trim()}; e-Mail Address: ${authSplit[1].trim()}`
+        })
+      }
+    })
+
+    //Get subjects
+    let subjects = []
+    metaKeywords.map(keywrd => {
+      subjects.push({
+        subject: keywrd,
+        subjectScheme: "",
+        schemeURI: ""
+      })
+    })
+
+    // get resourcetype
+    let resourceType = ""
+    let resTypeIndex = attachmentDetails.name.lastIndexOf(".")
+    if (resTypeIndex > -1) {
+      resourceType = attachmentDetails.name.substring(resTypeIndex + 1, attachmentDetails.name.length)
+    }
+
+    // get related identifiers
+    let relatedIdentifiers = []
+    if (!_gf.isEmptyValue(metaUID)) {
+      relatedIdentifiers = [
+        {   
+          relatedIdentifier: metaUID, //UID of previous metadata record
+          relatedIdentifierType: "URL", 
+          relationType: "isPreviousVersionOf"
+        }
+      ]
+    }
+
+    // construct post body
+    let jsonData = {
+      xsiSchema: "http://datacite.org/schema/kernel-3",
+      publisher: 'Department of Environmental Affairs',
+      publicationYear: new Date().getFullYear().toString(),
+      language: 'eng',
+      titles: [
+        {
+          titleType: "",
+          title: metaDocTitle 
+        }
+      ],
+      // doc abstract
+      description: [
+        {
+          descriptionType: 'Abstract',
+          description: metaDocDescr
+        }
+      ],
+      // doc type
+      resourceType: {
+        resourceTypeGeneral: 'Dataset', // selected doc format (eg text)
+        resourceType: resourceType.toUpperCase() // file extention (eg pdf)
+      }, 
+      // format of extracted media (eg pdf)
+      formats: [
+        {
+          format: attachmentDetails.format  
+        }
+      ],
+      // keywords
+      subjects: subjects, 
+      // region
+      geoLocations: [
+        { geoLocationPlace: metaRegion } 
+      ],
+      relatedIdentifiers: relatedIdentifiers, 
+      alternateIdentifiers: [
+        {
+          alternateIdentifier: goalId, 
+          alternateIdentifierType: "UID"
+        }
+      ],
+      //authors
+      creators: creators, 
+      dates: [
+        {
+          date: moment().format("YYYY-MM-DD"), // date of doc upload
+          dateType: "Submitted", 
+          dateInformation: "Document last update date"
+        }
+      ],
+      rights: [
+        {
+          rights: "Attributio 4.0 International (CC BY 4.0)",
+          rightsURI: "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      // file size in bytes
+      sizes: [
+        { 
+          size: `${attachmentDetails.size} B`
+        }
+      ], 
+      // file version number
+      version: attachmentDetails.version.toString(),
+      additionalFileds: {
+        onlineResources: [
+          {
+            func: "download",
+            desc: attachmentDetails.name, 
+            href: Q3_3_1,
+            format: resourceType.toUpperCase()
+          }
+        ]
+      },
+      // required
+      bounds: [] 
+    }
+
+    try {
+      let res = await CustomFetch(metadataServiceURL, {
+        method: "POST", 
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', 
+          'Authorization': basic(metaDataCredentials.username, metaDataCredentials.password)
+        },
+        body: new URLSearchParams({
+          metadataType: 'DataCite', 
+          jsonData: JSON.stringify(jsonData)
+        }).toString()
+      })
+
+    // get status
+    let status = res.ok
+    
+    // get response body
+    res = await res.json()
+
+    if (!status) {
+      throw new Error(res.error.message)
+      }
+      else if (res.status !== "success") {
+        throw new Error(`\nLog:\n${res.log.join("\n")}`)
+      }
+
+      //Process result
+      return res.url
+    }
+    catch (ex) {
+      console.error("Unable to create meta-data record.\n", ex)
+      this.showMessage("Meta-data creation failed", "Unable to create meta-data record. (See log for details)")
+
+      return null
     }
   }
 
@@ -261,7 +538,11 @@ class Goal3Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q3_1, Q3_2, Q3_3, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4, Q3_5, Q3_6 } = this.state
+    let { editing, goalStatus, goalId, metaAuthors, metaAddAuthorModal, metaAgreement, isDraft, metaKeywords, metaKeywordsList,
+      metaDocDescr, metaDocTitle, tmpMetaAuthorEmail, tmpMetaAuthorInstitution, tmpMetaAuthorName, TextAreaInput, attachmentDetails,
+      Q3_1, Q3_2, Q3_3_1, Q3_3, Q3_3_A, Q3_3_B, Q3_3_C, Q3_3_D, Q3_4, Q3_5, Q3_6 
+    } = this.state
+
 
     return (
       <>
@@ -453,6 +734,177 @@ class Goal3Contrib extends React.Component {
               </Col>
             </Row>
             <br />
+            <Row style={{ marginBottom: "7px"}}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                Add attachments to any evidence (this can be anything from a video, to a policy document or a flyer from an event):
+                </label>
+              </Col>
+            </Row>
+            <br />
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="4">
+                <FileUpload
+                  key={"fu_" + goalId}
+                  style={{ marginTop: "-15px", marginBottom: "20px" }}
+                  width="100%"
+                  callback={(fileInfo) => {
+                    this.setState({
+                      Q3_3_1: fileInfo.Link, 
+                      attachmentDetails: {
+                        size: fileInfo.Size, 
+                        name: fileInfo.FileName,
+                        format: fileInfo.Format,
+                        version: fileInfo.Version
+                      }
+                    })
+                  }}
+                  goalId={goalId}
+                />
+              </Col>
+            </Row>
+
+            {
+              !_gf.isEmptyValue(Q3_3_1) &&
+              <div>
+<Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Who wrote the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <br />
+                <Button
+                  color=""
+                  style={{ backgroundColor: DEAGreen, margin: "0px 0px 10px 0px" }}
+                  onClick={() => { this.setState({ metaAddAuthorModal: true }) }}
+                  size="sm"
+                >
+                  Add author details
+                </Button>
+
+                {/* List authors */}
+                {_sf.listAuthors(metaAuthors,
+                  updatedAuthors => this.setState({ metaAuthors: updatedAuthors }))}
+
+              </Col>
+            </Row>
+            <br />
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  What is the title of the document?
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TextInput
+                  width="95%"
+                  value={metaDocTitle}
+                  callback={(value) => {
+                    this.setState({ metaDocTitle: value })
+                  }}
+                />
+              </Col>
+            </Row>
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="8">
+                <label style={{ fontWeight: "bold" }}>
+                  Please select all keywords that apply to the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TreeSelectInput
+                  multiple
+                  defaultValue={[]}
+                  data={metaKeywordsList}
+                  transform={(item) => ({ id: item, text: item })}
+                  value={metaKeywords}
+                  callback={(value) => {
+                    this.setState({ metaKeywords: value })
+                  }}
+                />
+              </Col>
+            </Row>
+            <br />
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Please include an abstract or description for the document:
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                </label>
+                <TextAreaInput
+                  width="95%"
+                  value={metaDocDescr}
+                  callback={(value) => {
+                    this.setState({ metaDocDescr: value })
+                  }}
+                  readOnly={true}
+                />
+              </Col>
+            </Row>
+            <br />
+            <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      The document you are uploading will be shared under a
+                      &nbsp;
+                  <a href="https://creativecommons.org/licenses/by/4.0/" target="blank"><u>Creative Commons CC-BY license</u></a>.
+                  <br />
+                      This allows the work to be shared in the public domain with no restrictions on its use,
+                      provided it is cited correctly.
+                  <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <div style={{
+                      // marginLeft: "-15px",
+                      // marginTop: "-15px",
+                      border: "1px solid silver",
+                      width: "270px",
+                      backgroundColor: "#F0F0F0"
+                    }}
+                    >
+                      <Input
+                        id="metaAgreement"
+                        label="I accept this agreement"
+                        type="checkbox"
+                        checked={metaAgreement}
+                        onClick={() => { this.setState({ metaAgreement: !metaAgreement }) }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            }
+            
+                <br />
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Is this a final or draft document?
+                </label>
+              </Col>
+            </Row>
+            <Row style={{ marginLeft: "0px"}}>
+              <Col md="12">
+                <Button
+                  onClick={() => { this.setState({ isDraft: true }) }}
+                  color=""
+                  style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Draft
+                </Button>
+                <Button
+                  onClick={() => { this.setState({ isDraft: false }) }}
+                  color=""
+                  style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Final
+                </Button>
+                
+              </Col>
+            </Row>
+            <br />
 
             <Row style={{ marginBottom: "2px" }}>
               <Col md="12">
@@ -477,6 +929,7 @@ class Goal3Contrib extends React.Component {
               </Col>
             </Row>
             <br />
+            
 
             {
               Q3_3 === true &&
@@ -485,7 +938,7 @@ class Goal3Contrib extends React.Component {
                   <Col md="12">
                     <label style={{ fontWeight: "bold" }}>
                       What is the total budget facilities/networks?
-                </label>
+                    </label>
                     <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                       <Row style={{ marginBottom: "-10px" }}>
                         <Col md="2" style={{ textAlign: "left" }}>
@@ -523,7 +976,7 @@ class Goal3Contrib extends React.Component {
                   <Col md="5">
                     <label style={{ fontWeight: "bold" }}>
                       How long will the funding for the facilities/networks last?
-                </label>
+                    </label>
                     <div style={{ backgroundColor: "#FCFCFC", padding: "10px 15px 5px 15px", borderRadius: "5px", border: "1px solid lightgrey" }} >
                       <Row style={{ marginBottom: "-10px" }}>
                         <Col md="4" style={{ textAlign: "left" }}>
@@ -801,6 +1254,87 @@ class Goal3Contrib extends React.Component {
             </ModalFooter>
           </Modal>
         </Container>
+        
+      {/* Add author modal */}
+      <Modal isOpen={this.state.metaAddAuthorModal} toggle={() => { this.setState({ metaAddAuthorModal: false }) }} centered>
+                <ModalHeader toggle={() => { this.setState({ metaAddAuthorModal: false }) }}>
+                  Add author details:
+                </ModalHeader>
+                <ModalBody>
+                  <Row>
+                    <Col md="12">
+                      <label style={{ fontWeight: "bold" }}>
+                        Name:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                      </label>
+                      <TextInput
+                        width="95%"
+                        value={tmpMetaAuthorName}
+                        callback={(value) => {
+                          this.setState({ tmpMetaAuthorName: value }) // console.log(value)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <label style={{ fontWeight: "bold" }}>
+                        Email:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                      </label>
+                      <TextInput
+                        width="95%"
+                        value={tmpMetaAuthorEmail}
+                        callback={(value) => {
+                          this.setState({ tmpMetaAuthorEmail: value })
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <label style={{ fontWeight: "bold" }}>
+                        Institution:
+                        <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                      </label>
+                      <TextInput
+                        width="95%"
+                        value={tmpMetaAuthorInstitution}
+                        callback={(value) => {
+                          this.setState({ tmpMetaAuthorInstitution: value })
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    disabled={_gf.isEmptyValue(tmpMetaAuthorName) || _gf.isEmptyValue(tmpMetaAuthorEmail) || _gf.isEmptyValue(tmpMetaAuthorInstitution)}
+                    size="sm"
+                    style={{ width: "100px", backgroundColor: DEAGreen }}
+                    color="" onClick={() => this.setState({
+                      metaAddAuthorModal: false,
+                      metaAuthors: [...metaAuthors, `${tmpMetaAuthorName}, ${tmpMetaAuthorEmail}, ${tmpMetaAuthorInstitution}`],
+                      tmpMetaAuthorName: "",
+                      tmpMetaAuthorEmail: "",
+                      tmpMetaAuthorInstitution: ""
+                    })}
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    size="sm"
+                    style={{ width: "100px", backgroundColor: DEAGreen }}
+                    color="" onClick={() => this.setState({
+                      metaAddAuthorModal: false,
+                      tmpMetaAuthorName: "",
+                      tmpMetaAuthorEmail: "",
+                      tmpMetaAuthorInstitution: ""
+                    })} >
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Modal>
 
       </>
     )
