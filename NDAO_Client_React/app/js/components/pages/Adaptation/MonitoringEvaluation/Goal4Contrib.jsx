@@ -10,6 +10,7 @@ import SelectInput from '../../../input/SelectInput.jsx'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
+import FileUpload from '../../../input/FileUpload.jsx'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -46,6 +47,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q4_1: 1, //CapacityBuilding
   Q4_2: false, //DedicatedFunding
+  Q4_2_1: "", //DocumentLink
   Q4_2_A: 1, //TotalBudget
   Q4_2_B: 1, //BudgetDuration
   Q4_2_C: 0, //FundingAgency
@@ -83,7 +85,7 @@ class Goal4Contrib extends React.Component {
 
   assessGoalStatus() {
 
-    let { goalStatus, Q4_1 } = this.state
+    let { goalStatus, Q4_1, Q4_2_1 } = this.state
     let newGoalStatus = "R"
     let redPoints = 0
     let amberPoints = 0
@@ -93,14 +95,26 @@ class Goal4Contrib extends React.Component {
     if (Q4_1 === 1) {
       redPoints += 1
     }
+    
+    if (Q4_2_1 === false) {
+      redPoints += 1
+    }
 
     //Check amber conditions
     if (Q4_1 === 2) {
       amberPoints += 1
     }
 
+    if (Q4_2_1 === true) {
+      amberPoints += 1
+    }
+
     //Check green conditions
     if (Q4_1 === 3) {
+      greenPoints += 1
+    }
+
+    if (Q4_2_1 === true) {
       greenPoints += 1
     }
 
@@ -150,6 +164,7 @@ class Goal4Contrib extends React.Component {
           editing: true,
           goalId: editGoalId,
           Q4_1: parseInt(data.Questions.filter(x => x.Key === "CapacityBuilding")[0].Value),
+          Q4_2_1: data.Questions.filter(x => x.Key === "DocumentLink")[0].Value,
           Q4_2: data.Questions.filter(x => x.Key === "DedicatedFunding")[0].Value === 'true',
           Q4_2_A: parseInt(data.Questions.filter(x => x.Key === "TotalBudget")[0].Value),
           Q4_2_B: parseInt(data.Questions.filter(x => x.Key === "BudgetDuration")[0].Value),
@@ -186,7 +201,7 @@ class Goal4Contrib extends React.Component {
 
   async submit() {
 
-    let { goalId, goalStatus, Q4_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
+    let { goalId, goalStatus, Q4_1, Q4_2_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
     let { setLoading, user } = this.props
 
     setLoading(true)
@@ -206,7 +221,9 @@ class Goal4Contrib extends React.Component {
         { Key: "PartneringDepartments", Value: Q4_2_D.toString() },
         { Key: "Region", Value: Q4_3.toString() },
         { Key: "Institution", Value: Q4_4 },
-        { Key: "Sector", Value: Q4_5.toString() }
+        { Key: "Sector", Value: Q4_5.toString() },
+        { Key: "DocumentLink", Value: Q4_2_1 },
+        { Key: "DocumentAuthors", }
       ]
     }
 
@@ -249,7 +266,7 @@ class Goal4Contrib extends React.Component {
 
   render() {
 
-    let { editing, goalStatus, goalId, Q4_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
+    let { editing, goalStatus, goalId, Q4_2_1, Q4_1, Q4_2, Q4_2_A, Q4_2_B, Q4_2_C, Q4_2_D, Q4_3, Q4_4, Q4_5 } = this.state
 
     return (
       <>
@@ -374,6 +391,165 @@ class Goal4Contrib extends React.Component {
             </Row>
             <br />
 
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Add attachments to any evidence (this can be anything from a video, to a policy document or a flyer from an event):
+                </label>
+              </Col>
+            </Row>
+            <br />
+            <Row style={{ marginBottom: "7px" }}>
+              <Col md="4">
+                <FileUpload
+                  key={"fu_" + goalId}
+                  style={{ marginTop: "-15px", marginBottom: "20px" }}
+                  width="100%"
+                  callback={(fileInfo) => {
+                    this.setState({
+                      Q4_2_1: fileInfo.Link,
+                      attachmentDetails: {
+                        size: fileInfo.Size,
+                        name: fileInfo.FileName,
+                        format: fileInfo.Format,
+                        version: fileInfo.Version
+                      }
+                    })
+                  }}
+                  goalId={goalId}
+                />
+              </Col>
+            </Row>
+
+            {
+             !_gf.isEmptyValue(Q4_2_1) &&
+              
+              <div>
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      Who generated the evidence attached?
+                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <br />
+                    <Button
+                      color=""
+                      style={{ backgroundColor: DEAGreen, margin: "0px 0px 10px 0px" }}
+                      onClick={() => { this.setState({ metaAddAuthorModal: true }) }}
+                      size="sm"
+                    >
+                      Add author details
+                  </Button>
+
+                    {/* List authors */}
+                    {_sf.listAuthors(metaAuthors,
+                      updatedAuthors => this.setState({ metaAuthors: updatedAuthors }))}
+
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      What is the name of the file submitted?
+                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TextInput
+                      width="95%"
+                      value={metaDocTitle}
+                      callback={(value) => {
+                        this.setState({ metaDocTitle: value })
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="8">
+                    <label style={{ fontWeight: "bold" }}>
+                      Please select all keywords that apply to the file:
+                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <TreeSelectInput
+                      multiple
+                      defaultValue={[]}
+                      data={metaKeywordsList}
+                      transform={(item) => ({ id: item, text: item })}
+                      value={metaKeywords}
+                      callback={(value) => {
+                        this.setState({ metaKeywords: value })
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <br />
+
+                <Row style={{ marginLeft: "0px" }}>
+                  <Col md="12">
+                    <label style={{ fontWeight: "bold" }}>
+                      The document you are uploading will be shared under a
+                      &nbsp;
+                    <a href="https://creativecommons.org/licenses/by/4.0/" target="blank"><u>Creative Commons CC-BY license</u></a>.
+                    <br />
+                      This allows the work to be shared in the public domain with no restrictions on its use,
+                      provided it is cited correctly.
+                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
+                    </label>
+                    <div style={{
+                      // marginLeft: "-15px",
+                      // marginTop: "-15px",
+                      border: "1px solid silver",
+                      width: "270px",
+                      backgroundColor: "#F0F0F0"
+                    }}
+                    >
+                      <Input
+                        id="metaAgreement"
+                        label="I accept this agreement"
+                        type="checkbox"
+                        checked={metaAgreement}
+                        onClick={() => { this.setState({ metaAgreement: !metaAgreement }) }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+             
+            
+
+            <br />
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Is this a final or draft document?
+                </label>
+              </Col>
+            </Row>
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <Button
+                  onClick={() => { this.setState({ isDraft: true }) }}
+                  color=""
+                  style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Draft
+                </Button>
+                <Button
+                  onClick={() => { this.setState({ isDraft: false }) }}
+                  color=""
+                  style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Final
+                </Button>
+
+              </Col>
+            </Row>
+            </div>
+            }
+            <br />
+
+            
             <Row>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>

@@ -734,14 +734,18 @@ class Goal1Contrib extends React.Component {
                   Please select all keywords that apply to the document:
                   <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
+
+
                 <TreeSelectInput
+                  allowClear
                   multiple
-                  defaultValue={[]}
+                  initialValue={''}
                   data={metaKeywordsList}
                   transform={(item) => ({ id: item, text: item })}
-                  value={metaKeywords}
+                  value={metaKeywords || ''}
+                  placeHolder='select'
                   callback={(value) => {
-                    this.setState({ metaKeywords: value })
+                    this.setState({ metaKeywords: value || ''})
                   }}
                 />
               </Col>

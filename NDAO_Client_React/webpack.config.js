@@ -113,6 +113,15 @@ module.exports = {
       }
     }]
   },
+  devServer: {
+    proxy: {
+    '/': {
+        target: 'http://192.168.105.102',
+            secure: false,
+            changeOrigin: true,
+      }
+    }
+  },
 
   plugins: [
     new CleanWebpackPlugin(['dist']),
