@@ -11,6 +11,7 @@ import OData from 'react-odata';
 import { DEAGreen } from '../../../../config/colours.js'
 import About from './About.jsx'
 import { apiBaseURL } from '../../../../../js/config/serviceURLs.js'
+import goaldDetails, { goalDetails } from '../../../../../data/goalDetails.js'
 
 import Goal1Contrib from './Goal1Contrib.jsx'
 import Goal2Contrib from './Goal2Contrib.jsx'
@@ -151,15 +152,15 @@ class AME extends React.Component {
                       placeHolder="Select Goal..."
                       value={"Goal-" + selectedGoal}
                       data={[
-                        { id: 1, text: "Goal-1" },
-                        { id: 2, text: "Goal-2" },
-                        { id: 3, text: "Goal-3" },
-                        { id: 4, text: "Goal-4" },
-                        { id: 5, text: "Goal-5" },
-                        { id: 6, text: "Goal-6" },
-                        { id: 7, text: "Goal-7" },
-                        { id: 8, text: "Goal-8" },
-                        { id: 9, text: "Goal-9" }
+                        goalDetails[1],
+                        goalDetails[2],
+                        goalDetails[3],
+                        goalDetails[4],
+                        goalDetails[5],
+                        goalDetails[6],
+                        goalDetails[7],
+                        goalDetails[8],
+                        goalDetails[9],
                       ]}
                       allowEdit={true}
                       allowClear={false}
