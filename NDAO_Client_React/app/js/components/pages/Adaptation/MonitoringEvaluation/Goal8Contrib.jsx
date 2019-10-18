@@ -618,6 +618,7 @@ class Goal8Contrib extends React.Component {
                 /> */}
               </Col>
             </Row>
+            <br />
             <Row style={{ marginBottom: "7px" }}>
               <Col md="4">
                 <FileUpload
