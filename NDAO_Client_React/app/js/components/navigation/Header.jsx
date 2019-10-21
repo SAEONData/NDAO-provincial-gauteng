@@ -32,7 +32,7 @@ class Header extends React.Component {
           <Col md="6">
             <div>
               <h1 style={{ textAlign: "center", letterSpacing: "2px", color: "#2e7d32" }}>
-                <b>NDAO</b>
+                <b>GAUTENG NDAO</b>
 
                 {/* BETA tag */}
                 <sub style={{ fontSize: "18px", backgroundColor: "#78e26c", borderRadius: "5px", padding: "2px" }}>

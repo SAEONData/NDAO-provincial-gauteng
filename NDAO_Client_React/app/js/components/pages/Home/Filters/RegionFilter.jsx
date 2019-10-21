@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col } from 'mdbreact'
+import { Row, Col, Button } from 'mdbreact'
 import TreeSelectInput from '../../../input/TreeSelectInput.jsx';
 import { vmsBaseURL } from '../../../../../js/config/serviceURLs.js'
 import OData from 'react-odata'
@@ -41,16 +41,17 @@ class RegionFilter extends React.Component {
             }
 
             return (
-              <TreeSelectInput
-                data={processedData}
-                transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
-                value={value}
-                allowClear={true}
-                callback={(value) => {
-                  callback(value.id)
-                }}
-                placeHolder={"Region  (National)"}
-              />
+              // <TreeSelectInput
+              //   data={processedData}
+              //   transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
+              //   value={value}
+              //   allowClear={true}
+              //   callback={(value) => {
+              //     callback(value.id)
+              //   }}
+              //   placeHolder={"Region  (National)"}
+              // />
+              <p></p>
             )
           }}
         </OData>

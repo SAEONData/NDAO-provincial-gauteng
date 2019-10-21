@@ -47,8 +47,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    let filterRegion = 0
-    let filterRegionParent = 0
+    let filterRegion = 7
+    let filterRegionParent = 7
     let filterSector = 0
     let filterGoal = 1
     let filterYear = (new Date()).getFullYear()
