@@ -3,7 +3,7 @@ import { Col, Row, Container } from 'mdbreact';
 import { DEAGreen, DEAGreenDark } from '../../config/colours.js'
 
 //Images
-import environmental_affairs_logo from '../../../images/DEA/environmental_affairs_logo.png'
+import environmental_affairs_logo from '../../../images/GDARD/gdard_logo.png'
 import sa_flag from '../../../images/Other/sa_flag.jpg'
 
 class Header extends React.Component {
@@ -32,7 +32,7 @@ class Header extends React.Component {
           <Col md="6">
             <div>
               <h1 style={{ textAlign: "center", letterSpacing: "2px", color: "#2e7d32" }}>
-                <b>GAUTENG NDAO</b>
+                <b>GDAO</b>
 
                 {/* BETA tag */}
                 <sub style={{ fontSize: "18px", backgroundColor: "#78e26c", borderRadius: "5px", padding: "2px" }}>
@@ -42,7 +42,7 @@ class Header extends React.Component {
               </h1>
               <p></p>
               <h5 style={{ textAlign: "center", letterSpacing: "2px", marginTop: "-8px", color: "grey" }}>
-                <b>National Desired Adaptation Outcomes</b>
+                <b>Gauteng Desired Adaptation Outcomes</b>
               </h5>
             </div>
           </Col>

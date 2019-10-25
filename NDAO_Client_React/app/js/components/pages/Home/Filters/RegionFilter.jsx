@@ -51,7 +51,7 @@ class RegionFilter extends React.Component {
               //   }}
               //   placeHolder={"Region  (National)"}
               // />
-              <p></p>
+              <span></span>
             )
           }}
         </OData>
