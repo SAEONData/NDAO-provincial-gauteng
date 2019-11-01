@@ -147,7 +147,7 @@ class TreeSelectInput extends React.Component {
 
         <TreeSelect
           multiple={multiple}
-          disabled={!allowEdit}
+          disabled={allowEdit}
           showSearch
           searchPlaceholder="Search..."
           style={{ width: "100%", ...style }}

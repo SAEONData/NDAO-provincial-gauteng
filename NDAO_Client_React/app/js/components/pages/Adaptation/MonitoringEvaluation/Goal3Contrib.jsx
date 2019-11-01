@@ -1037,6 +1037,7 @@ class Goal3Contrib extends React.Component {
 
                         return (
                           <TreeSelectInput
+                            disabled
                             data={processedData}
                             transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
                             value={Q3_4_C}
