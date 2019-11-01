@@ -58,7 +58,7 @@ const defaultState = {
   Q5_3_B: 1, //BudgetDuration
   Q5_3_C: 0, //FundingAgency
   Q5_3_D: 0, //PartneringDepartments
-  Q5_4: 0, //Region
+  Q5_4: 7, //Region
   Q5_5: "", //Institution
   Q5_6: 0, //Sector
   metaAddAuthorModal: false,

@@ -63,7 +63,7 @@ const defaultState = {
   Q2_2_C: 0, //FundingAgency
   Q2_2_D: 0, //PartneringDepartments
   Q2_3: 1, //IncludedInForums
-  Q2_4: 0, //Region
+  Q2_4: 7, //Region
   Q2_5: "", //Institution
   Q2_6: 0, //Sector
   metaAddAuthorModal: false,

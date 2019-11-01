@@ -49,7 +49,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q6_1: 1, //ProfilesAndAssessments
   Q6_2: "", //EvidenceLink
-  Q6_3: 0, //Region
+  Q6_3: 7, //Region
   Q6_4: "", //Institution
   Q6_5: 0, //Sector
   metaAddAuthorModal: false,

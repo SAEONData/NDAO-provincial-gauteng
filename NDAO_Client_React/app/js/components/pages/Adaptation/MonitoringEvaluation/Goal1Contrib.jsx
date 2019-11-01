@@ -56,7 +56,7 @@ const defaultState = {
   Q1_1: "", //DocumentLink
   Q1_3: false, //HasAssessment
   Q1_4: moment().format("YYYY-MM-DD"), //DocLastUpdated
-  Q1_5: 0, //Region
+  Q1_5: 7, //Region
   Q1_6: "", //Institution
   Q1_7: 0, //Sector
   metaAddAuthorModal: false,
@@ -917,6 +917,7 @@ class Goal1Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
+                        disabled
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}
