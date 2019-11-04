@@ -32,7 +32,7 @@ if (CONSTANTS.DEV) {
   _nccisSiteBaseURL = 'http://192.168.105.102/'
   _ndmcBaseURL = 'http://192.168.105.102/ndmc/api/'
   _ndmcSiteBaseURL = 'http://192.168.105.102/ndmc/'
-  _vmsBaseURL = 'https://ccis.environment.gov.za/vms/api/'
+  _vmsBaseURL = 'http://192.168.105.102/vms/api/'//'https://ccis.environment.gov.za/vms/api/'
   _ssoBaseURL = 'https://identity.saeon.ac.za/'
   _metadataServiceURL = 'https://qad.saeoss.org/Institutions/dea-monitoring-and-evaluation/dea-monitoring-and-evaluation/metadata/jsonCreateMetadataAsJson/'
   _mapServerBaseURL = 'https://ccis.environment.gov.za/map'
