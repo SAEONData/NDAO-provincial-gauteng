@@ -63,7 +63,7 @@ const defaultState = {
   Q2_2_C: 0, //FundingAgency
   Q2_2_D: 0, //PartneringDepartments
   Q2_3: 1, //IncludedInForums
-  Q2_4: 0, //Region
+  Q2_4: 7, //Region
   Q2_5: "", //Institution
   Q2_6: 0, //Sector
   metaAddAuthorModal: false,
@@ -1091,6 +1091,7 @@ class Goal2Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
+                        disabled
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q2_4}

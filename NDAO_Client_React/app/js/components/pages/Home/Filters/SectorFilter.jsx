@@ -41,6 +41,7 @@ class SectorFilter extends React.Component {
 
             return (
               <TreeSelectInput
+                disabled={false}
                 data={processedData}
                 transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                 allowClear={true}

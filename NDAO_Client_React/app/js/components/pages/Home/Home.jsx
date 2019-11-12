@@ -329,13 +329,14 @@ class Home extends React.Component {
         <div style={{ height: 5 }} />
 
         <div style={{ borderTop: "1px solid gainsboro", borderBottom: "1px solid gainsboro", paddingTop: "12px", paddingBottom: "8px" }}>
-          <Row >
+         
             {/* <Col md="3" style={{ marginBottom: "3px" }}>
               <RegionFilter
                 value={filterRegion}
                 callback={(value) => { this.setState({ filterRegion: value }) }}
               />
             </Col> */}
+          <Row>
             <Col md="3" style={{ marginBottom: "3px" }}>
               <SectorFilter
                 value={filterSector}

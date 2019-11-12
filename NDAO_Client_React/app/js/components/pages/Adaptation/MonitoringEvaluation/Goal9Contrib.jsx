@@ -49,7 +49,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q9_1: 1, //Practices
   Q9_2: "", //EvidenceLink
-  Q9_3: 0, //Region
+  Q9_3: 7, //Region
   Q9_4: "", //Institution
   Q9_5: 0, //Sector
   metaAddAuthorModal: false,
@@ -774,6 +774,7 @@ class Goal9Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
+                        disabled
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q9_3}

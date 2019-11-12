@@ -52,7 +52,7 @@ const defaultState = {
   Q4_3_B: 1, //BudgetDuration
   Q4_3_C: 0, //FundingAgency
   Q4_3_D: 0, //PartneringDepartments
-  Q4_4: 0, //Region
+  Q4_4: 7, //Region
   Q4_5: "", //Institution
   Q4_6: 0 //Sector
 }
@@ -677,6 +677,7 @@ class Goal4Contrib extends React.Component {
 
                         return (
                           <TreeSelectInput
+                            disabled
                             data={processedData}
                             transform={(item) => { return { id: item.FunderId, text: item.FundingAgency } }}
                             value={Q4_3_C}
