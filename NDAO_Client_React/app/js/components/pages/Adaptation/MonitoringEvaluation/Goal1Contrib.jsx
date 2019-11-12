@@ -891,7 +891,7 @@ class Goal1Contrib extends React.Component {
             <Row>
               <Col md="8">
                 <label style={{ fontWeight: "bold" }}>
-                  1.4 Select the region where your plan will be implemented. If your plan will be implemented in multiple locations, select the highest geographic level that applies. For example, for locations in multiple provinces select 'national', for locations in multiple district muncipalities in the same province, select the correct province, etc.
+                  1.4 Select the region where your plan will be implemented. 
                 </label>
 
                 <OData
@@ -917,12 +917,13 @@ class Goal1Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
+                        disabled
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}
                         callback={(value) => { this.setState({ Q1_5: value.id, metaRegion: value.text }) }}
                         allowClear={true}
-                        placeHolder={"Select Region...  (Leave empty for 'National')"}
+                        placeHolder={"Select Region..."}
                       />
                     )
 

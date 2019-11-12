@@ -114,7 +114,7 @@ class FileUpload extends React.Component {
 
     //Upload
     try {
-      let res = await globalFunctions.CustomFetch(apiBaseURL + "Uploads", {
+      let res = await globalFunctions.CustomFetch(apiBaseURL + "UploadFile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
