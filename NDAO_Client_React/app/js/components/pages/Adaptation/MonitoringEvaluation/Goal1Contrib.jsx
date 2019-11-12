@@ -917,7 +917,7 @@ class Goal1Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
-                        disabled
+                        disabled={true}
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}

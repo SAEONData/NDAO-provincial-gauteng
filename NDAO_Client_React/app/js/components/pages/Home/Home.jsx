@@ -10,7 +10,7 @@ import LessInfoBtn from './LessInfoBtn.jsx'
 import TrafficLights from './TrafficLights.jsx'
 import YearFilter from './Filters/YearFilter.jsx'
 import RegionFilter from './Filters/RegionFilter.jsx'
-import SectorFilter from './Filters/SectorFilter.jsx'
+import SectorFilter from './Filters/SectorFilter.jsx'  
 import GoalFilter from './Filters/GoalFilter.jsx'
 import { apiBaseURL, vmsBaseURL } from '../../../../js/config/serviceURLs.js'
 import InstitutionFilter from './Filters/InstitutionFilter.jsx'
@@ -383,7 +383,7 @@ class Home extends React.Component {
                 onClick={() => {
                   this.setState({
                     filterYear: (new Date()).getFullYear(),
-                    filterRegion: 0,
+                    filterRegion: 7,
                     filterSector: 0,
                     filterGoal: 1
                   })
