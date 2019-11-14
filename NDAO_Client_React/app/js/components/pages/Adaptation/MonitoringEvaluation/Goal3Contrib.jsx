@@ -12,6 +12,8 @@ import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
+import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
+import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -542,7 +544,7 @@ class Goal3Contrib extends React.Component {
       metaAddAuthorModal, metaAgreement, metaKeywords, 
       metaKeywordsList, metaDocDescr, metaDocTitle, 
       tmpMetaAuthorEmail, tmpMetaAuthorInstitution, tmpMetaAuthorName, 
-      TextAreaInput, attachmentDetails,
+      TextAreaInput,
       Q3_1, Q3_2, Q3_3, Q3_4, Q3_4_A, Q3_4_B, Q3_4_C, 
       Q3_4_D, Q3_5, Q3_6, Q3_7
     } = this.state
@@ -769,151 +771,12 @@ class Goal3Contrib extends React.Component {
               </Col>
             </Row>
 
-            {
-             !_gf.isEmptyValue(Q3_3) &&
-              
-              <div>
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="12">
-                    <label style={{ fontWeight: "bold" }}>
-                      Who wrote the document?
-                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <br />
-                    <Button
-                      color=""
-                      style={{ backgroundColor: DEAGreen, margin: "0px 0px 10px 0px" }}
-                      onClick={() => { this.setState({ metaAddAuthorModal: true }) }}
-                      size="sm"
-                    >
-                      Add author details
-                  </Button>
-
-                    {/* List authors */}
-                    {_sf.listAuthors(metaAuthors,
-                      updatedAuthors => this.setState({ metaAuthors: updatedAuthors }))}
-
-                  </Col>
-                </Row>
-                <br />
-
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="12">
-                    <label style={{ fontWeight: "bold" }}>
-                      What is the title of the document?
-                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <TextInput
-                      width="95%"
-                      value={metaDocTitle}
-                      callback={(value) => {
-                        this.setState({ metaDocTitle: value })
-                      }}
-                    />
-                  </Col>
-                </Row>
-
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="8">
-                    <label style={{ fontWeight: "bold" }}>
-                      Please select all keywords that apply to the document:
-                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <TreeSelectInput
-                      multiple
-                      defaultValue={[]}
-                      data={metaKeywordsList}
-                      transform={(item) => ({ id: item, text: item })}
-                      value={metaKeywords}
-                      callback={(value) => {
-                        this.setState({ metaKeywords: value })
-                      }}
-                    />
-                  </Col>
-                </Row>
-                <br />
-
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="12">
-                    <label style={{ fontWeight: "bold" }}>
-                      Please include an abstract or description for the document:
-                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <TextAreaInput
-                      width="95%"
-                      value={metaDocDescr}
-                      callback={(value) => {
-                        this.setState({ metaDocDescr: value })
-                      }}
-                      readOnly={true}
-                    />
-                  </Col>
-                </Row>
-                <br />
-                <Row style={{ marginLeft: "0px" }}>
-                  <Col md="12">
-                    <label style={{ fontWeight: "bold" }}>
-                      The document you are uploading will be shared under a
-                      &nbsp;
-                    <a href="https://creativecommons.org/licenses/by/4.0/" target="blank"><u>Creative Commons CC-BY license</u></a>.
-                    <br />
-                      This allows the work to be shared in the public domain with no restrictions on its use,
-                      provided it is cited correctly.
-                    <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
-                    </label>
-                    <div style={{
-                      // marginLeft: "-15px",
-                      // marginTop: "-15px",
-                      border: "1px solid silver",
-                      width: "270px",
-                      backgroundColor: "#F0F0F0"
-                    }}
-                    >
-                      <Input
-                        id="metaAgreement"
-                        label="I accept this agreement"
-                        type="checkbox"
-                        checked={metaAgreement}
-                        onClick={() => { this.setState({ metaAgreement: !metaAgreement }) }}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-             
             
+           
+              
+        
 
-            <br />
-
-            {/* <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <label style={{ fontWeight: "bold" }}>
-                  Is this a final or draft document?
-                </label>
-              </Col>
-            </Row> */}
-            {/* <Row style={{ marginLeft: "0px" }}>
-              <Col md="12">
-                <Button
-                  onClick={() => { this.setState({ isDraft: true }) }}
-                  color=""
-                  style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
-                  size="sm">
-                  Draft
-                </Button>
-                <Button
-                  onClick={() => { this.setState({ isDraft: false }) }}
-                  color=""
-                  style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
-                  size="sm">
-                  Final
-                </Button>
-
-              </Col>
-            </Row> */}
-            </div>
-            }
-            <br />
-
+   
             <Row style={{ marginBottom: "2px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
@@ -1238,9 +1101,8 @@ class Goal3Contrib extends React.Component {
                 />
               </Col>
             </Row>
-
-          </Col>
-        </Row>
+</Col>
+</Row>
 
         {/* Message modal */}
         <Container>
@@ -1268,7 +1130,7 @@ class Goal3Contrib extends React.Component {
         <Modal isOpen={this.state.metaAddAuthorModal} toggle={() => { this.setState({ metaAddAuthorModal: false }) }} centered>
           <ModalHeader toggle={() => { this.setState({ metaAddAuthorModal: false }) }}>
             Add author details:
-                </ModalHeader>
+          </ModalHeader>
           <ModalBody>
             <Row>
               <Col md="12">
@@ -1330,7 +1192,7 @@ class Goal3Contrib extends React.Component {
               })}
             >
               Add
-                  </Button>
+            </Button>
             <Button
               size="sm"
               style={{ width: "100px", backgroundColor: DEAGreen }}
@@ -1341,7 +1203,7 @@ class Goal3Contrib extends React.Component {
                 tmpMetaAuthorInstitution: ""
               })} >
               Cancel
-                  </Button>
+            </Button>
           </ModalFooter>
         </Modal>
 
