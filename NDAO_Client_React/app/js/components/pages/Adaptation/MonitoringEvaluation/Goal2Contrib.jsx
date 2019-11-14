@@ -78,7 +78,7 @@ const defaultState = {
   metaUID: "",
   metaRegion: "",
   attachmentDetails: { size: 0, name: "", format: "", version: 0 }, //JSON
-  // isDraft: false
+  isDraft: false
 }
 
 class Goal2Contrib extends React.Component {
@@ -209,7 +209,7 @@ class Goal2Contrib extends React.Component {
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
           metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
           attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
-          // isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
+          isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
       this.props.setLoading(false)
@@ -304,7 +304,7 @@ class Goal2Contrib extends React.Component {
     let {
       goalId, goalStatus, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6,
       metaAuthors, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement,
-      attachmentDetails, metaRegion
+      attachmentDetails, metaRegion, isDraft
     } = this.state
     let { user } = this.props
 
@@ -334,7 +334,7 @@ class Goal2Contrib extends React.Component {
         { Key: "DocumentDetails", Value: JSON.stringify(attachmentDetails) }, //file details as JSON string
         { Key: "RegionName", Value: metaRegion.toString() },
         { Key: "MetaDataUID", Value: metaUID },
-        // { Key: "IsDraft", Value: isDraft }
+        { Key: "IsDraft", Value: isDraft }
       ]
     }
 
@@ -532,7 +532,7 @@ class Goal2Contrib extends React.Component {
     let {
       editing, Q2_1, Q2_1_A, Q2_2, Q2_2_A, Q2_2_B, Q2_2_C, Q2_2_D, Q2_3, Q2_4, Q2_5, Q2_6, goalStatus, goalId,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
-      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, isDraft
     } = this.state
 
     return (
@@ -784,14 +784,14 @@ class Goal2Contrib extends React.Component {
                   </Col>
                 </Row>
                 <br />
-                {/* <Row style={{ marginLeft: "0px" }}>
+                <Row style={{ marginLeft: "0px" }}>
               <Col md="12">
                 <label style={{ fontWeight: "bold" }}>
                   Is this a final or draft document?
                 </label>
                 </Col>
-            </Row> */}
-            {/* <Row style={{ marginLeft: "0px"}}>
+            </Row>
+            <Row style={{ marginLeft: "0px"}}>
               <Col md="12">
                 <Button
                   onClick={() => { this.setState({ isDraft: true }) }}
@@ -809,7 +809,7 @@ class Goal2Contrib extends React.Component {
                 </Button>
                 
               </Col>
-            </Row> */}
+            </Row>
             <br />
                 <Row style={{ marginLeft: "0px" }}>
                   <Col md="12">

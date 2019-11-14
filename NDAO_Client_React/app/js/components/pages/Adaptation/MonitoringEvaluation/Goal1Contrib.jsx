@@ -69,7 +69,8 @@ const defaultState = {
   metaDocDescr: "",
   metaAgreement: false,
   metaUID: "",
-  metaRegion: ""
+  metaRegion: "",
+  isDraft: false
 }
 
 class Goal1Contrib extends React.Component {
@@ -146,7 +147,8 @@ class Goal1Contrib extends React.Component {
           metaAgreement: data.Questions.filter(x => x.Key === "DocumentAgreement")[0].Value === 'true',
           metaUID: data.Questions.filter(x => x.Key === "MetaDataUID")[0].Value,
           metaRegion: data.Questions.filter(x => x.Key === "RegionName")[0].Value,
-          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value)
+          attachmentDetails: JSON.parse(data.Questions.filter(x => x.Key === "DocumentDetails")[0].Value),
+          isDraft: data.Questions.filter(x => x.Key === "IsDraft")[0].Value === 'true'
         })
       }
 
@@ -221,7 +223,7 @@ class Goal1Contrib extends React.Component {
 
     let {
       goalId, goalStatus, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7, metaAuthors, metaDocTitle, metaKeywords,
-      metaDocDescr, metaAgreement, attachmentDetails, metaRegion
+      metaDocDescr, metaAgreement, attachmentDetails, metaRegion, isDraft
     } = this.state
     let { user } = this.props
 
@@ -245,7 +247,8 @@ class Goal1Contrib extends React.Component {
         { Key: "DocumentKeywords", Value: metaKeywords.join("||") },
         { Key: "DocumentDescription", Value: metaDocDescr },
         { Key: "DocumentAgreement", Value: metaAgreement.toString() },
-        { Key: "MetaDataUID", Value: metaUID }
+        { Key: "MetaDataUID", Value: metaUID },
+        { Key: "IsDraft", Value: isDraft }
       ]
     }
 
@@ -268,7 +271,7 @@ class Goal1Contrib extends React.Component {
 
       this.showMessage("Success", "Goal submitted successfully")
       await this.waitForMessageClosed()
-      // this.reset()
+      this.reset()
     }
     catch (ex) {
       console.error(ex)
@@ -451,19 +454,11 @@ class Goal1Contrib extends React.Component {
     this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
     setTimeout(() => {
-<<<<<<< HEAD
       window.scroll({
         top: 180,
         left: 0,
         behavior: 'smooth'
       })
-=======
-      // window.scroll({
-      //   top: 180,
-      //   left: 0,
-      //   behavior: 'smooth'
-      // })
->>>>>>> 9d862597010f9553274fdf2a0bbb51879dff0028
     }, 100)
   }
 
@@ -544,7 +539,7 @@ class Goal1Contrib extends React.Component {
     let {
       editing, goalId, goalStatus, showNCCRD, Q1_1, Q1_3, Q1_4, Q1_5, Q1_6, Q1_7,
       metaAddAuthorModal, metaAuthors, tmpMetaAuthorName, tmpMetaAuthorEmail,
-      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement
+      tmpMetaAuthorInstitution, metaDocTitle, metaKeywords, metaDocDescr, metaAgreement, isDraft
     } = this.state
 
     let { user } = this.props
@@ -739,14 +734,18 @@ class Goal1Contrib extends React.Component {
                   Please select all keywords that apply to the document:
                   <span style={{ color: "red", marginLeft: "10px", fontSize: "20px" }}>*</span>
                 </label>
+
+
                 <TreeSelectInput
+                  allowClear
                   multiple
+                  initialValue={''}
                   data={metaKeywordsList}
                   transform={(item) => ({ id: item, text: item })}
-                  value={metaKeywords}
-                  placeHolder={"Unspecified"}
+                  value={metaKeywords || ''}
+                  placeHolder='select'
                   callback={(value) => {
-                    this.setState({ metaKeywords: value })
+                    this.setState({ metaKeywords: value || ''})
                   }}
                 />
               </Col>
@@ -767,6 +766,34 @@ class Goal1Contrib extends React.Component {
                   }}
                   readOnly={true}
                 />
+              </Col>
+            </Row>
+            <br />
+
+            <Row style={{ marginLeft: "0px" }}>
+              <Col md="12">
+                <label style={{ fontWeight: "bold" }}>
+                  Is this a final or draft document?
+                </label>
+                </Col>
+            </Row>
+            <Row style={{ marginLeft: "0px"}}>
+              <Col md="12">
+                <Button
+                  onClick={() => { this.setState({ isDraft: true }) }}
+                  color=""
+                  style={{ fontSize: isDraft ? "13px" : "10px", marginLeft: "0px", backgroundColor: isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Draft
+                </Button>
+                <Button
+                  onClick={() => { this.setState({ isDraft: false }) }}
+                  color=""
+                  style={{ fontSize: !isDraft ? "13px" : "10px", backgroundColor: !isDraft ? DEAGreen : "grey" }}
+                  size="sm">
+                  Final
+                </Button>
+                
               </Col>
             </Row>
             <br />
@@ -890,16 +917,13 @@ class Goal1Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
-<<<<<<< HEAD
                         // disabled={true}
-=======
->>>>>>> 9d862597010f9553274fdf2a0bbb51879dff0028
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}
                         callback={(value) => { this.setState({ Q1_5: value.id, metaRegion: value.text }) }}
                         allowClear={true}
-                        placeHolder={"Select Region...  (Leave empty for 'National')"}
+                        placeHolder={"Select Region..."}
                       />
                     )
 
