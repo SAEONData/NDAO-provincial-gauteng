@@ -453,13 +453,13 @@ class Goal1Contrib extends React.Component {
 
     this.setState({ ...defaultState, goalId: _gf.GetUID() })
 
-    // setTimeout(() => {
-    //   window.scroll({
-    //     top: 180,
-    //     left: 0,
-    //     behavior: 'smooth'
-    //   })
-    // }, 100)
+    setTimeout(() => {
+      window.scroll({
+        top: 180,
+        left: 0,
+        behavior: 'smooth'
+      })
+    }, 100)
   }
 
   async assessGoalStatus() {
@@ -917,7 +917,7 @@ class Goal1Contrib extends React.Component {
 
                     return (
                       <TreeSelectInput
-                        disabled={true}
+                        // disabled={true}
                         data={processedData}
                         transform={(item) => { return { id: item.id, text: item.value, children: item.children } }}
                         value={Q1_5}
