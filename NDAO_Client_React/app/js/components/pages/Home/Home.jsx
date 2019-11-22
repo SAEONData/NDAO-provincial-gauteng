@@ -26,6 +26,7 @@ import MapViewCore from '../../visualization/Map/MapViewCore.jsx'
 import GoalDetails from './GoalDetails.jsx'
 import { CSVLink } from 'react-csv'
 import { CustomFetch } from '../../../globalFunctions.js';
+import { custom, region, logo } from '../../../custom/custom_config.js'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -47,8 +48,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    let filterRegion = 7
-    let filterRegionParent = 7
+    let filterRegion = custom.region
+    let filterRegionParent = custom.region
     let filterSector = 0
     let filterGoal = 1
     let filterYear = (new Date()).getFullYear()
