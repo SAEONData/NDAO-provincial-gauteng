@@ -15,6 +15,7 @@ import moment from 'moment'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
+import { region, custom } from '../../../../../js/custom/custom_config'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -58,7 +59,7 @@ const defaultState = {
   Q5_3_B: 1, //BudgetDuration
   Q5_3_C: 0, //FundingAgency
   Q5_3_D: 0, //PartneringDepartments
-  Q5_4: 7, //Region
+  Q5_4: custom.region, //Region
   Q5_5: "", //Institution
   Q5_6: 0, //Sector
   metaAddAuthorModal: false,

@@ -15,6 +15,7 @@ import moment from 'moment'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
+import { region, custom } from '../../../../../js/custom/custom_config'
 
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
@@ -49,7 +50,7 @@ const defaultState = {
   goalId: _gf.GetUID(),
   Q8_1: 1, //NonClimateChange
   Q8_2: "", //EvidenceLink
-  Q8_3: 7, //Region
+  Q8_3: custom.region, //Region
   Q8_4: "", //Institution
   Q8_5: 0, //Sector
   metaAddAuthorModal: false,

@@ -12,6 +12,7 @@ import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import FileUpload from '../../../input/FileUpload.jsx'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
+import { region, custom } from '../../../../../js/custom/custom_config'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -57,7 +58,7 @@ const defaultState = {
   Q3_4_B: 1, //BudgetDuration
   Q3_4_C: 0, //FundingAgency
   Q3_4_D: 0, //PartneringDepartments
-  Q3_5: 7, //Region
+  Q3_5: custom.region, //Region
   Q3_6: "", //Institution
   Q3_7: 0, //Sector
   metaAddAuthorModal: false,

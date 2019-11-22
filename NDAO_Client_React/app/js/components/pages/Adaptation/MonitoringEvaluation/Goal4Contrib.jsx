@@ -11,6 +11,7 @@ import TreeSelectInput from '../../../input/TreeSelectInput.jsx'
 import OData from 'react-odata'
 import buildQuery from 'odata-query'
 import FileUpload from '../../../input/FileUpload.jsx'
+import { region, custom } from '../../../../../js/custom/custom_config'
 
 //Ant.D
 import Slider from 'antd/lib/slider'
@@ -52,7 +53,7 @@ const defaultState = {
   Q4_3_B: 1, //BudgetDuration
   Q4_3_C: 0, //FundingAgency
   Q4_3_D: 0, //PartneringDepartments
-  Q4_4: 7, //Region
+  Q4_4: custom.region, //Region
   Q4_5: "", //Institution
   Q4_6: 0 //Sector
 }

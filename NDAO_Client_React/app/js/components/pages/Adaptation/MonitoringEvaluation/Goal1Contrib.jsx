@@ -17,7 +17,7 @@ import buildQuery from 'odata-query'
 import { metaDocFormatsList } from '../../../../../data/metaDocFormatsList.js'
 import { metaKeywordsList } from '../../../../../data/metaKeywordsList.js'
 import { metaDataCredentials } from '../../../../../js/secrets.js'
-
+import { region, custom } from '../../../../../js/custom/custom_config'
 //Images
 import gear from '../../../../../images/Icons/gear.png'
 import checklist from '../../../../../images/Icons/checklist.png'
@@ -56,7 +56,7 @@ const defaultState = {
   Q1_1: "", //DocumentLink
   Q1_3: false, //HasAssessment
   Q1_4: moment().format("YYYY-MM-DD"), //DocLastUpdated
-  Q1_5: 7, //Region
+  Q1_5: custom.region, //Region
   Q1_6: "", //Institution
   Q1_7: 0, //Sector
   metaAddAuthorModal: false,
