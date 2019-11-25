@@ -3,7 +3,7 @@ import { Col, Row, Container } from 'mdbreact';
 import { DEAGreen, DEAGreenDark } from '../../config/colours.js'
 
 //Images
-import environmental_affairs_logo from '../../../images/GDARD/gdard_logo.png'
+import logo from '../../custom/logo.png'
 import sa_flag from '../../../images/Other/sa_flag.jpg'
 
 class Header extends React.Component {
@@ -20,7 +20,7 @@ class Header extends React.Component {
           <Col md="2" className="d-none d-md-block">
             <img
               onClick={() => window.open("http://www.environment.gov.za/")}
-              src={environmental_affairs_logo}
+              src={logo}
               style={{
                 height: 80,
                 marginLeft: 5,

@@ -5,7 +5,7 @@ let logo = ''
 
 
 export const custom = {
-    region: 6,
+    region: 7,
     logo : './logo.png'
 }
 

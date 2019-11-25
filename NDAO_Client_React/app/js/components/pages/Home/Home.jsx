@@ -264,13 +264,18 @@ class Home extends React.Component {
 
     let {
       infoSection, filterYear, filterRegion, filterRegionParent, filterSector, filterGoal, filterInstitution,
-      goalData, trafficLightFull, mapFullView
+      goalData, trafficLightFull, mapFullView, getGoalData
     } = this.state
 
     let qData = [{
-      Id: "",
-      Key: "",
-      Value: ""
+      id: "",
+      key: "",
+      value: "",
+      goal: {
+        questions: {
+
+        }
+      }
     }]
 
     return (
@@ -289,7 +294,7 @@ class Home extends React.Component {
           </Col>
           <Col sm="6" style={{ textAlign: "right" }}>
             <CSVLink
-              data={[...this.state.goalData]}
+              data={Object.values({...this.state.goalData})}
               headers={['Id', 'Type', 'CreateDate', 'Status']}
               filename={"DAO-list.csv"}
               style={{
@@ -300,11 +305,11 @@ class Home extends React.Component {
                 padding: "10px 25px 11px 25px",
                 borderRadius: 2,
                 fontSize: 11,
-                border: "1px solid dimgrey",
                 fontWeight: 400
               }}
               asyncOnClick={true}
             >
+          
               DOWNLOAD DAO DATA
             </CSVLink>
 
